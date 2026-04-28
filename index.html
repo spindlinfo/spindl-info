@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Digitální průvodce</title>
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: center; justify-content: center; padding: 15px; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; }
+
+.lang-switcher { background: #0d1836; padding: 15px; display: flex; justify-content: center; gap: 25px; }
+.lang-btn { cursor: pointer; font-size: 13px; font-weight: 800; color: #ffffff; opacity: 0.4; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+.lang-btn.active { opacity: 1; color: #12b800; }
+
+.top { background: #12b800; padding: 30px 20px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; } 
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 600; opacity: 0.95; }
+
+.content { padding: 25px 20px; }
+
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+
+.btn-main { background: #12204a; }
+.btn-news { background: #ff9f00; color: #12204a; }
+.btn-transport { background: #12b800; }
+.btn-emergency { background: #e74c3c; }
+.btn-info { background: #3498db; }
+.btn-outline { background: transparent; color: #12204a; border: 2px solid #12204a; box-shadow: none; padding: 12px; font-size: 13px; }
+
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 25px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.weather-box { background: #f8f9fa; padding: 15px; border-radius: 12px; font-size: 14px; border-left: 5px solid #12b800; margin-top: 10px; text-align: left; color: #333; line-height: 1.6; }
+.news-desc { font-size: 13px; color: #555; margin: -8px 0 15px; text-align: left; line-height: 1.4; padding: 0 5px; }
+.footer { font-size: 12px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 700; }
+</style>
+</head>
+
+<body>
+<main class="card">
+  <div class="lang-switcher">
+    <span class="lang-btn" onclick="setLang('cs')" id="btn-cs">CZ</span>
+    <span class="lang-btn" onclick="setLang('de')" id="btn-de">DE</span>
+    <span class="lang-btn" onclick="setLang('pl')" id="btn-pl">PL</span>
+    <span class="lang-btn" onclick="setLang('en')" id="btn-en">GB</span>
+  </div>
+
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="Logo"></div>
+    <div class="subtitle" id="txt-subtitle">Digitální průvodce Špindlerovým Mlýnem</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" href="https://g.page/r/Ca_VRigL1XZyEBM/review" id="txt-review" target="_blank">⭐ Ohodnoťte nás na Google</a>
+
+    <div class="section-title" id="txt-sec-news">Aktuálně / News</div>
+    <a class="button btn-news" id="lnk-event" href="#" target="_blank">🌸 1. máj ve Špindlu 2026</a>
+    <div class="news-desc" id="txt-news-desc">Oslavte s námi 1. máj! Program, trhy a hudba.</div>
+
+    <div class="section-title" id="txt-sec-trans">Doprava a parkování</div>
+    <div class="grid">
+        <a class="button btn-transport" id="lnk-trans" href="#" target="_blank" style="font-size: 12px; padding: 12px 6px;">MHD, Parking & Špindlerovka</a>
+        <a class="button btn-transport" id="lnk-idos" href="#" target="_blank" style="font-size: 12px; padding: 12px 6px;">🔍 Jízdní řády (Celá ČR)</a>
+    </div>
+
+    <div class="section-title" id="txt-sec-live">Live info</div>
+    <div class="grid">
+      <a class="button btn-outline" id="lnk-cams" href="#" target="_blank">🎥 Kamery</a>
+      <a class="button btn-outline" id="lnk-lifts" href="#" target="_blank">🚠 Lanovky</a>
+    </div>
+
+    <div class="section-title" id="txt-sec-weather">Počasí / Weather</div>
+    <a class="button btn-info" id="lnk-weather" href="#" target="_blank">☀️ Předpověď počasí Špindl</a>
+    <div class="grid">
+        <a class="button btn-outline" id="lnk-det-spindl" href="#" target="_blank">Detail Špindl</a>
+        <a class="button btn-outline" id="lnk-det-snezka" href="#" target="_blank">Detail Sněžka</a>
+    </div>
+    <div class="weather-box" id="weather-summary">...</div>
+
+    <div class="section-title" id="txt-sec-safe">Bezpečnost / Safety</div>
+    <button class="button btn-emergency" onclick="stahnoutAppku()">🆘 <span id="txt-zachranka">Aplikace ZÁCHRANKA</span></button>
+
+    <div class="footer">
+      <span id="txt-footer">Všechny informace na:</span><br>
+      <a id="lnk-web" href="https://www.spindleruv-mlyn.com/cz/" target="_blank">WWW.SPINDLERUV-MLYN.COM</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const translations = {
+  cs: {
+    subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
+    secNews: "Aktuálně ze Špindlu", newsEvent: "🌸 1. máj ve Špindlu 2026", newsDesc: "Oslavte s námi 1. máj! Program, trhy a hudba.",
+    secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
+    busLocal: "MHD, Parking & Špindlerovka", idos: "🔍 IDOS - Jízdní řády",
+    secLive: "Aktuální info", cams: "🎥 Kamery", lifts: "🚠 Lanovky", secWeather: "Počasí na horách", 
+    weatherBtn: "☀️ Předpověď počasí Špindl", detailSpindl: "Detail Špindl", detailSnezka: "Detail Sněžka", 
+    footer: "Všechny informace na:", wLoading: "Načítám...", wSpindl: "🌡️ Špindl: {temp}°C", 
+    wSnezka: "🏔️ Sněžka: {temp}°C", wInversion: "⚠️ <b>Inverze!</b> Na hřebenech je o {diff}°C tepleji.",
+    wNormal: "📉 Na hřebenech je o <b>{diff}°C méně</b>.", wTip: "Nepodceňte oblečení!",
+    urlWeb: "https://www.spindleruv-mlyn.com/cz/", urlEvent: "https://www.mestospindleruvmlyn.cz/prvni-maj-2026",
+    urlTrans: "https://www.spindleruv-mlyn.com/cz/doprava/", urlIdos: "https://idos.idnes.cz/vlakyautobusymhdvse/spojeni/",
+    urlCams: "https://www.spindleruv-mlyn.com/cz/webkamery/", urlLifts: "https://www.spindleruv-mlyn.com/cz/lanovky/",
+    urlWeather: "https://www.spindleruv-mlyn.com/cz/pocasi/", urlDetSpindl: "https://www.meteoblue.com/cs/pocasi/tyden/špindlerův-mlýn_česko_3065522",
+    urlDetSnezka: "https://www.meteoblue.com/cs/pocasi/tyden/sněžka_česko_3085294"
+  },
+  de: {
+    subtitle: "Digitaler Reiseführer für Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
+    secNews: "Aktuelles aus Spindl", newsEvent: "🌸 1. Mai in Spindl 2026", newsDesc: "Feiern Sie mit uns den 1. Mai! Programm, Märkte und Musik.",
+    secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
+    busLocal: "Ortsbus & Parken", idos: "🔍 Fahrpläne (CZ)",
+    secLive: "Live-Info", cams: "🎥 Webcams", lifts: "🚠 Seilbahnen", secWeather: "Bergwetter", 
+    weatherBtn: "☀️ Wettervorhersage Spindl", detailSpindl: "Detail Spindl", detailSnezka: "Detail Schneekoppe", 
+    footer: "Alle Informationen unter:", wLoading: "Laden...", wSpindl: "🌡️ Spindl: {temp}°C", 
+    wSnezka: "🏔️ Schneekoppe: {temp}°C", wInversion: "⚠️ <b>Inversion!</b> Es ist {diff}°C wärmer auf den Kämmen.",
+    wNormal: "📉 Es ist <b>{diff}°C kälter</b> auf den Kämmen.", wTip: "Kleidung nicht unterschätzen!",
+    urlWeb: "https://www.spindleruv-mlyn.com/de/", urlEvent: "https://www.mestospindleruvmlyn.cz/de/prvni-maj-2026",
+    urlTrans: "https://www.spindleruv-mlyn.com/de/transport/", urlIdos: "https://idos.idnes.cz/de/vlakyautobusy/spojeni/",
+    urlCams: "https://www.spindleruv-mlyn.com/de/webcams/", urlLifts: "https://www.spindleruv-mlyn.com/de/seilbahnen/",
+    urlWeather: "https://www.spindleruv-mlyn.com/de/wetter/", urlDetSpindl: "https://www.meteoblue.com/de/wetter/woche/spindlermühle_tschechien_3065522",
+    urlDetSnezka: "https://www.meteoblue.com/de/wetter/woche/schneekoppe_tschechien_3085294"
+  },
+  pl: {
+    subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nas v Google", 
+    secNews: "Aktualności ze Szpindla", newsEvent: "🌸 1 maja w Szpindlu 2026", newsDesc: "Świętuj z nami 1 maja! Program, targi i muzyka.",
+    secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
+    busLocal: "Autobusy i Parking", idos: "🔍 Rozkłady (CZ)",
+    secLive: "Na żywo", cams: "🎥 Kamery", lifts: "🚠 Koleje linowe", secWeather: "Pogoda v górach", 
+    weatherBtn: "☀️ Prognoza Szpindl", detailSpindl: "Szczegóły Szpindl", detailSnezka: "Szczegóły Śnieżka", 
+    footer: "Więcej informacji na:", wLoading: "Ładowanie...", wSpindl: "🌡️ Szpindl: {temp}°C", 
+    wSnezka: "🏔️ Śnieżka: {temp}°C", wInversion: "⚠️ <b>Inwersja!</b> Na szczytach jest o {diff}°C cieplej.",
+    wNormal: "📉 Na szczytach jest o <b>{diff}°C zimniej</b>.", wTip: "Pamiętaj o ciepłym ubraniu!",
+    urlWeb: "https://www.spindleruv-mlyn.com/pl/", urlEvent: "https://www.mestospindleruvmlyn.cz/pl/prvni-maj-2026",
+    urlTrans: "https://www.spindleruv-mlyn.com/pl/transport/", urlIdos: "https://idos.idnes.cz/en/vlakyautobusy/spojeni/",
+    urlCams: "https://www.spindleruv-mlyn.com/pl/webcams/", urlLifts: "https://www.spindleruv-mlyn.com/pl/kolejki-linowe/",
+    urlWeather: "https://www.spindleruv-mlyn.com/pl/pogoda/", urlDetSpindl: "https://www.meteoblue.com/en/weather/week/spindleruv-mlyn_czech-republic_3065522",
+    urlDetSnezka: "https://www.meteoblue.com/en/weather/week/snezka_czech-republic_3085294"
+  },
+  en: {
+    subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
+    secNews: "Latest News from Spindl", newsEvent: "🌸 May Day in Spindl 2026", newsDesc: "Celebrate May Day with us! Program, markets and music.",
+    secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
+    busLocal: "Local Bus & Parking", idos: "🔍 Timetables (CZ)",
+    secLive: "Live Info", cams: "🎥 Webcams", lifts: "🚠 Ski Lifts", secWeather: "Mountain Weather", 
+    weatherBtn: "☀️ Forecast Spindl", detailSpindl: "Detail Spindl", detailSnezka: "Detail Snezka", 
+    footer: "More info at:", wLoading: "Loading...", wSpindl: "🌡️ Spindl: {temp}°C", 
+    wSnezka: "🏔️ Snezka: {temp}°C", wInversion: "⚠️ <b>Inversion!</b> It's {diff}°C warmer on the ridges.",
+    wNormal: "📉 It's <b>{diff}°C colder</b> on the ridges.", wTip: "Dress warmly!",
+    urlWeb: "https://www.spindleruv-mlyn.com/en/", urlEvent: "https://www.mestospindleruvmlyn.cz/en/prvni-maj-2026",
+    urlTrans: "https://www.spindleruv-mlyn.com/en/transport/", urlIdos: "https://idos.idnes.cz/en/vlakyautobusy/spojeni/",
+    urlCams: "https://www.spindleruv-mlyn.com/en/webcams/", urlLifts: "https://www.spindleruv-mlyn.com/en/lifts/",
+    urlWeather: "https://www.spindleruv-mlyn.com/en/weather/", urlDetSpindl: "https://www.meteoblue.com/en/weather/week/spindleruv-mlyn_czech-republic_3065522",
+    urlDetSnezka: "https://www.meteoblue.com/en/weather/week/snezka_czech-republic_3085294"
+  }
+};
+
+let currentLang = 'cs';
+let weatherData = null;
+
+function updateEl(id, prop, value) {
+  const el = document.getElementById(id);
+  if (el) el[prop] = value;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById('btn-' + lang);
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  const t = translations[lang];
+
+  updateEl('txt-subtitle', 'innerText', t.subtitle);
+  updateEl('txt-review', 'innerText', t.review);
+  updateEl('txt-sec-news', 'innerText', t.secNews);
+  updateEl('lnk-event', 'innerText', t.newsEvent);
+  updateEl('txt-news-desc', 'innerText', t.newsDesc);
+  updateEl('txt-sec-safe', 'innerText', t.secSafe);
+  updateEl('txt-zachranka', 'innerText', t.zachranka);
+  updateEl('txt-sec-trans', 'innerText', t.secTrans);
+  updateEl('lnk-trans', 'innerText', t.busLocal);
+  updateEl('lnk-idos', 'innerText', t.idos);
+  updateEl('txt-sec-live', 'innerText', t.secLive);
+  updateEl('lnk-cams', 'innerText', t.cams);
+  updateEl('lnk-lifts', 'innerText', t.lifts);
+  updateEl('txt-sec-weather', 'innerText', t.secWeather);
+  updateEl('lnk-weather', 'innerText', t.weatherBtn);
+  updateEl('lnk-det-spindl', 'innerText', t.detailSpindl);
+  updateEl('lnk-det-snezka', 'innerText', t.detailSnezka);
+  updateEl('txt-footer', 'innerText', t.footer);
+
+  updateEl('lnk-web', 'href', t.urlWeb);
+  updateEl('lnk-event', 'href', t.urlEvent);
+  updateEl('lnk-trans', 'href', t.urlTrans);
+  updateEl('lnk-idos', 'href', t.urlIdos);
+  updateEl('lnk-cams', 'href', t.urlCams);
+  updateEl('lnk-lifts', 'href', t.urlLifts);
+  updateEl('lnk-weather', 'href', t.urlWeather);
+  updateEl('lnk-det-spindl', 'href', t.urlDetSpindl);
+  updateEl('lnk-det-snezka', 'href', t.urlDetSnezka);
+
+  updateWeatherUI();
+}
+
+function detectUserLanguage() {
+    const browserLang = navigator.language || navigator.userLanguage;
+    const shortLang = browserLang.slice(0, 2).toLowerCase();
+    if (translations[shortLang]) setLang(shortLang);
+    else setLang('en');
+}
+
+async function fetchWeather() {
+    try {
+        const urlSpindl = "https://api.open-meteo.com/v1/forecast?latitude=50.7252&longitude=15.6083&current=temperature_2m";
+        const urlSnezka = "https://api.open-meteo.com/v1/forecast?latitude=50.7360&longitude=15.7400&current=temperature_2m";
+        const [r1, r2] = await Promise.all([fetch(urlSpindl).then(r => r.json()), fetch(urlSnezka).then(r => r.json())]);
+        if (r1.current && r2.current) {
+            weatherData = { spindl: r1.current.temperature_2m, snezka: r2.current.temperature_2m };
+        }
+        updateWeatherUI();
+    } catch (e) { updateEl('weather-summary', 'innerText', "☀️ Data offline."); }
+}
+
+function updateWeatherUI() {
+    const box = document.getElementById('weather-summary');
+    if (!box) return;
+    const t = translations[currentLang];
+    if (!weatherData) { box.innerText = t.wLoading; return; }
+    
+    let html = `<b>${t.wSpindl.replace('{temp}', weatherData.spindl)}</b><br>`;
+    html += `<b>${t.wSnezka.replace('{temp}', weatherData.snezka)}</b><hr style="border:0;border-top:1px solid #eee;margin:8px 0;">`;
+    
+    if (weatherData.snezka > weatherData.spindl) {
+        html += t.wInversion.replace('{diff}', (weatherData.snezka - weatherData.spindl).toFixed(1));
+        box.style.borderLeftColor = "#2196f3";
+    } else {
+        html += t.wNormal.replace('{diff}', (weatherData.spindl - weatherData.snezka).toFixed(1)) + " " + t.wTip;
+        box.style.borderLeftColor = "#12b800";
+    }
+    box.innerHTML = html;
+}
+
+function stahnoutAppku() {
+    var ua = navigator.userAgent;
+    if (/iPad|iPhone|iPod/.test(ua)) window.location.href = "https://apps.apple.com/cz/app/z%C3%A1chranka/id1071831457";
+    else if (/android/i.test(ua)) window.location.href = "https://play.google.com/store/apps/details?id=com.medicalit.zachranka";
+    else window.location.href = "https://www.zachrankaapp.cz/cs/stazeni";
+}
+
+detectUserLanguage();
+fetchWeather();
+setInterval(fetchWeather, 300000);
+</script>
+</body>
+</html>
