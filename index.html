@@ -27,6 +27,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 .btn-google { background: #12204a; color: #ffffff !important; border: none; }
 .btn-main { background: #12204a; color: white !important; }
 .btn-news { background: #ff9f00; color: #12204a; }
+.btn-mlynar { background: #12204a; color: #ffffff; }
 .btn-transport { background: #12b800; }
 .btn-emergency { background: #e74c3c; }
 .btn-info { background: #3498db; }
@@ -53,7 +54,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
         <span class="lang-btn" onclick="setLang('cs')" id="btn-cs">CZ</span>
         <span class="lang-btn" onclick="setLang('de')" id="btn-de">DE</span>
         <span class="lang-btn" onclick="setLang('pl')" id="btn-pl">PL</span>
-        <span class="lang-btn" onclick="setLang('en')" id="btn-en">ENG</span>
+        <span class="lang-btn" onclick="setLang('en')" id="btn-en">EN</span>
     </div>
     <section class="top">
         <div class="logo-box"><img src="hora.png" alt="Logo"></div>
@@ -65,6 +66,9 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
         <div class="section-title" id="txt-sec-news">Aktuálně / News</div>
         <a class="button btn-news" id="lnk-event" href="#" target="_blank">🌸 1. máj ve Špindlu 2026</a>
         <div id="txt-news-desc" style="font-size: 13px; color: #555; margin: -8px 0 15px; text-align: left; padding: 0 5px;">Oslavte s námi 1. máj!</div>
+
+        <div class="section-title" id="txt-sec-mlynar">Naučné stezky</div>
+        <a class="button btn-mlynar" id="lnk-mlynar" href="mlynar.html?lang=cs">🚶 Mlynářovy okruhy</a>
 
         <div class="section-title" id="txt-sec-weather">Webkamery & Počasí</div>
         <a class="button btn-news" id="lnk-cams" href="#" target="_blank">🎥 Webkamery Špindl</a>
@@ -169,7 +173,8 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 const translations = {
   cs: {
     subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
-    secNews: "Aktuálně ze Špindlu", newsEvent: "🌸 1. máj ve Špindlu 2026", newsDesc: "Oslavte s námi 1. máj!",
+    secNews: "Aktuálně ze Špindlu", newsEvent: "🌸 1. máj ve Špindlu 2026", newsDesc: "Oslavte s nadmi 1. máj!",
+    secMlynar: "Naučné stezky", mlynarBtn: "🚶 Mlynářovy okruhy",
     secWeather: "Webkamery & Počasí", cams: "🎥 Webkamery Špindl", wBlueS: "☁️ Špindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Předpověď (Web)",
     secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
     busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník",
@@ -188,6 +193,7 @@ const translations = {
   de: {
     subtitle: "Digitaler Reiseführer Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
     secNews: "Aktuelles", newsEvent: "🌸 1. Mai in Spindl 2026", newsDesc: "Feiern Sie mit uns!",
+    secMlynar: "Lehrpfade", mlynarBtn: "🚶 Müller-Lehrpfade",
     secWeather: "Webcams & Wetter", cams: "🎥 Webcams Spindl", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Wetter (Web)",
     secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
     busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste",
@@ -206,11 +212,12 @@ const translations = {
   pl: {
     subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nás v Google", 
     secNews: "Aktualności", newsEvent: "🌸 1 maja w Szpindlu 2026", newsDesc: "Świętuj z nami!",
+    secMlynar: "Ścieżki dydaktyczne", mlynarBtn: "🚶 Ścieżki Młynarza",
     secWeather: "Kamery i Pogoda", cams: "🎥 Kamery internetowe", wBlueS: "☁️ Szpindl", wBlueN: "🏔️ Śnieżka", wMain: "☀️ Pogoda (Web)",
-    secSafe: "Bezpečnost", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
+    secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
     busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cenník",
     secShop: "Kontakty", wLoading: "Ładowanie...", wSpindl: "🌡️ Szpindl: {temp}°C", wSnezka: "🏔️ Śnieżka: {temp}°C",
-    wInversion: "⚠️ <b>Inwersja!</b> Na szczytach jest o {diff}°C cieplej.",
+    wInversion: "⚠️ <b>Inwersja!</b> Na szczytach je o {diff}°C cieplej.",
     wNormal: "📉 Na szczytach je o <b>{diff}°C zimniej</b>.", wTip: "Ubierz się ciepło!",
     p1Closed: "⛔ ZAMKNIĘTE (remont)", urlWeb: "https://www.spindleruv-mlyn.com/pl/",
     urlCams: "https://www.spindleruv-mlyn.com/pl/kamery-internetowe/", urlWeather: "https://www.spindleruv-mlyn.com/pl/pogoda/",
@@ -224,6 +231,7 @@ const translations = {
   en: {
     subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
     secNews: "Latest News", newsEvent: "🌸 May Day in Spindl 2026", newsDesc: "Celebrate May Day!",
+    secMlynar: "Nature Trails", mlynarBtn: "🚶 Miller's Trails",
     secWeather: "Webcams & Weather", cams: "🎥 Spindl Webcams", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Snezka", wMain: "☀️ Forecast (Web)",
     secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
     busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices",
@@ -272,6 +280,12 @@ function setLang(lang) {
   updateEl('lnk-event', 'innerText', t.newsEvent);
   updateEl('lnk-event', 'href', t.urlEvent);
   updateEl('txt-news-desc', 'innerText', t.newsDesc);
+  
+  // Oprava odkazu na Mlynáře - teď to jde na mlynar.html s vybraným jazykem
+  updateEl('txt-sec-mlynar', 'innerText', t.secMlynar);
+  updateEl('lnk-mlynar', 'innerText', t.mlynarBtn);
+  updateEl('lnk-mlynar', 'href', 'mlynar.html?lang=' + lang);
+
   updateEl('txt-sec-weather', 'innerText', t.secWeather);
   updateEl('lnk-cams', 'innerText', t.cams);
   updateEl('lnk-cams', 'href', t.urlCams);
