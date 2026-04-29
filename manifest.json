@@ -1,15 +1,11 @@
 {
-  "short_name": "SpindlInfo",
-  "name": "SPINDL info - Průvodce",
-  "icons": [
-    {
-      "src": "hora.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ],
-  "start_url": ".",
+  "name": "SPINDL info",
+  "short_name": "SPINDL",
+  "start_url": "index.html",
   "display": "standalone",
+  "background_color": "#12204a",
   "theme_color": "#12204a",
-  "background_color": "#12204a"
+  "icons": [
+    { "src": "hora.png", "sizes": "192x192", "type": "image/png" }
+  ]
 }
