@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mlynářovy okruhy - SPINDL.info</title>
+<style>
+    body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background: #12204a; color: #333; display: flex; justify-content: center; padding: 15px; }
+    .card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .header { background: #12b800; color: white; padding: 25px 20px; text-align: center; }
+    .content { padding: 20px; }
+    .btn-back { display: inline-block; background: rgba(0,0,0,0.2); color: white; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 14px; margin-bottom: 15px; }
+    h1 { margin: 10px 0; font-size: 22px; }
+    .trail-card { border-radius: 15px; padding: 15px; margin-bottom: 20px; border-left: 8px solid; background: #f8f9fa; }
+    .green { border-left-color: #28a745; }
+    .red { border-left-color: #dc3545; }
+    .blue { border-left-color: #007bff; }
+    .trail-title { font-weight: 800; font-size: 18px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+    .info-row { font-size: 14px; margin: 5px 0; display: flex; justify-content: space-between; border-bottom: 1px dotted #ddd; padding-bottom: 2px; }
+    .desc { font-size: 14px; color: #555; font-style: italic; margin: 10px 0; }
+    .btn-map { display: block; background: #12204a; color: white !important; text-decoration: none; text-align: center; padding: 12px; border-radius: 10px; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+    .btn-map:active { transform: translateY(2px); }
+    .reward-box { background: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 12px; font-size: 14px; margin-top: 20px; }
+    .reward-title { font-weight: bold; color: #856404; display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 16px; }
+    .opening-hours { background: rgba(255,255,255,0.5); padding: 8px; border-radius: 8px; margin: 10px 0; border: 1px dashed #e6ae00; font-weight: bold; text-align: center; }
+    .info-link { color: #12204a; font-weight: bold; text-decoration: underline; display: block; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <a href="index.html" class="btn-back" id="back-btn">⬅ Zpět</a>
+        <h1 id="main-title">Mlynářovy okruhy</h1>
+    </div>
+    <div class="content" id="trails-container">
+        </div>
+</div>
+
+<script>
+const content = {
+    cs: {
+        title: "Mlynářovy naučné okruhy",
+        back: "Zpět",
+        mapBtn: "Navigovat na okruh",
+        rewardTitle: "🎁 Odměna a papírová mapa",
+        rewardText: "Zastavte se v <b>Městském infocentru</b> (budova radnice, č.p. 173). Dostanete tam zdarma tištěnou mapu a po projití tras i odměnu!",
+        openingLabel: "Otevírací doba Infocentra:",
+        openingHours: "9:00 – 11:30 | 12:30 – 17:00",
+        rewardNav: "📍 Navigovat k Infocentru (150m)",
+        trails: [
+            { class: "green", name: "Zelený okruh (1,1 km)", desc: "Historie cestovního ruchu a vznik města. Obsahuje schody.", time: "45 min", stroller: "❌ NE", link: "https://mapy.cz/s/fozavukuga" },
+            { class: "red", name: "Červený okruh (2,8 km)", desc: "To nejzajímavější z centra a historie osidlování.", time: "1,5 hod", stroller: "✅ ANO", link: "https://mapy.cz/s/gofesogevu" },
+            { class: "blue", name: "Modrý okruh (3,1 km)", desc: "Přírodní trasa podél Labe s výhledy. Lesní pěšiny.", time: "2 hod", stroller: "❌ NE", link: "https://mapy.cz/s/celodelema" }
+        ]
+    },
+    de: {
+        title: "Müllers Naturlehrpfade",
+        back: "Zurück",
+        mapBtn: "Navigation starten",
+        rewardTitle: "🎁 Belohnung & Karte",
+        rewardText: "Besuchen Sie das <b>Stadt-Infozentrum</b> (Rathaus, Nr. 173). Dort erhalten Sie eine kostenlose Wanderkarte und Ihre Belohnung!",
+        openingLabel: "Öffnungszeiten Infozentrum:",
+        openingHours: "9:00 – 11:30 | 12:30 – 17:00",
+        rewardNav: "📍 Weg zum Infozentrum (150m)",
+        trails: [
+            { class: "green", name: "Grüner Rundgang (1,1 km)", desc: "Stadtgeschichte. Beinhaltet Treppen.", time: "45 Min", stroller: "❌ NEIN", link: "https://mapy.cz/s/fozavukuga" },
+            { class: "red", name: "Roter Rundgang (2,8 km)", desc: "Das Beste aus dem Zentrum.", time: "1,5 Std", stroller: "✅ JA", link: "https://mapy.cz/s/gofesogevu" },
+            { class: "blue", name: "Blauer Rundgang (3,1 km)", desc: "Naturpfad entlang der Elbe. Waldwege.", time: "2 Std", stroller: "❌ NEIN", link: "https://mapy.cz/s/celodelema" }
+        ]
+    },
+    en: {
+        title: "Miller's Nature Trails",
+        back: "Back",
+        mapBtn: "Navigate to trail",
+        rewardTitle: "🎁 Reward & Paper Map",
+        rewardText: "Stop by the <b>City Information Center</b> (Town Hall, No. 173). You can get a free printed map and a reward for finishing the trails!",
+        openingLabel: "Info Center Opening Hours:",
+        openingHours: "9:00 – 11:30 | 12:30 – 17:00",
+        rewardNav: "📍 Route to Info Center (150m)",
+        trails: [
+            { class: "green", name: "Green Loop (1.1 km)", desc: "Tourism history. Includes stairs.", time: "45 min", stroller: "❌ NO", link: "https://mapy.cz/s/fozavukuga" },
+            { class: "red", name: "Red Loop (2.8 km)", desc: "Highlights of the center.", time: "1.5 hours", stroller: "✅ YES", link: "https://mapy.cz/s/gofesogevu" },
+            { class: "blue", name: "Blue Loop (3.1 km)", desc: "Nature trail along the Elbe. Forest paths.", time: "2 hours", stroller: "❌ NO", link: "https://mapy.cz/s/celodelema" }
+        ]
+    },
+    pl: {
+        title: "Ścieżki edukacyjne Młynarza",
+        back: "Powrót",
+        mapBtn: "Nawiguj do trasy",
+        rewardTitle: "🎁 Nagroda i mapa",
+        rewardText: "Odwiedź <b>Miejskie Centrum Informacji</b> (Ratusz, nr 173). Otrzymasz tam bezpłatną mapę i nagrodę za przejście tras!",
+        openingLabel: "Godziny otwarcia Centrum Info:",
+        openingHours: "9:00 – 11:30 | 12:30 – 17:00",
+        rewardNav: "📍 Nawiguj do Centrum Info (150m)",
+        trails: [
+            { class: "green", name: "Zielona pętla (1,1 km)", desc: "Historia miasta. Zawiera schody.", time: "45 min", stroller: "❌ NIE", link: "https://mapy.cz/s/fozavukuga" },
+            { class: "red", name: "Czerwona pętla (2,8 km)", desc: "Najciekawsze miejsca w centrum.", time: "1,5 godz", stroller: "✅ TAK", link: "https://mapy.cz/s/gofesogevu" },
+            { class: "blue", name: "Niebieska pętla (3,1 km)", desc: "Ścieżka wzdłuż Łaby. Leśne ścieżki.", time: "2 godz", stroller: "❌ NIE", link: "https://mapy.cz/s/celodelema" }
+        ]
+    }
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const lang = urlParams.get('lang') || 'cs';
+const t = content[lang] || content['en'];
+
+document.getElementById('main-title').innerText = t.title;
+document.getElementById('back-btn').innerText = "⬅ " + t.back;
+
+let html = "";
+t.trails.forEach(trail => {
+    html += `
+        <div class="trail-card ${trail.class}">
+            <div class="trail-title">${trail.name}</div>
+            <div class="desc">${trail.desc}</div>
+            <div class="info-row"><span>⏱ Čas:</span> <b>${trail.time}</b></div>
+            <div class="info-row"><span>👶 Kočárek:</span> <b>${trail.stroller}</b></div>
+            <a href="${trail.link}" class="btn-map" target="_blank">${t.mapBtn}</a>
+        </div>
+    `;
+});
+
+html += `
+    <div class="reward-box">
+        <div class="reward-title">${t.rewardTitle}</div>
+        <div>${t.rewardText}</div>
+        <div class="opening-hours">
+            <span style="font-size:12px; display:block; opacity:0.8; font-weight:normal;">${t.openingLabel}</span>
+            ${t.openingHours}
+        </div>
+        <a href="https://mapy.com/s/guhazezaba" target="_blank" class="info-link">${t.rewardNav}</a>
+    </div>
+`;
+
+document.getElementById('trails-container').innerHTML = html;
+</script>
+</body>
+</html>
