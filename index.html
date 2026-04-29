@@ -23,7 +23,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 .content { padding: 25px 20px; }
 .button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
 .button:active { transform: translateY(2px); box-shadow: none; }
-.btn-main { background: #12204a; }
+.btn-main { background: #12204a; color: white !important; }
 .btn-news { background: #ff9f00; color: #12204a; }
 .btn-transport { background: #12b800; }
 .btn-emergency { background: #e74c3c; }
@@ -61,7 +61,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
         <div class="subtitle" id="txt-subtitle">Digitální průvodce Špindlerovým Mlýnem</div>
     </section>
     <section class="content">
-        <a class="button btn-outline" href="https://g.page/r/Ca_VRigL1XZyEBM/review" id="txt-review" target="_blank">⭐ Ohodnoťte nás na Google</a>
+        <a class="button btn-main" href="https://g.page/r/Ca_VRigL1XZyEBM/review" id="txt-review" target="_blank"><span style="color:white">☆</span> Ohodnoťte nás na Google</a>
         <div class="section-title" id="txt-sec-news">Aktuálně / News</div>
         <a class="button btn-news" id="lnk-event" href="#" target="_blank">🌸 1. máj ve Špindlu 2026</a>
         <div id="txt-news-desc" style="font-size: 13px; color: #555; margin: -8px 0 15px; text-align: left; padding: 0 5px;">Oslavte s námi 1. máj! Program, trhy a hudba.</div>
@@ -93,9 +93,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
     <div class="top" style="padding: 20px;"><button class="button btn-main" onclick="toggleMenu('main')" style="margin-bottom: 0;">⬅ <span id="txt-back">Zpět</span></button></div>
     <section class="content">
         <div class="section-title" id="txt-parking-title">Parkoviště / Parking</div>
-        
         <div class="parking-card closed"><strong>P1 - Bedřichov</strong><br><span style="color:#e74c3c; font-size: 12px; font-weight: bold;" id="txt-p1-closed">⛔ UZAVŘENO (rekonstrukce)</span></div>
-        
         <div class="parking-card">
             <strong>P2 - Hromovka</strong>
             <div class="grid" style="margin-top:10px;">
@@ -111,7 +109,6 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
             </table>
         </div>
-
         <div class="parking-card">
             <strong>P3 - Medvědín</strong>
             <div class="grid" style="margin-top:10px;">
@@ -127,7 +124,6 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
             </table>
         </div>
-
         <div class="parking-card">
             <strong>Parkoviště CENTRAL</strong>
             <div class="grid" style="margin-top:10px;">
@@ -140,7 +136,6 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Provozní doba: NONSTOP</td></tr>
             </table>
         </div>
-
         <div class="section-title">Info</div>
         <a href="https://www.sluzbyspindleruvmlyn.cz/parkoviste/" target="_blank" class="button btn-outline" style="font-size: 12px;">ℹ️ sluzbyspindleruvmlyn.cz</a>
         <a href="https://www.spindleruv-mlyn.com/cz/doprava/" target="_blank" class="button btn-info" id="txt-spindlerovka">Bus Špindlerovka</a>
@@ -150,6 +145,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 </main>
 
 <script>
+// (Zbytek JavaScript kódu zůstává stejný)
 const translations = {
   cs: {
     subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
