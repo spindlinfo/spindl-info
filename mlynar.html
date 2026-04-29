@@ -42,6 +42,8 @@ const content = {
         title: "Mlynářovy naučné okruhy",
         back: "Zpět",
         mapBtn: "Navigovat na okruh",
+        timeLabel: "⏱ Čas:",
+        strollerLabel: "👶 Kočárek:",
         rewardTitle: "🎁 Odměna a papírová mapa",
         rewardText: "Zastavte se v <b>Městském infocentru</b> (budova radnice, č.p. 173). Dostanete tam zdarma tištěnou mapu a po projití tras i odměnu!",
         openingLabel: "Otevírací doba Infocentra:",
@@ -57,6 +59,8 @@ const content = {
         title: "Müllers Naturlehrpfade",
         back: "Zurück",
         mapBtn: "Navigation starten",
+        timeLabel: "⏱ Zeit:",
+        strollerLabel: "👶 Kinderwagen:",
         rewardTitle: "🎁 Belohnung & Karte",
         rewardText: "Besuchen Sie das <b>Stadt-Infozentrum</b> (Rathaus, Nr. 173). Dort erhalten Sie eine kostenlose Wanderkarte und Ihre Belohnung!",
         openingLabel: "Öffnungszeiten Infozentrum:",
@@ -72,6 +76,8 @@ const content = {
         title: "Miller's Nature Trails",
         back: "Back",
         mapBtn: "Navigate to trail",
+        timeLabel: "⏱ Time:",
+        strollerLabel: "👶 Stroller:",
         rewardTitle: "🎁 Reward & Paper Map",
         rewardText: "Stop by the <b>City Information Center</b> (Town Hall, No. 173). You can get a free printed map and a reward for finishing the trails!",
         openingLabel: "Info Center Opening Hours:",
@@ -87,6 +93,8 @@ const content = {
         title: "Ścieżki edukacyjne Młynarza",
         back: "Powrót",
         mapBtn: "Nawiguj do trasy",
+        timeLabel: "⏱ Czas:",
+        strollerLabel: "👶 Wózek:",
         rewardTitle: "🎁 Nagroda i mapa",
         rewardText: "Odwiedź <b>Miejskie Centrum Informacji</b> (Ratusz, nr 173). Otrzymasz tam bezpłatną mapę i nagrodę za przejście tras!",
         openingLabel: "Godziny otwarcia Centrum Info:",
@@ -113,8 +121,8 @@ t.trails.forEach(trail => {
         <div class="trail-card ${trail.class}">
             <div class="trail-title">${trail.name}</div>
             <div class="desc">${trail.desc}</div>
-            <div class="info-row"><span>⏱ Čas:</span> <b>${trail.time}</b></div>
-            <div class="info-row"><span>👶 Kočárek:</span> <b>${trail.stroller}</b></div>
+            <div class="info-row"><span>${t.timeLabel}</span> <b>${trail.time}</b></div>
+            <div class="info-row"><span>${t.strollerLabel}</span> <b>${trail.stroller}</b></div>
             <a href="${trail.link}" class="btn-map" target="_blank">${t.mapBtn}</a>
         </div>
     `;
@@ -128,7 +136,7 @@ html += `
             <span style="font-size:12px; display:block; opacity:0.8; font-weight:normal;">${t.openingLabel}</span>
             ${t.openingHours}
         </div>
-        <a href="https://mapy.com/s/guhazezaba" target="_blank" class="info-link">${t.rewardNav}</a>
+        <a href="https://mapy.cz/s/guhazezaba" target="_blank" class="info-link">${t.rewardNav}</a>
     </div>
 `;
 
