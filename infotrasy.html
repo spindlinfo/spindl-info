@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Turistické trasy</title>
+<meta name="description" content="Sedm turistických tras ze Špindlerova Mlýna s délkou, časem, převýšením a náročností." />
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12204a">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJQ8FH9BRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PJQ8FH9BRE');
+</script>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: flex-start; justify-content: center; padding: 15px; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; position: relative; }
+.top { background: #12b800; padding: 28px 20px 24px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; }
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 700; opacity: 0.96; }
+.content { padding: 22px 18px; }
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+.btn-main { background: #12204a; color: white !important; }
+.btn-transport { background: #12b800; color: #ffffff; }
+.btn-outline { background: transparent; color: #12204a; border: 2px solid #12204a; box-shadow: none; padding: 12px; font-size: 13px; }
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 22px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.hero-title { color: #12204a; font-size: 25px; line-height: 1.05; margin: 0 0 10px; font-weight: 900; letter-spacing: -0.6px; }
+.hero-lead { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 11px; text-align: left; }
+.tap-hint { background: #f0f2f5; border-radius: 12px; color: #555; font-size: 12.5px; line-height: 1.45; padding: 10px 12px; margin: 0 0 12px; text-align: left; border-left: 5px solid #12b800; }
+.start-box { background: #f8f9fa; padding: 14px; border-radius: 12px; border-left: 5px solid #12b800; text-align: left; color: #333; font-size: 14px; line-height: 1.45; margin-bottom: 8px; }
+.start-box strong { color: #12204a; display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+.route-card { background: #f8f9fa; border-radius: 14px; margin-bottom: 11px; text-align: left; border-left: 5px solid #12b800; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; }
+.route-trigger { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; padding: 14px 13px; text-align: left; cursor: pointer; display: block; }
+.route-trigger:active { background: #eef2f4; }
+.route-head { display: flex; gap: 10px; align-items: flex-start; }
+.route-number { width: 32px; height: 32px; border-radius: 10px; background: #12204a; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex: 0 0 32px; font-size: 14px; }
+.route-main { flex: 1; min-width: 0; }
+.route-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-title { margin: 0; color: #12204a; font-size: 17px; line-height: 1.15; font-weight: 900; }
+.route-type { margin-top: 3px; color: #666; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.chevron { color: #12204a; font-size: 18px; font-weight: 900; line-height: 1; transition: transform .2s ease; margin-top: 1px; }
+.route-card.open .chevron { transform: rotate(180deg); }
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; margin: 11px 0 0; }
+.quick-stat { background: #ffffff; border: 1px solid #eee; border-radius: 9px; padding: 7px 8px; min-width: 0; }
+.quick-label { display: block; color: #888; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.quick-value { display: block; color: #12204a; font-size: 12.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-details { display: none; padding: 0 13px 14px 13px; border-top: 1px solid #e8eaed; }
+.route-card.open .route-details { display: block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 13px 0 12px; }
+.stat { background: #ffffff; border-radius: 10px; padding: 9px 10px; border: 1px solid #eee; }
+.stat-label { display: block; color: #888; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.stat-value { color: #12204a; font-weight: 900; font-size: 15px; }
+.route-desc { margin: 0 0 11px; color: #333; font-size: 13px; line-height: 1.5; }
+.note-box { background: #ffffff; border-radius: 10px; padding: 10px; color: #444; border-left: 4px solid #ff9f00; font-size: 12.5px; line-height: 1.45; margin-bottom: 12px; }
+.note-box strong { color: #12204a; }
+.dots { display: inline-flex; gap: 3px; vertical-align: middle; margin-left: 5px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #d5d5d5; display: inline-block; }
+.dot.on { background: #12b800; }
+.summary-box { background: #f0f2f5; padding: 14px; border-radius: 12px; margin-top: 18px; text-align: left; color: #333; font-size: 13px; line-height: 1.55; }
+.summary-box strong { color: #12204a; }
+.footer { font-size: 12px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding: 18px 18px 22px; line-height: 1.45; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 800; }
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .quick-stats { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="SPINDL info"></div>
+    <div class="subtitle" id="txt-subtitle">Turistické trasy ze Špindlu</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
+    <h1 class="hero-title" id="txt-title">Turistické trasy ze Špindlerova Mlýna</h1>
+    <p class="hero-lead" id="txt-lead">Sedm ověřených okruhů přímo z centra.</p>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na trasu pro detail, náročnost a odkaz do Mapy.com.</div>
+
+    <div class="start-box">
+      <strong id="txt-start-label">Start a cíl</strong>
+      <span id="txt-start">Spindl.info / centrum Špindlerova Mlýna</span>
+    </div>
+
+    <div class="section-title" id="txt-section">Vybrané trasy</div>
+    <div id="routes"></div>
+
+    <div class="section-title" id="txt-summary-title">Rychlé doporučení</div>
+    <div class="summary-box">
+      <div id="txt-easy"></div>
+      <div id="txt-medium"></div>
+      <div id="txt-hard"></div>
+    </div>
+  </section>
+  <div class="footer"><span id="txt-footer"></span><br><a href="https://www.spindleruv-mlyn.com/" target="_blank" rel="noopener">WWW.SPINDLERUV-MLYN.COM</a></div>
+</main>
+
+<script>
+const ROUTES = [
+  {
+    "id": "prehrada",
+    "file": "Kolem prehrady.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.605038,50.723398;15.598499,50.721930;15.592085,50.720838;15.588186,50.717232;15.586309,50.713006;15.582985,50.713626;15.580371,50.716174;15.583021,50.719860;15.585169,50.723750;15.587972,50.724978;15.594322,50.724319;15.601428,50.724910&navigate=false",
+    "dist": "6,4 km",
+    "time": "1 h 55 min",
+    "gain": "190 m",
+    "level": 2,
+    "title": {
+      "cs": "Kolem přehrady",
+      "en": "Around the dam",
+      "de": "Rund um die Talsperre",
+      "pl": "Wokół zapory"
+    },
+    "type": {
+      "cs": "Krátký okruh u Labské přehrady",
+      "en": "Short loop by the Labská dam",
+      "de": "Kurze Runde an der Elbtalsperre",
+      "pl": "Krótka pętla przy zaporze Labská"
+    },
+    "difficulty": {
+      "cs": "Lehká až střední",
+      "en": "Easy to moderate",
+      "de": "Leicht bis mittel",
+      "pl": "Łatwa do średniej"
+    },
+    "desc": {
+      "cs": "Pohodový okruh z centra Špindlu k Labské přehradě a zpět. Ideální, když chcete kratší výlet bez výjezdu autobusem a s hezkými výhledy na vodu i údolí.",
+      "en": "A relaxed loop from the centre of Špindl to the Labská dam and back. A good choice for a shorter walk without taking a bus, with nice views of the water and valley.",
+      "de": "Eine entspannte Runde vom Zentrum von Špindl zur Elbtalsperre und zurück. Gute Wahl für einen kürzeren Spaziergang ohne Busfahrt, mit schönen Blicken auf Wasser und Tal.",
+      "pl": "Spokojna pętla z centrum Szpindla do zapory Labská i z powrotem. Dobry wybór na krótszy spacer bez autobusu, z widokami na wodę i dolinę."
+    },
+    "note": {
+      "cs": "Vhodné jako rychlý výlet po příjezdu nebo při horším počasí. Některé úseky mohou být po dešti kluzké.",
+      "en": "Good as a quick walk after arrival or in less stable weather. Some sections can be slippery after rain.",
+      "de": "Gut als schneller Spaziergang nach der Ankunft oder bei unsicherem Wetter. Einige Abschnitte können nach Regen rutschig sein.",
+      "pl": "Dobra trasa na szybki spacer po przyjeździe albo przy gorszej pogodzie. Po deszczu niektóre odcinki mogą być śliskie."
+    }
+  },
+  {
+    "id": "prehrada-limobar",
+    "file": "Kolem prehrady s limobarem.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.603996,50.723125;15.596711,50.721447;15.589714,50.719348;15.586624,50.714570;15.583507,50.712329;15.579213,50.714041;15.572098,50.715037;15.578953,50.717676;15.584314,50.721293;15.585033,50.725416;15.592597,50.724154;15.600170,50.725012&navigate=false",
+    "dist": "7,4 km",
+    "time": "2 h 10 min",
+    "gain": "192 m",
+    "level": 2,
+    "title": {
+      "cs": "Kolem přehrady s Limobarem",
+      "en": "Around the dam with Limobar",
+      "de": "Rund um die Talsperre mit Limobar",
+      "pl": "Wokół zapory z Limobarem"
+    },
+    "type": {
+      "cs": "Přehrada s příjemnou zastávkou",
+      "en": "Dam loop with a nice stop",
+      "de": "Talsperrenrunde mit angenehmem Stopp",
+      "pl": "Pętla przy zaporze z miłym postojem"
+    },
+    "difficulty": {
+      "cs": "Lehká až střední",
+      "en": "Easy to moderate",
+      "de": "Leicht bis mittel",
+      "pl": "Łatwa do średniej"
+    },
+    "desc": {
+      "cs": "Varianta okruhu kolem Labské přehrady prodloužená o zastávku u Limobaru. Fajn trasa pro lidi, kteří nechtějí celý den šlapat, ale chtějí si cestu něčím zpříjemnit.",
+      "en": "A version of the Labská dam loop extended by a stop at Limobar. Great for visitors who do not want a full-day hike but still want the walk to feel like a small trip.",
+      "de": "Eine Variante der Runde um die Elbtalsperre mit einem Stopp beim Limobar. Ideal für Gäste, die keine Tagestour wollen, aber unterwegs eine angenehme Pause mögen.",
+      "pl": "Wariant pętli wokół zapory Labská z dodatkowym postojem przy Limobarze. Fajna opcja dla osób, które nie chcą całodniowej wędrówki, ale chcą urozmaicić spacer."
+    },
+    "note": {
+      "cs": "Dobrá volba pro pohodovější tempo. Otevírací doba občerstvení se může měnit podle sezóny a počasí.",
+      "en": "A good choice at an easy pace. Refreshment opening times may change depending on season and weather.",
+      "de": "Gute Wahl für ein gemütlicheres Tempo. Die Öffnungszeiten der Einkehr können je nach Saison und Wetter variieren.",
+      "pl": "Dobry wybór na spokojniejsze tempo. Godziny otwarcia punktu gastronomicznego mogą zależeć od sezonu i pogody."
+    }
+  },
+  {
+    "id": "labsky-dul",
+    "file": "Labsky dul.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.606845,50.731421;15.605560,50.738829;15.601482,50.745685;15.592543,50.748589;15.581989,50.750567;15.572089,50.753977;15.571685,50.754262;15.581800,50.750641;15.592436,50.748640;15.601140,50.745673;15.605604,50.739090;15.606935,50.732154&navigate=false",
+    "dist": "10,9 km",
+    "time": "3 h 00 min",
+    "gain": "179 m",
+    "level": 2,
+    "title": {
+      "cs": "Labský důl",
+      "en": "Labský důl valley",
+      "de": "Elbgrund / Labský důl",
+      "pl": "Dolina Łaby"
+    },
+    "type": {
+      "cs": "Krásné údolí Labe bez velkého stoupání",
+      "en": "Beautiful Elbe valley without a major climb",
+      "de": "Schönes Elbtal ohne großen Anstieg",
+      "pl": "Piękna dolina Łaby bez dużego podejścia"
+    },
+    "difficulty": {
+      "cs": "Lehká až střední",
+      "en": "Easy to moderate",
+      "de": "Leicht bis mittel",
+      "pl": "Łatwa do średniej"
+    },
+    "desc": {
+      "cs": "Velmi oblíbená trasa do Labského dolu. Má delší vzdálenost, ale převýšení je mírné, takže působí příjemněji než hřebenové výlety. Skvělá volba pro vodopády, horské údolí a klidnější tempo.",
+      "en": "A very popular walk into the Labský důl valley. It is longer, but the elevation gain is mild, so it feels easier than ridge hikes. Great for waterfalls, mountain valley scenery and a calmer pace.",
+      "de": "Sehr beliebte Wanderung in den Labský důl. Die Strecke ist länger, aber mit wenig Höhenmetern, daher angenehmer als Touren auf die Kämme. Schön für Wasserfälle, Talblicke und ruhigeres Tempo.",
+      "pl": "Bardzo popularna trasa do doliny Labský důl. Jest dłuższa, ale przewyższenie jest niewielkie, więc jest łatwiejsza niż wycieczki graniowe. Dobra na wodospady, górską dolinę i spokojniejsze tempo."
+    },
+    "note": {
+      "cs": "Délka už je znát, i když profil není brutální. V zimě a po dešti sledujte aktuální stav cest.",
+      "en": "The distance is noticeable even though the profile is not hard. In winter and after rain, check current trail conditions.",
+      "de": "Die Länge merkt man, auch wenn das Profil nicht schwierig ist. Im Winter und nach Regen den aktuellen Zustand der Wege prüfen.",
+      "pl": "Długość jest odczuwalna, choć profil nie jest trudny. Zimą i po deszczu sprawdź aktualny stan tras."
+    }
+  },
+  {
+    "id": "bile-labe",
+    "file": "Bile labe.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.606845,50.731421;15.605560,50.738829;15.610187,50.744468;15.618999,50.748828;15.629886,50.746389;15.638150,50.741757;15.645373,50.740091;15.634018,50.739699;15.625108,50.744230;15.614273,50.741882;15.613843,50.734855;15.615971,50.728288&navigate=false",
+    "dist": "10,9 km",
+    "time": "3 h 20 min",
+    "gain": "380 m",
+    "level": 3,
+    "title": {
+      "cs": "Bílé Labe",
+      "en": "White Elbe valley",
+      "de": "Weißwasser / Bílé Labe",
+      "pl": "Biała Łaba"
+    },
+    "type": {
+      "cs": "Údolí Bílého Labe a návrat do Špindlu",
+      "en": "White Elbe valley and return to Špindl",
+      "de": "Tal der Weißen Elbe und zurück nach Špindl",
+      "pl": "Dolina Białej Łaby i powrót do Szpindla"
+    },
+    "difficulty": {
+      "cs": "Střední",
+      "en": "Moderate",
+      "de": "Mittel",
+      "pl": "Średnia"
+    },
+    "desc": {
+      "cs": "Klasický výlet přes Dívčí lávky do údolí Bílého Labe. Trasa vede krásným horským údolím podél vody, postupně stoupá a pak se vrací zpět do centra Špindlu.",
+      "en": "A classic hike via Dívčí lávky into the White Elbe valley. The route follows a beautiful mountain valley along the water, climbs gradually and returns back to the centre of Špindl.",
+      "de": "Klassische Wanderung über Dívčí lávky in das Tal der Weißen Elbe. Die Strecke führt durch ein schönes Gebirgstal am Wasser entlang, steigt allmählich an und kehrt zurück ins Zentrum.",
+      "pl": "Klasyczna wycieczka przez Dívčí lávky do doliny Białej Łaby. Trasa prowadzi piękną górską doliną wzdłuż wody, stopniowo się wznosi i wraca do centrum Szpindla."
+    },
+    "note": {
+      "cs": "Dobrá obuv se hodí. Pro úplné začátečníky je lepší zvolit kratší přehradu nebo Labský důl.",
+      "en": "Good shoes are useful. For complete beginners, the dam loop or Labský důl is a better first choice.",
+      "de": "Gutes Schuhwerk ist sinnvoll. Für absolute Anfänger sind die Talsperrenrunde oder der Labský důl besser geeignet.",
+      "pl": "Przydadzą się dobre buty. Dla początkujących lepsza będzie pętla przy zaporze albo dolina Labský důl."
+    }
+  },
+  {
+    "id": "hornicka-stezka",
+    "file": "Hornicka stezka.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.612208,50.726520;15.620166,50.725718;15.627506,50.725723;15.635995,50.725695;15.642804,50.726360;15.651419,50.726082;15.651742,50.726030;15.643981,50.726536;15.636022,50.725678;15.628404,50.725820;15.620454,50.725644;15.612988,50.726729&navigate=false",
+    "dist": "7,3 km",
+    "time": "2 h 20 min",
+    "gain": "304 m",
+    "level": 3,
+    "title": {
+      "cs": "Hornická stezka",
+      "en": "Mining trail",
+      "de": "Bergbau-Lehrpfad",
+      "pl": "Ścieżka górnicza"
+    },
+    "type": {
+      "cs": "Kratší, ale členitější naučný okruh",
+      "en": "Shorter but more varied educational loop",
+      "de": "Kürzere, aber abwechslungsreiche Lehrpfadrunde",
+      "pl": "Krótsza, ale bardziej urozmaicona pętla edukacyjna"
+    },
+    "difficulty": {
+      "cs": "Střední",
+      "en": "Moderate",
+      "de": "Mittel",
+      "pl": "Średnia"
+    },
+    "desc": {
+      "cs": "Okruh s naučným charakterem a členitějším profilem. Není extrémně dlouhý, ale převýšení už je znát, takže je lepší pro lidi, kteří chtějí kratší trasu s trochu sportovnějším pocitem.",
+      "en": "A loop with an educational feel and a more varied profile. It is not very long, but the climbing is noticeable, so it suits visitors who want a shorter route with a slightly sportier feel.",
+      "de": "Eine Runde mit Lehrpfad-Charakter und abwechslungsreicherem Profil. Nicht sehr lang, aber die Höhenmeter sind spürbar – gut für Gäste, die eine kürzere, etwas sportlichere Tour möchten.",
+      "pl": "Pętla o charakterze edukacyjnym i bardziej urozmaiconym profilu. Nie jest bardzo długa, ale podejścia są odczuwalne, więc pasuje do osób szukających krótszej, trochę bardziej sportowej trasy."
+    },
+    "note": {
+      "cs": "Není to úplně rovná procházka. Za mokra počítejte s horším povrchem v lesních úsecích.",
+      "en": "Not a completely flat walk. In wet weather, expect rougher surfaces in forest sections.",
+      "de": "Kein völlig flacher Spaziergang. Bei Nässe können Waldabschnitte schlechter begehbar sein.",
+      "pl": "To nie jest całkiem płaski spacer. Po deszczu leśne odcinki mogą mieć gorszą nawierzchnię."
+    }
+  },
+  {
+    "id": "harrachova-skala",
+    "file": "Harrachova skala.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.601526,50.727788;15.594888,50.731131;15.587360,50.732814;15.578584,50.733741;15.572682,50.731734;15.573454,50.727776;15.575134,50.727543;15.576886,50.723341;15.583308,50.720343;15.583901,50.724574;15.591375,50.723960;15.599775,50.724989&navigate=false",
+    "dist": "7,9 km",
+    "time": "2 h 35 min",
+    "gain": "362 m",
+    "level": 4,
+    "title": {
+      "cs": "Harrachova skála",
+      "en": "Harrachova skála viewpoint",
+      "de": "Harrachova skála Aussichtspunkt",
+      "pl": "Punkt widokowy Harrachova skála"
+    },
+    "type": {
+      "cs": "Vyhlídkový okruh s prudším stoupáním",
+      "en": "Scenic loop with a steeper climb",
+      "de": "Aussichtsreiche Runde mit steilerem Anstieg",
+      "pl": "Widokowa pętla z bardziej stromym podejściem"
+    },
+    "difficulty": {
+      "cs": "Střední až náročnější",
+      "en": "Moderate to demanding",
+      "de": "Mittel bis anspruchsvoll",
+      "pl": "Średnia do wymagającej"
+    },
+    "desc": {
+      "cs": "Kratší, ale poctivější výlet na vyhlídkové místo nad Špindlem. Hlavní odměnou je výhled, ale je potřeba počítat s výraznějším stoupáním.",
+      "en": "A shorter but more honest hike to a viewpoint above Špindl. The main reward is the view, but expect a more noticeable climb.",
+      "de": "Eine kürzere, aber kräftigere Wanderung zu einem Aussichtspunkt oberhalb von Špindl. Der Ausblick lohnt sich, der Anstieg ist aber deutlich spürbar.",
+      "pl": "Krótsza, ale solidniejsza wycieczka na punkt widokowy nad Szpindlem. Największą nagrodą jest widok, ale trzeba liczyć się z wyraźnym podejściem."
+    },
+    "note": {
+      "cs": "Nevhodné jako úplně první výlet pro lidi bez kondice. Za mokra opatrně hlavně v prudších částech.",
+      "en": "Not ideal as a first hike for people without fitness. Be careful in steeper parts, especially when wet.",
+      "de": "Nicht ideal als erste Tour für Gäste ohne Kondition. Besonders bei Nässe in steileren Passagen vorsichtig sein.",
+      "pl": "Nie jest to najlepsza pierwsza trasa dla osób bez kondycji. Po deszczu ostrożnie szczególnie na stromszych fragmentach."
+    }
+  },
+  {
+    "id": "certova-strouha",
+    "file": "Certova strouha.gpx",
+    "url": "https://mapy.com/fnc/v1/route?mapset=outdoor&start=15.606557,50.725360&end=15.606557,50.725360&routeType=foot_hiking&waypoints=15.607042,50.733507;15.607501,50.741723;15.616978,50.748828;15.630318,50.746225;15.641655,50.740893;15.649200,50.746162;15.652740,50.750147;15.647647,50.741649;15.634450,50.739512;15.622816,50.744753;15.613762,50.738613;15.617634,50.729647&navigate=false",
+    "dist": "13,8 km",
+    "time": "4 h 20 min",
+    "gain": "531 m",
+    "level": 5,
+    "title": {
+      "cs": "Bílé Labe + Čertova strouha",
+      "en": "White Elbe + Čertova strouha",
+      "de": "Weiße Elbe + Čertova strouha",
+      "pl": "Biała Łaba + Čertova strouha"
+    },
+    "type": {
+      "cs": "Delší horský výlet pro zdatnější",
+      "en": "Longer mountain hike for fitter walkers",
+      "de": "Längere Bergtour für geübtere Wanderer",
+      "pl": "Dłuższa górska trasa dla sprawniejszych turystów"
+    },
+    "difficulty": {
+      "cs": "Náročná",
+      "en": "Demanding",
+      "de": "Anspruchsvoll",
+      "pl": "Wymagająca"
+    },
+    "desc": {
+      "cs": "Nejdelší a fyzicky nejnáročnější trasa z výběru. Spojuje údolí Bílého Labe s odbočkou k Čertově strouze, takže nabídne vodu, les, horskou atmosféru i pořádnou porci metrů.",
+      "en": "The longest and most demanding route in this selection. It combines the White Elbe valley with a detour to Čertova strouha, offering water, forest, mountain atmosphere and a solid amount of climbing.",
+      "de": "Die längste und anspruchsvollste Tour dieser Auswahl. Sie verbindet das Tal der Weißen Elbe mit einem Abstecher zur Čertova strouha – Wasser, Wald, Gebirgsstimmung und viele Höhenmeter.",
+      "pl": "Najdłuższa i najtrudniejsza trasa z tego wyboru. Łączy dolinę Białej Łaby z odcinkiem do Čertova strouha, oferując wodę, las, górski klimat i sporą porcję podejść."
+    },
+    "note": {
+      "cs": "Vyrazit raději dopoledne, vzít vodu a pevnější obuv. Při špatné předpovědi zvolte kratší Bílé Labe.",
+      "en": "Start preferably in the morning, take water and solid shoes. If the forecast is poor, choose the shorter White Elbe route.",
+      "de": "Am besten vormittags starten, Wasser und festere Schuhe mitnehmen. Bei schlechter Prognose lieber die kürzere Weiße-Elbe-Tour wählen.",
+      "pl": "Najlepiej wyruszyć rano, zabrać wodę i solidniejsze buty. Przy złej prognozie wybierz krótszą trasę Biała Łaba."
+    }
+  }
+];
+const T = {
+  "cs": {
+    "subtitle": "Turistické trasy ze Špindlu",
+    "title": "Turistické trasy ze Špindlerova Mlýna",
+    "lead": "Sedm ověřených okruhů přímo z centra. Od lehké procházky k přehradě až po delší horský výlet k Bílému Labi a Čertově strouze.",
+    "tapHint": "Klepněte na trasu pro detail, náročnost a odkaz do Mapy.com.",
+    "back": "⬅ Zpět na hlavního průvodce",
+    "section": "Vybrané trasy",
+    "startLabel": "Start a cíl",
+    "start": "Spindl.info / centrum Špindlerova Mlýna",
+    "dist": "Délka",
+    "time": "Čas",
+    "gain": "Převýšení",
+    "diff": "Náročnost",
+    "open": "🗺️ Otevřít v Mapy.com",
+    "note": "Poznámka",
+    "summary": "Rychlé doporučení",
+    "easy": "Nejlehčí: Kolem přehrady",
+    "medium": "Střední: Bílé Labe, Hornická stezka",
+    "hard": "Nejnáročnější: Bílé Labe + Čertova strouha",
+    "footer": "Časy a převýšení jsou orientační podle GPX trasy a běžné turistické chůze. V Krkonoších vždy sledujte počasí, sezónní uzávěry a aktuální stav cest.",
+    "homeUrl": "index.html?lang=cs"
+  },
+  "en": {
+    "subtitle": "Hiking routes from Špindl",
+    "title": "Hiking routes from Špindlerův Mlýn",
+    "lead": "Seven checked circular routes starting directly in the centre. From an easy walk to the dam to a longer mountain hike to the White Elbe and Čertova strouha.",
+    "tapHint": "Tap a route to open details, difficulty and the Mapy.com link.",
+    "back": "⬅ Back to main guide",
+    "section": "Selected routes",
+    "startLabel": "Start and finish",
+    "start": "Spindl.info / Špindlerův Mlýn centre",
+    "dist": "Distance",
+    "time": "Time",
+    "gain": "Elevation gain",
+    "diff": "Difficulty",
+    "open": "🗺️ Open in Mapy.com",
+    "note": "Note",
+    "summary": "Quick recommendation",
+    "easy": "Easiest: Around the dam",
+    "medium": "Moderate: White Elbe, Mining trail",
+    "hard": "Hardest: White Elbe + Čertova strouha",
+    "footer": "Times and elevation gain are approximate, based on the GPX route and regular hiking pace. In the Krkonoše Mountains, always check weather, seasonal closures and current trail conditions.",
+    "homeUrl": "index.html?lang=en"
+  },
+  "de": {
+    "subtitle": "Wanderrouten ab Špindl",
+    "title": "Wanderrouten ab Špindlerův Mlýn",
+    "lead": "Sieben geprüfte Rundtouren direkt ab dem Zentrum. Vom leichten Spaziergang zur Talsperre bis zur längeren Bergtour zur Weißen Elbe und Čertova strouha.",
+    "tapHint": "Tippen Sie auf eine Route für Details, Schwierigkeit und den Mapy.com-Link.",
+    "back": "⬅ Zurück zum Hauptführer",
+    "section": "Ausgewählte Routen",
+    "startLabel": "Start und Ziel",
+    "start": "Spindl.info / Zentrum von Špindlerův Mlýn",
+    "dist": "Länge",
+    "time": "Zeit",
+    "gain": "Höhenmeter",
+    "diff": "Schwierigkeit",
+    "open": "🗺️ In Mapy.com öffnen",
+    "note": "Hinweis",
+    "summary": "Schnelle Empfehlung",
+    "easy": "Am leichtesten: Rund um die Talsperre",
+    "medium": "Mittel: Weiße Elbe, Bergbau-Lehrpfad",
+    "hard": "Am anspruchsvollsten: Weiße Elbe + Čertova strouha",
+    "footer": "Zeiten und Höhenmeter sind Richtwerte nach GPX-Route und normalem Wandertempo. Im Riesengebirge immer Wetter, saisonale Sperrungen und aktuellen Zustand der Wege prüfen.",
+    "homeUrl": "index.html?lang=de"
+  },
+  "pl": {
+    "subtitle": "Trasy piesze ze Szpindla",
+    "title": "Trasy piesze ze Szpindlerowego Młyna",
+    "lead": "Siedem sprawdzonych pętli startujących bezpośrednio z centrum. Od łatwego spaceru do zapory po dłuższą górską trasę do Białej Łaby i Čertova strouha.",
+    "tapHint": "Dotknij trasy, aby zobaczyć szczegóły, trudność i link do Mapy.com.",
+    "back": "⬅ Powrót do głównego przewodnika",
+    "section": "Wybrane trasy",
+    "startLabel": "Start i meta",
+    "start": "Spindl.info / centrum Szpindlerowego Młyna",
+    "dist": "Długość",
+    "time": "Czas",
+    "gain": "Przewyższenie",
+    "diff": "Trudność",
+    "open": "🗺️ Otwórz w Mapy.com",
+    "note": "Uwaga",
+    "summary": "Szybka rekomendacja",
+    "easy": "Najłatwiejsza: Wokół zapory",
+    "medium": "Średnie: Biała Łaba, Ścieżka górnicza",
+    "hard": "Najtrudniejsza: Biała Łaba + Čertova strouha",
+    "footer": "Czasy i przewyższenia są orientacyjne, na podstawie trasy GPX i zwykłego tempa turystycznego. W Karkonoszach zawsze sprawdzaj pogodę, sezonowe zamknięcia i aktualny stan szlaków.",
+    "homeUrl": "index.html?lang=pl"
+  }
+};
+
+function getLang() {
+  const params = new URLSearchParams(window.location.search);
+  const forced = (params.get('lang') || '').toLowerCase();
+  if (['cs','en','de','pl'].includes(forced)) return forced;
+  const nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  if (nav.startsWith('cs')) return 'cs';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('pl')) return 'pl';
+  return 'en';
+}
+
+function dots(level) {
+  let html = '<span class="dots" aria-hidden="true">';
+  for (let i = 1; i <= 5; i++) html += `<span class="dot ${i <= level ? 'on' : ''}"></span>`;
+  return html + '</span>';
+}
+
+function toggleRoute(routeId) {
+  const target = document.getElementById('route-' + routeId);
+  if (!target) return;
+  const shouldOpen = !target.classList.contains('open');
+  document.querySelectorAll('.route-card.open').forEach(card => {
+    card.classList.remove('open');
+    const btn = card.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (shouldOpen) {
+    target.classList.add('open');
+    const btn = target.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+function render() {
+  const lang = getLang();
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-title').textContent = t.title;
+  document.getElementById('txt-lead').textContent = t.lead;
+  document.getElementById('txt-tap-hint').textContent = t.tapHint;
+  document.getElementById('btn-back').textContent = t.back;
+  document.getElementById('btn-back').href = t.homeUrl;
+  document.getElementById('txt-start-label').textContent = t.startLabel;
+  document.getElementById('txt-start').textContent = t.start;
+  document.getElementById('txt-section').textContent = t.section;
+  document.getElementById('txt-summary-title').textContent = t.summary;
+  document.getElementById('txt-easy').innerHTML = `<strong>1.</strong> ${t.easy}`;
+  document.getElementById('txt-medium').innerHTML = `<strong>2.</strong> ${t.medium}`;
+  document.getElementById('txt-hard').innerHTML = `<strong>3.</strong> ${t.hard}`;
+  document.getElementById('txt-footer').textContent = t.footer;
+
+  const wrap = document.getElementById('routes');
+  wrap.innerHTML = ROUTES.map((r, i) => `
+    <article class="route-card" id="route-${r.id}">
+      <button class="route-trigger" type="button" onclick="toggleRoute('${r.id}')" aria-expanded="false" aria-controls="detail-${r.id}">
+        <div class="route-head">
+          <div class="route-number">${i + 1}</div>
+          <div class="route-main">
+            <div class="route-topline">
+              <div>
+                <h2 class="route-title">${r.title[lang] || r.title.en}</h2>
+                <div class="route-type">${r.type[lang] || r.type.en}</div>
+              </div>
+              <div class="chevron">⌄</div>
+            </div>
+            <div class="quick-stats">
+              <div class="quick-stat"><span class="quick-label">${t.dist}</span><span class="quick-value">${r.dist}</span></div>
+              <div class="quick-stat"><span class="quick-label">${t.time}</span><span class="quick-value">${r.time}</span></div>
+              <div class="quick-stat"><span class="quick-label">${t.diff}</span><span class="quick-value">${r.difficulty[lang] || r.difficulty.en}</span></div>
+            </div>
+          </div>
+        </div>
+      </button>
+      <div class="route-details" id="detail-${r.id}">
+        <div class="stats-grid">
+          <div class="stat"><span class="stat-label">${t.dist}</span><span class="stat-value">${r.dist}</span></div>
+          <div class="stat"><span class="stat-label">${t.time}</span><span class="stat-value">${r.time}</span></div>
+          <div class="stat"><span class="stat-label">${t.gain}</span><span class="stat-value">${r.gain}</span></div>
+          <div class="stat"><span class="stat-label">${t.diff}</span><span class="stat-value">${r.difficulty[lang] || r.difficulty.en} ${dots(r.level)}</span></div>
+        </div>
+        <p class="route-desc">${r.desc[lang] || r.desc.en}</p>
+        <div class="note-box"><strong>${t.note}:</strong> ${r.note[lang] || r.note.en}</div>
+        <a class="button btn-transport" href="${r.url}" target="_blank" rel="noopener">${t.open}</a>
+      </div>
+    </article>
+  `).join('');
+}
+
+render();
+</script>
+</body>
+</html>
