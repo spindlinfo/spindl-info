@@ -123,6 +123,7 @@ const t = content[lang] || content['en'];
 
 document.getElementById('main-title').innerText = t.title;
 document.getElementById('back-btn').innerText = "⬅ " + t.back;
+document.getElementById('back-btn').href = 'index.html?lang=' + lang;
 
 let html = "";
 t.trails.forEach(trail => {

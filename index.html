@@ -53,6 +53,9 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 .price-table td:last-child { text-align: right; font-weight: bold; color: #12204a; }
 .feedback-box { background: #f0f2f5; padding: 15px; border-radius: 12px; margin-top: 20px; }
 .footer { font-size: 12px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding: 20px 0; }
+.tourism-list { display: none; margin: -4px 0 6px; padding-left: 10px; border-left: 3px solid #12b800; }
+.tourism-list.open { display: block; }
+.tourism-list .button { background: #12204a; color: #ffffff !important; padding: 13px 14px; font-size: 14px; margin-bottom: 8px; text-align: left; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 #transport-menu { display: none; }
 </style>
 </head>
@@ -72,8 +75,13 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
     <section class="content">
         <a class="button btn-google" href="https://g.page/r/Ca_VRigL1XZyEBM/review" id="txt-review" target="_blank">⭐ Ohodnoťte nás na Google</a>
         
-        <div class="section-title" id="txt-sec-mlynar">Naučné stezky</div>
-        <a class="button btn-mlynar" id="lnk-mlynar" href="mlynar.html?lang=cs">🚶 Mlynářovy okruhy</a>
+        <div class="section-title" id="txt-sec-tourism">Turistika</div>
+        <button class="button btn-mlynar" id="btn-tourism" type="button" onclick="toggleTourism()" aria-expanded="false">🥾 Turistika</button>
+        <div class="tourism-list" id="tourism-list">
+            <a class="button" id="lnk-mlynar" href="mlynar.html?lang=cs">🚶 Mlynářovy okruhy</a>
+            <a class="button" id="lnk-infotrasy" href="infotrasy.html?lang=cs">🥾 Turistické trasy z infocentra</a>
+            <a class="button" id="lnk-spindlerovka" href="spindlerovka.html?lang=cs">🏔️ Trasy ze Špindlerovy boudy</a>
+        </div>
 
         <div class="section-title" id="txt-sec-weather">Webkamery & Počasí</div>
         <a class="button btn-news" id="lnk-cams" href="#" target="_blank">🎥 Webkamery Špindl</a>
@@ -178,7 +186,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 const translations = {
   cs: {
     subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
-    secMlynar: "Naučné stezky", mlynarBtn: "🚶 Mlynářovy okruhy",
+    secTourism: "Turistika", tourismBtn: "🥾 Turistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy",
     secWeather: "Webkamery & Počasí", cams: "🎥 Webkamery Špindl", wBlueS: "☁️ Špindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Předpověď (Web)",
     secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
     busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník",
@@ -195,7 +203,7 @@ const translations = {
   },
   de: {
     subtitle: "Digitaler Reiseführer Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
-    secMlynar: "Lehrpfade", mlynarBtn: "🚶 Müller-Lehrpfade",
+    secTourism: "Wandern", tourismBtn: "🥾 Wandern", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude",
     secWeather: "Webcams & Wetter", cams: "🎥 Webcams Spindl", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Wetter (Web)",
     secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
     busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste",
@@ -211,11 +219,11 @@ const translations = {
     feedPh: "Was können wir verbessern?", feedBtn: "Absenden"
   },
   pl: {
-    subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nás v Google", 
-    secMlynar: "Ścieżki dydaktyczne", mlynarBtn: "🚶 Ścieżki Młynarza",
+    subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nas w Google", 
+    secTourism: "Turystyka", tourismBtn: "🥾 Turystyka", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki",
     secWeather: "Kamery i Pogoda", cams: "🎥 Kamery internetowe", wBlueS: "☁️ Szpindl", wBlueN: "🏔️ Śnieżka", wMain: "☀️ Pogoda (Web)",
     secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
-    busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cenník",
+    busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cennik",
     secShop: "Kontakty", wLoading: "Ładowanie...", wSpindl: "🌡️ Szpindl: {temp}°C", wSnezka: "🏔️ Śnieżka: {temp}°C",
     wInversion: "⚠️ <b>Inwersja!</b> Na szczytach je o {diff}°C cieplej.",
     wNormal: "📉 Na szczytach je o <b>{diff}°C zimniej</b>.", wTip: "Ubierz się ciepło!",
@@ -229,7 +237,7 @@ const translations = {
   },
   en: {
     subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
-    secMlynar: "Nature Trails", mlynarBtn: "🚶 Miller's Trails",
+    secTourism: "Hiking", tourismBtn: "🥾 Hiking", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda",
     secWeather: "Webcams & Weather", cams: "🎥 Spindl Webcams", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Snezka", wMain: "☀️ Forecast (Web)",
     secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
     busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices",
@@ -255,6 +263,15 @@ function toggleMenu(menu) {
     window.scrollTo(0,0);
 }
 
+function toggleTourism() {
+    const list = document.getElementById('tourism-list');
+    const btn = document.getElementById('btn-tourism');
+    if (!list || !btn) return;
+    const open = !list.classList.contains('open');
+    list.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
 function togglePrice(id) {
     const el = document.getElementById(id);
     el.style.display = el.style.display === 'table' ? 'none' : 'table';
@@ -274,9 +291,15 @@ function setLang(lang) {
   updateEl('txt-subtitle', 'innerText', t.subtitle);
   updateEl('txt-review', 'innerText', t.review);
   
-  updateEl('txt-sec-mlynar', 'innerText', t.secMlynar);
+  document.documentElement.lang = lang;
+  updateEl('txt-sec-tourism', 'innerText', t.secTourism);
+  updateEl('btn-tourism', 'innerText', t.tourismBtn);
   updateEl('lnk-mlynar', 'innerText', t.mlynarBtn);
   updateEl('lnk-mlynar', 'href', 'mlynar.html?lang=' + lang);
+  updateEl('lnk-infotrasy', 'innerText', t.infotrasyBtn);
+  updateEl('lnk-infotrasy', 'href', 'infotrasy.html?lang=' + lang);
+  updateEl('lnk-spindlerovka', 'innerText', t.spindlerovkaBtn);
+  updateEl('lnk-spindlerovka', 'href', 'spindlerovka.html?lang=' + lang);
 
   updateEl('txt-sec-weather', 'innerText', t.secWeather);
   updateEl('lnk-cams', 'innerText', t.cams);
@@ -335,7 +358,18 @@ function stahnoutAppku() {
     else window.location.href = "https://www.zachrankaapp.cz/cs/stazeni";
 }
 
-setLang('cs');
+function getInitialLang() {
+    const params = new URLSearchParams(window.location.search);
+    const forced = (params.get('lang') || '').toLowerCase();
+    if (['cs','de','pl','en'].includes(forced)) return forced;
+    const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+    if (nav.startsWith('cs')) return 'cs';
+    if (nav.startsWith('de')) return 'de';
+    if (nav.startsWith('pl')) return 'pl';
+    return 'en';
+}
+
+setLang(getInitialLang());
 fetchWeather();
 </script>
 </body>

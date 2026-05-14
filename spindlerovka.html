@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Trasy ze Špindlerovy boudy</title>
+<meta name="description" content="Turistické trasy ze Špindlerovy boudy s délkou, časem, převýšením a náročností." />
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12204a">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJQ8FH9BRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PJQ8FH9BRE');
+</script>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: flex-start; justify-content: center; padding: 15px; color: #333; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; position: relative; }
+.top { background: #12b800; padding: 28px 20px 24px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; }
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 700; opacity: 0.96; }
+.content { padding: 22px 18px; }
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+.btn-main { background: #12204a; color: white !important; }
+.btn-transport { background: #12b800; color: #ffffff !important; }
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 22px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.hero-title { color: #12204a; font-size: 25px; line-height: 1.05; margin: 0 0 10px; font-weight: 900; letter-spacing: -0.6px; }
+.hero-lead { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 12px; text-align: left; }
+.tap-hint { background: #f0f2f5; border-radius: 12px; color: #555; font-size: 12.5px; line-height: 1.45; padding: 10px 12px; margin: 0 0 12px; text-align: left; border-left: 5px solid #12b800; }
+.route-card { background: #f8f9fa; border-radius: 14px; margin-bottom: 11px; text-align: left; border-left: 5px solid #12b800; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; }
+.route-trigger { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; padding: 14px 13px; text-align: left; cursor: pointer; display: block; }
+.route-trigger:active { background: #eef2f4; }
+.route-head { display: flex; gap: 10px; align-items: flex-start; }
+.route-number { width: 32px; height: 32px; border-radius: 10px; background: #12204a; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex: 0 0 32px; font-size: 14px; }
+.route-main { flex: 1; min-width: 0; }
+.route-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-title { margin: 0; color: #12204a; font-size: 17px; line-height: 1.15; font-weight: 900; }
+.route-type { margin-top: 3px; color: #666; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.chevron { color: #12204a; font-size: 18px; font-weight: 900; line-height: 1; transition: transform .2s ease; margin-top: 1px; }
+.route-card.open .chevron { transform: rotate(180deg); }
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; margin: 11px 0 0; }
+.quick-stat { background: #ffffff; border: 1px solid #eee; border-radius: 9px; padding: 7px 8px; min-width: 0; }
+.quick-label { display: block; color: #888; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.quick-value { display: block; color: #12204a; font-size: 12.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-details { display: none; padding: 0 13px 14px 13px; border-top: 1px solid #e8eaed; }
+.route-card.open .route-details { display: block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 13px 0 12px; }
+.stat { background: #ffffff; border-radius: 10px; padding: 9px 10px; border: 1px solid #eee; }
+.stat-label { display: block; color: #888; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.stat-value { color: #12204a; font-weight: 900; font-size: 15px; }
+.route-desc { margin: 0 0 11px; color: #333; font-size: 13px; line-height: 1.5; }
+.footer { font-size: 12px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding: 18px 18px 22px; line-height: 1.45; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 800; }
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .quick-stats { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="SPINDL info"></div>
+    <div class="subtitle" id="txt-subtitle">Trasy ze Špindlerovy boudy</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
+    <h1 class="hero-title" id="txt-title">Trasy ze Špindlerovy boudy</h1>
+    <p class="hero-lead" id="txt-lead">Vyberte si trasu podle délky a náročnosti.</p>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na trasu pro detail a odkaz do Mapy.com.</div>
+
+    <div class="section-title" id="txt-section">Turistické trasy</div>
+    <div id="routes"></div>
+  </section>
+  <div class="footer"><a href="https://www.spindleruv-mlyn.com/" target="_blank" rel="noopener">WWW.SPINDLERUV-MLYN.COM</a></div>
+</main>
+
+<script>
+const routes=[{"url":"https://mapy.com/s/dudazenuhe","km":4.8,"up":117,"down":117,"time":"1:25 h","difficulty":"easy","names":{"cz":"Moravská bouda a zpět","de":"Moravská bouda und zurück","pl":"Moravská bouda i z powrotem","en":"Moravská Bouda and back"},"texts":{"cz":"Krátká hřebenová procházka od Špindlerovy boudy k Moravské boudě a zpět. Hodí se, když je málo času nebo horší počasí.","de":"Kurzer Kammspaziergang von der Špindlerova bouda zur Moravská bouda und zurück. Gut bei wenig Zeit oder unsicherem Wetter.","pl":"Krótki spacer grzbietem ze Špindlerovej boudy do Moravské boudy i z powrotem. Dobry wybór przy małej ilości czasu.","en":"A short ridge walk from Špindlerova Bouda to Moravská Bouda and back. Good when time is limited or the weather is uncertain."},"diffLabels":{"cz":"lehká","de":"leicht","pl":"łatwa","en":"easy"}},{"url":"https://mapy.com/s/cubemajato","km":8.0,"up":72,"down":555,"time":"2:25 h","difficulty":"medium","names":{"cz":"Přes Moravskou boudu do Špindlu","de":"Über Moravská bouda nach Špindl","pl":"Przez Moravską boudę do Szpindla","en":"Via Moravská Bouda to Špindl"},"texts":{"cz":"Pohodový sestup do centra Špindlerova Mlýna přes Moravskou boudu. Dobrá volba pro rodiny a klidnější den.","de":"Angenehmer Abstieg nach Špindlerův Mlýn über Moravská bouda. Eine gute Wahl für Familien und einen ruhigeren Tag.","pl":"Spokojne zejście do centrum Szpindlerowego Młyna przez Moravską boudę. Dobre dla rodzin i na luźniejszy dzień.","en":"An easy descent to the centre of Špindlerův Mlýn via Moravská Bouda. A good option for families and a calmer day."},"diffLabels":{"cz":"střední","de":"mittel","pl":"średnia","en":"moderate"}},{"url":"https://mapy.com/s/nupezelofa","km":11.2,"up":109,"down":592,"time":"3:15 h","difficulty":"medium","names":{"cz":"Čertova strouha a Bílé Labe","de":"Teufelsgrund und Weißwasser","pl":"Čertova strouha i Białe Łaby","en":"Devil’s Ditch and White Elbe"},"texts":{"cz":"Krásná sestupová trasa kolem Bílého Labe s odbočkou k Čertově strouze. Hodně vody, les a příjemný horský chodník.","de":"Schöne Abstiegsroute entlang der Weißwasser mit Abstecher zur Teufelsrinne. Viel Wasser, Wald und angenehme Bergwege.","pl":"Piękna trasa zejściowa wzdłuż Białej Łaby z odcinkiem przy Čertově strouze. Woda, las i przyjemna górska ścieżka.","en":"A beautiful descending route along the White Elbe with a detour to Devil’s Ditch. Water, forest and pleasant mountain paths."},"diffLabels":{"cz":"střední","de":"mittel","pl":"średnia","en":"moderate"}},{"url":"https://mapy.com/s/nukopadope","km":11.8,"up":261,"down":744,"time":"3:45 h","difficulty":"hard","names":{"cz":"Dívčí a Mužské kameny do Špindlu","de":"Mädelsteine und Mannsteine nach Špindl","pl":"Dívčí i Mužské kameny do Szpindla","en":"Dívčí and Mužské Kameny to Špindl"},"texts":{"cz":"Výhledová hřebenovka přes Dívčí a Mužské kameny a potom dlouhý sestup do Špindlu. Za hezkého počasí paráda.","de":"Aussichtsreiche Kammroute über Mädelsteine und Mannsteine mit langem Abstieg nach Špindl. Besonders schön bei gutem Wetter.","pl":"Widokowa trasa grzbietowa przez Dívčí i Mužské kameny, potem długie zejście do Szpindla. Świetna przy dobrej pogodzie.","en":"A scenic ridge route over Dívčí and Mužské Kameny, followed by a long descent to Špindl. Excellent in good weather."},"diffLabels":{"cz":"těžší","de":"schwerer","pl":"trudniejsza","en":"hard"}},{"url":"https://mapy.com/s/jefolepuku","km":12.0,"up":442,"down":442,"time":"3:55 h","difficulty":"hard","names":{"cz":"Dívčí kameny, Mužské kameny a Martinovka","de":"Mädelsteine, Mannsteine und Martinova bouda","pl":"Dívčí kameny, Mužské kameny i Martinovka","en":"Dívčí Kameny, Mužské Kameny and Martinovka"},"texts":{"cz":"Okruh po hřebeni přes Dívčí kameny, Mužské kameny a Martinovu boudu zpět na Špindlerovku. Výhledy bez nutnosti končit dole ve městě.","de":"Kammrunde über Mädelsteine, Mannsteine und Martinova bouda zurück zur Špindlerova bouda. Aussichten ohne Abstieg bis in den Ort.","pl":"Pętla grzbietem przez Dívčí kameny, Mužské kameny i Martinovkę z powrotem na Špindlerovkę. Widoki bez schodzenia do miasta.","en":"A ridge loop via Dívčí Kameny, Mužské Kameny and Martinovka back to Špindlerovka. Great views without finishing down in town."},"diffLabels":{"cz":"těžší","de":"schwerer","pl":"trudniejsza","en":"hard"}},{"url":"https://mapy.com/s/nelutevapo","km":14.7,"up":286,"down":769,"time":"4:40 h","difficulty":"hard","names":{"cz":"Luční bouda a Kozí hřbety do Špindlu","de":"Luční bouda und Kozí hřbety nach Špindl","pl":"Luční bouda i Kozí hřbety do Szpindla","en":"Luční Bouda and Kozí Hřbety to Špindl"},"texts":{"cz":"Delší trasa přes Luční boudu a Kozí hřbety s dlouhým sestupem do Špindlu. Výborné výhledy, ale chce to jistý krok.","de":"Längere Tour über Luční bouda und Kozí hřbety mit langem Abstieg nach Špindl. Sehr schöne Ausblicke, aber Trittsicherheit ist nützlich.","pl":"Dłuższa trasa przez Luční boudę i Kozí hřbety z długim zejściem do Szpindla. Świetne widoki, ale przyda się pewny krok.","en":"A longer route via Luční Bouda and Kozí Hřbety with a long descent to Špindl. Excellent views, but sure footing helps."},"diffLabels":{"cz":"těžší","de":"schwerer","pl":"trudniejsza","en":"hard"}},{"url":"https://mapy.com/s/mafehorosu","km":15.7,"up":598,"down":567,"time":"5:05 h","difficulty":"veryhard","names":{"cz":"Pramen Labe, Labská bouda a Pančava na Medvědín","de":"Elbquelle, Labská bouda und Pantschefall zum Medvědín","pl":"Źródło Łaby, Labská bouda i Pančava na Medvědín","en":"Elbe Spring, Labská Bouda and Pančava to Medvědín"},"texts":{"cz":"Trasa k Prameni Labe přes Labskou boudu a Pančavský vodopád s koncem na Medvědíně. Ideální, když chcete využít lanovku dolů.","de":"Route zur Elbquelle über Labská bouda und den Pantschefall mit Ziel am Medvědín. Ideal, wenn man mit der Seilbahn hinunterfahren möchte.","pl":"Trasa do Źródła Łaby przez Labską boudę i wodospad Pančavy, z końcem na Medvědínie. Dobra, gdy chcecie zjechać kolejką.","en":"A route to the Elbe Spring via Labská Bouda and Pančava Waterfall, ending at Medvědín. Ideal if you want to take the cable car down."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/dufegejoja","km":16.0,"up":414,"down":897,"time":"5:10 h","difficulty":"veryhard","names":{"cz":"Přes Luční boudu a Výrovku do Špindlu","de":"Über Luční bouda und Výrovka nach Špindl","pl":"Przez Luční boudę i Výrovkę do Szpindla","en":"Via Luční Bouda and Výrovka to Špindl"},"texts":{"cz":"Delší přechod přes Luční boudu a Výrovku s dlouhým sestupem do Špindlu. Dobrá kondice se hodí.","de":"Längere Tour über Luční bouda und Výrovka mit langem Abstieg nach Špindl. Gute Kondition ist hilfreich.","pl":"Dłuższe przejście przez Luční boudę i Výrovkę z długim zejściem do Szpindla. Przyda się dobra kondycja.","en":"A longer crossing via Luční Bouda and Výrovka with a long descent to Špindl. Good fitness is useful."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/docutudeze","km":19.1,"up":591,"down":1074,"time":"6:15 h","difficulty":"veryhard","names":{"cz":"Pramen Labe, Labská bouda a Pančava do Špindlu","de":"Elbquelle, Labská bouda und Pantschefall nach Špindl","pl":"Źródło Łaby, Labská bouda i Pančava do Szpindla","en":"Elbe Spring, Labská Bouda and Pančava to Špindl"},"texts":{"cz":"Velká západní trasa: Pramen Labe, Labská bouda, Pančavský vodopád a sestup až do Špindlu. Výborná celodenní varianta.","de":"Große Westroute: Elbquelle, Labská bouda, Pantschefall und Abstieg bis nach Špindl. Eine sehr gute Tagestour.","pl":"Duża zachodnia trasa: Źródło Łaby, Labská bouda, wodospad Pančavy i zejście aż do Szpindla. Bardzo dobra całodzienna opcja.","en":"A big western route: Elbe Spring, Labská Bouda, Pančava Waterfall and descent all the way to Špindl. A great full-day option."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/dajoredaba","km":19.2,"up":436,"down":919,"time":"6:00 h","difficulty":"veryhard","names":{"cz":"Pramen Labe a Labským dolem do Špindlu","de":"Elbquelle und Elbgrund nach Špindl","pl":"Źródło Łaby i doliną Łaby do Szpindla","en":"Elbe Spring and Elbe Valley to Špindl"},"texts":{"cz":"Pramen Labe a potom dlouhý sestup Labským dolem. Nádherná trasa, ale počítejte s délkou a únavou v závěru.","de":"Zur Elbquelle und anschließend langer Abstieg durch den Elbgrund. Wunderschön, aber Länge und Müdigkeit am Ende einplanen.","pl":"Źródło Łaby, a potem długie zejście doliną Łaby. Piękna trasa, ale trzeba liczyć się z długością i zmęczeniem pod koniec.","en":"Elbe Spring followed by a long descent through the Elbe Valley. Beautiful, but expect distance and fatigue near the end."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/kavanureve","km":19.5,"up":394,"down":877,"time":"6:00 h","difficulty":"veryhard","names":{"cz":"Luční bouda, Výrovka, Rozcestí a Stoh","de":"Luční bouda, Výrovka, Rozcestí und Stoh","pl":"Luční bouda, Výrovka, Rozcestí i Stoh","en":"Luční Bouda, Výrovka, Rozcestí and Stoh"},"texts":{"cz":"Dlouhá horská varianta přes Luční boudu, Výrovku, Rozcestí a Stoh. Méně rychlá trasa, vhodná pro zkušenější turisty.","de":"Lange Bergvariante über Luční bouda, Výrovka, Rozcestí und Stoh. Keine schnelle Tour, eher für erfahrenere Wanderer.","pl":"Długi wariant górski przez Luční boudę, Výrovkę, Rozcestí i Stoh. Nie jest szybki, raczej dla bardziej doświadczonych.","en":"A long mountain option via Luční Bouda, Výrovka, Rozcestí and Stoh. Not a quick route; better for experienced hikers."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/cocuhoteje","km":21.1,"up":564,"down":1047,"time":"6:45 h","difficulty":"veryhard","names":{"cz":"Sněžka a sestup do Špindlu","de":"Schneekoppe und Abstieg nach Špindl","pl":"Śnieżka i zejście do Szpindla","en":"Sněžka and descent to Špindl"},"texts":{"cz":"Nejdelší výlet ze seznamu: přes Luční boudu na Sněžku a potom zpět směrem do Špindlu. Celodenní horská trasa pro zdatné.","de":"Die längste Tour der Liste: über Luční bouda zur Schneekoppe und weiter zurück Richtung Špindl. Ganztägige Bergtour für Geübte.","pl":"Najdłuższa wycieczka z listy: przez Luční boudę na Śnieżkę, a potem z powrotem w stronę Szpindla. Całodzienna trasa dla sprawnych.","en":"The longest trip on the list: via Luční Bouda to Sněžka, then back towards Špindl. A full-day mountain route for fit hikers."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}}];
+const T = {
+  cs: {
+    subtitle: "Trasy ze Špindlerovy boudy",
+    title: "Trasy ze Špindlerovy boudy",
+    lead: "Vyberte si trasu podle délky a náročnosti. Detail se otevře až po kliknutí.",
+    tapHint: "Klepněte na trasu pro popis, převýšení a odkaz do Mapy.com.",
+    back: "⬅ Zpět na hlavního průvodce",
+    section: "Turistické trasy",
+    dist: "Délka",
+    time: "Čas",
+    elev: "Převýšení",
+    diff: "Náročnost",
+    open: "🗺️ Otevřít v Mapy.com",
+    homeUrl: "index.html?lang=cs"
+  },
+  de: {
+    subtitle: "Touren ab Špindlerova bouda",
+    title: "Touren ab Špindlerova bouda",
+    lead: "Wählen Sie eine Tour nach Länge und Schwierigkeit. Details öffnen sich erst nach dem Antippen.",
+    tapHint: "Tippen Sie auf eine Route für Beschreibung, Höhenmeter und den Mapy.com-Link.",
+    back: "⬅ Zurück zum Hauptführer",
+    section: "Wandertouren",
+    dist: "Länge",
+    time: "Zeit",
+    elev: "Höhenmeter",
+    diff: "Schwierigkeit",
+    open: "🗺️ In Mapy.com öffnen",
+    homeUrl: "index.html?lang=de"
+  },
+  pl: {
+    subtitle: "Trasy ze Špindlerovki",
+    title: "Trasy ze Špindlerovki",
+    lead: "Wybierz trasę według długości i trudności. Szczegóły otworzą się dopiero po kliknięciu.",
+    tapHint: "Dotknij trasy, aby zobaczyć opis, przewyższenie i link do Mapy.com.",
+    back: "⬅ Powrót do głównego przewodnika",
+    section: "Trasy turystyczne",
+    dist: "Długość",
+    time: "Czas",
+    elev: "Przewyższenie",
+    diff: "Trudność",
+    open: "🗺️ Otwórz w Mapy.com",
+    homeUrl: "index.html?lang=pl"
+  },
+  en: {
+    subtitle: "Routes from Špindlerova Bouda",
+    title: "Routes from Špindlerova Bouda",
+    lead: "Choose a route by distance and difficulty. Details open only after tapping.",
+    tapHint: "Tap a route to see the description, elevation and Mapy.com link.",
+    back: "⬅ Back to main guide",
+    section: "Hiking routes",
+    dist: "Distance",
+    time: "Time",
+    elev: "Elevation",
+    diff: "Difficulty",
+    open: "🗺️ Open in Mapy.com",
+    homeUrl: "index.html?lang=en"
+  }
+};
+
+function getLang() {
+  const params = new URLSearchParams(window.location.search);
+  const forced = (params.get('lang') || '').toLowerCase();
+  if (['cs','de','pl','en'].includes(forced)) return forced;
+  const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('cs')) return 'cs';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('pl')) return 'pl';
+  return 'en';
+}
+
+function dataLang(lang) { return lang === 'cs' ? 'cz' : lang; }
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function formatKm(km, lang) {
+  const loc = lang === 'en' ? 'en-US' : (lang === 'de' ? 'de-DE' : (lang === 'pl' ? 'pl-PL' : 'cs-CZ'));
+  return Number(km).toLocaleString(loc, { maximumFractionDigits: 1 });
+}
+function toggleRoute(routeId) {
+  const target = document.getElementById('route-' + routeId);
+  if (!target) return;
+  const shouldOpen = !target.classList.contains('open');
+  document.querySelectorAll('.route-card.open').forEach(card => {
+    card.classList.remove('open');
+    const btn = card.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (shouldOpen) {
+    target.classList.add('open');
+    const btn = target.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+function routeKind(r, lang) {
+  const key = dataLang(lang);
+  const diff = (r.diffLabels && (r.diffLabels[key] || r.diffLabels.en)) || '';
+  const km = formatKm(r.km, lang);
+  return `${km} km • ${r.time} • ${diff}`;
+}
+function render() {
+  const lang = getLang();
+  const key = dataLang(lang);
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.title = t.title + ' | Spindl.info';
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-title').textContent = t.title;
+  document.getElementById('txt-lead').textContent = t.lead;
+  document.getElementById('txt-tap-hint').textContent = t.tapHint;
+  document.getElementById('btn-back').textContent = t.back;
+  document.getElementById('btn-back').href = t.homeUrl;
+  document.getElementById('txt-section').textContent = t.section;
+
+  const wrap = document.getElementById('routes');
+  wrap.innerHTML = routes.map((r, i) => {
+    const id = 'spindlerovka-' + i;
+    const title = (r.names && (r.names[key] || r.names.en)) || 'Route';
+    const desc = (r.texts && (r.texts[key] || r.texts.en)) || '';
+    const diff = (r.diffLabels && (r.diffLabels[key] || r.diffLabels.en)) || '';
+    const km = formatKm(r.km, lang);
+    return `
+      <article class="route-card" id="route-${id}">
+        <button class="route-trigger" type="button" onclick="toggleRoute('${id}')" aria-expanded="false" aria-controls="detail-${id}">
+          <div class="route-head">
+            <div class="route-number">${i + 1}</div>
+            <div class="route-main">
+              <div class="route-topline">
+                <div>
+                  <h2 class="route-title">${esc(title)}</h2>
+                  <div class="route-type">${esc(routeKind(r, lang))}</div>
+                </div>
+                <div class="chevron">⌄</div>
+              </div>
+              <div class="quick-stats">
+                <div class="quick-stat"><span class="quick-label">${esc(t.dist)}</span><span class="quick-value">${km} km</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.time)}</span><span class="quick-value">${esc(r.time)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.diff)}</span><span class="quick-value">${esc(diff)}</span></div>
+              </div>
+            </div>
+          </div>
+        </button>
+        <div class="route-details" id="detail-${id}">
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-label">${esc(t.dist)}</span><span class="stat-value">${km} km</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.time)}</span><span class="stat-value">${esc(r.time)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.elev)}</span><span class="stat-value">+${r.up} / −${r.down} m</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.diff)}</span><span class="stat-value">${esc(diff)}</span></div>
+          </div>
+          <p class="route-desc">${esc(desc)}</p>
+          <a class="button btn-transport" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t.open)}</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
