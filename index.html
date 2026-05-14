@@ -81,6 +81,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
             <a class="button" id="lnk-mlynar" href="mlynar.html?lang=cs">🚶 Mlynářovy okruhy</a>
             <a class="button" id="lnk-infotrasy" href="infotrasy.html?lang=cs">🥾 Turistické trasy z infocentra</a>
             <a class="button" id="lnk-spindlerovka" href="spindlerovka.html?lang=cs">🏔️ Trasy ze Špindlerovy boudy</a>
+            <a class="button" id="lnk-medvedin" href="medvedin.html?lang=cs">🚡 Trasy z Medvědína</a>
         </div>
 
         <div class="section-title" id="txt-sec-weather">Webkamery & Počasí</div>
@@ -186,7 +187,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 const translations = {
   cs: {
     subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
-    secTourism: "Turistika", tourismBtn: "🥾 Turistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy",
+    secTourism: "Turistika", tourismBtn: "🥾 Turistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy", medvedinBtn: "🚡 Trasy z Medvědína",
     secWeather: "Webkamery & Počasí", cams: "🎥 Webkamery Špindl", wBlueS: "☁️ Špindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Předpověď (Web)",
     secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
     busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník",
@@ -203,7 +204,7 @@ const translations = {
   },
   de: {
     subtitle: "Digitaler Reiseführer Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
-    secTourism: "Wandern", tourismBtn: "🥾 Wandern", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude",
+    secTourism: "Wandern", tourismBtn: "🥾 Wandern", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude", medvedinBtn: "🚡 Touren ab Medvědín",
     secWeather: "Webcams & Wetter", cams: "🎥 Webcams Spindl", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Wetter (Web)",
     secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
     busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste",
@@ -220,7 +221,7 @@ const translations = {
   },
   pl: {
     subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nas w Google", 
-    secTourism: "Turystyka", tourismBtn: "🥾 Turystyka", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki",
+    secTourism: "Turystyka", tourismBtn: "🥾 Turystyka", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki", medvedinBtn: "🚡 Trasy z Medvědína",
     secWeather: "Kamery i Pogoda", cams: "🎥 Kamery internetowe", wBlueS: "☁️ Szpindl", wBlueN: "🏔️ Śnieżka", wMain: "☀️ Pogoda (Web)",
     secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
     busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cennik",
@@ -237,7 +238,7 @@ const translations = {
   },
   en: {
     subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
-    secTourism: "Hiking", tourismBtn: "🥾 Hiking", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda",
+    secTourism: "Hiking", tourismBtn: "🥾 Hiking", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda", medvedinBtn: "🚡 Routes from Medvědín",
     secWeather: "Webcams & Weather", cams: "🎥 Spindl Webcams", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Snezka", wMain: "☀️ Forecast (Web)",
     secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
     busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices",
@@ -300,6 +301,8 @@ function setLang(lang) {
   updateEl('lnk-infotrasy', 'href', 'infotrasy.html?lang=' + lang);
   updateEl('lnk-spindlerovka', 'innerText', t.spindlerovkaBtn);
   updateEl('lnk-spindlerovka', 'href', 'spindlerovka.html?lang=' + lang);
+  updateEl('lnk-medvedin', 'innerText', t.medvedinBtn);
+  updateEl('lnk-medvedin', 'href', 'medvedin.html?lang=' + lang);
 
   updateEl('txt-sec-weather', 'innerText', t.secWeather);
   updateEl('lnk-cams', 'innerText', t.cams);
