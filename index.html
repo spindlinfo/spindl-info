@@ -180,7 +180,11 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
         <a href="#" target="_blank" class="button btn-info" id="txt-spindlerovka">Bus Špindlerovka</a>
     </section>
   </div>
-  <div class="footer"><a id="lnk-web" href="#" target="_blank" style="color: #12b800; text-decoration: none; font-weight: 700;">WWW.SPINDLERUV-MLYN.COM</a></div>
+  <div class="footer">
+    <a id="lnk-web" href="#" target="_blank" style="color: #12b800; text-decoration: none; font-weight: 700;">WWW.SPINDLERUV-MLYN.COM</a>
+    <br><br>
+    <span>© 2026 Spindl.info · Infocentrum Špindlerův Mlýn</span>
+  </div>
 </main>
 
 <script>
@@ -285,6 +289,7 @@ function updateEl(id, prop, value) {
 
 function setLang(lang) {
   currentLang = lang;
+  localStorage.setItem('spindlLang', lang);
   document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById('btn-' + lang).classList.add('active');
   const t = translations[lang] || translations['en'];
@@ -365,6 +370,8 @@ function getInitialLang() {
     const params = new URLSearchParams(window.location.search);
     const forced = (params.get('lang') || '').toLowerCase();
     if (['cs','de','pl','en'].includes(forced)) return forced;
+    const saved = (localStorage.getItem('spindlLang') || '').toLowerCase();
+    if (['cs','de','pl','en'].includes(saved)) return saved;
     const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
     if (nav.startsWith('cs')) return 'cs';
     if (nav.startsWith('de')) return 'de';
