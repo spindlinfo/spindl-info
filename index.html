@@ -137,12 +137,12 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <button onclick="togglePrice('price-p2')" class="button btn-info" style="padding:10px; font-size:13px; margin-bottom:0;">💰 <span class="txt-price-btn">Ceník</span></button>
             </div>
             <table class="price-table" id="price-p2">
-                <tr><td>1 hodina</td><td>30 Kč</td></tr>
-                <tr><td>2 hodiny</td><td>50 Kč</td></tr>
-                <tr><td>3 hodiny</td><td>80 Kč</td></tr>
-                <tr><td>4 hodiny</td><td>120 Kč</td></tr>
-                <tr><td>1 den (24h)</td><td>200 Kč</td></tr>
-                <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
+                <tr><td class="price-hour-1">1 hodina</td><td class="price-30">30 Kč</td></tr>
+                <tr><td class="price-hour-2">2 hodiny</td><td class="price-50">50 Kč</td></tr>
+                <tr><td class="price-hour-3">3 hodiny</td><td class="price-80">80 Kč</td></tr>
+                <tr><td class="price-hour-4">4 hodiny</td><td class="price-120">120 Kč</td></tr>
+                <tr><td class="price-day">1 den (24h)</td><td class="price-200">200 Kč</td></tr>
+                <tr><td colspan="2" class="price-extra-day" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
             </table>
         </div>
 
@@ -153,12 +153,12 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <button onclick="togglePrice('price-p3')" class="button btn-info" style="padding:10px; font-size:13px; margin-bottom:0;">💰 <span class="txt-price-btn">Ceník</span></button>
             </div>
             <table class="price-table" id="price-p3">
-                <tr><td>1 hodina</td><td>30 Kč</td></tr>
-                <tr><td>2 hodiny</td><td>50 Kč</td></tr>
-                <tr><td>3 hodiny</td><td>100 Kč</td></tr>
-                <tr><td>4 hodiny</td><td>150 Kč</td></tr>
-                <tr><td>1 den (24h)</td><td>250 Kč</td></tr>
-                <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
+                <tr><td class="price-hour-1">1 hodina</td><td class="price-30">30 Kč</td></tr>
+                <tr><td class="price-hour-2">2 hodiny</td><td class="price-50">50 Kč</td></tr>
+                <tr><td class="price-hour-3">3 hodiny</td><td class="price-100">100 Kč</td></tr>
+                <tr><td class="price-hour-4">4 hodiny</td><td class="price-150">150 Kč</td></tr>
+                <tr><td class="price-day">1 den (24h)</td><td class="price-250">250 Kč</td></tr>
+                <tr><td colspan="2" class="price-extra-day" style="font-size:10px; font-weight:normal; text-align:center;">Každý další započatý den 200 Kč</td></tr>
             </table>
         </div>
 
@@ -169,9 +169,9 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <button onclick="togglePrice('price-central')" class="button btn-info" style="padding:10px; font-size:13px; margin-bottom:0;">💰 <span class="txt-price-btn">Ceník</span></button>
             </div>
             <table class="price-table" id="price-central">
-                <tr><td>Sazba</td><td>80 Kč / hod</td></tr>
-                <tr><td>1 den (24h)</td><td>320 Kč</td></tr>
-                <tr><td colspan="2" style="font-size:10px; font-weight:normal; text-align:center;">Provozní doba: NONSTOP</td></tr>
+                <tr><td class="price-rate">Sazba</td><td class="price-80-hour">80 Kč / hod</td></tr>
+                <tr><td class="price-day">1 den (24h)</td><td class="price-320">320 Kč</td></tr>
+                <tr><td colspan="2" class="price-nonstop" style="font-size:10px; font-weight:normal; text-align:center;">Provozní doba: NONSTOP</td></tr>
             </table>
         </div>
 
@@ -183,7 +183,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
   <div class="footer">
     <a id="lnk-web" href="#" target="_blank" style="color: #12b800; text-decoration: none; font-weight: 700;">WWW.SPINDLERUV-MLYN.COM</a>
     <br><br>
-    <span>© 2026 Spindl.info · Infocentrum Špindlerův Mlýn</span>
+    © 2026 Spindl.info · Infocentrum Špindlerův Mlýn
   </div>
 </main>
 
@@ -194,7 +194,7 @@ const translations = {
     secTourism: "Turistika", tourismBtn: "🥾 Turistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy", medvedinBtn: "🚡 Trasy z Medvědína",
     secWeather: "Webkamery & Počasí", cams: "🎥 Webkamery Špindl", wBlueS: "☁️ Špindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Předpověď (Web)",
     secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
-    busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník",
+    busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník", parkingTitle: "Parkoviště",
     secShop: "Kontakty", wLoading: "Načítám...", wSpindl: "🌡️ Špindl: {temp}°C", wSnezka: "🏔️ Sněžka: {temp}°C",
     wInversion: "⚠️ <b>Inverze!</b> Nahoře je o {diff}°C tepleji.",
     wNormal: "📉 Nahoře je o <b>{diff}°C méně</b>.", wTip: "Oblečte se!",
@@ -211,7 +211,7 @@ const translations = {
     secTourism: "Wandern", tourismBtn: "🥾 Wandern", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude", medvedinBtn: "🚡 Touren ab Medvědín",
     secWeather: "Webcams & Wetter", cams: "🎥 Webcams Spindl", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Wetter (Web)",
     secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
-    busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste",
+    busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste", parkingTitle: "Parkplätze",
     secShop: "Kontakte", wLoading: "Laden...", wSpindl: "🌡️ Špindl: {temp}°C", wSnezka: "🏔️ Schneekoppe: {temp}°C",
     wInversion: "⚠️ <b>Inversion!</b> Oben ist es {diff}°C wärmer.",
     wNormal: "📉 Oben ist es <b>{diff}°C kälter</b>.", wTip: "Zieh dich warm an!",
@@ -228,7 +228,7 @@ const translations = {
     secTourism: "Turystyka", tourismBtn: "🥾 Turystyka", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki", medvedinBtn: "🚡 Trasy z Medvědína",
     secWeather: "Kamery i Pogoda", cams: "🎥 Kamery internetowe", wBlueS: "☁️ Szpindl", wBlueN: "🏔️ Śnieżka", wMain: "☀️ Pogoda (Web)",
     secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
-    busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cennik",
+    busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cennik", parkingTitle: "Parkingi",
     secShop: "Kontakty", wLoading: "Ładowanie...", wSpindl: "🌡️ Szpindl: {temp}°C", wSnezka: "🏔️ Śnieżka: {temp}°C",
     wInversion: "⚠️ <b>Inwersja!</b> Na szczytach je o {diff}°C cieplej.",
     wNormal: "📉 Na szczytach je o <b>{diff}°C zimniej</b>.", wTip: "Ubierz się ciepło!",
@@ -245,7 +245,7 @@ const translations = {
     secTourism: "Hiking", tourismBtn: "🥾 Hiking", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda", medvedinBtn: "🚡 Routes from Medvědín",
     secWeather: "Webcams & Weather", cams: "🎥 Spindl Webcams", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Snezka", wMain: "☀️ Forecast (Web)",
     secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
-    busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices",
+    busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices", parkingTitle: "Parking",
     secShop: "Contacts", wLoading: "Loading...", wSpindl: "🌡️ Spindl: {temp}°C", wSnezka: "🏔️ Snezka: {temp}°C",
     wInversion: "⚠️ <b>Inversion!</b> Ridges are {diff}°C warmer.",
     wNormal: "📉 Ridges are <b>{diff}°C colder</b>.", wTip: "Dress warmly!",
@@ -258,6 +258,63 @@ const translations = {
     feedPh: "How can we improve?", feedBtn: "Send"
   }
 };
+
+const parkingLabels = {
+  cs: {
+    hour1: "1 hodina", hour2: "2 hodiny", hour3: "3 hodiny", hour4: "4 hodiny",
+    day: "1 den (24 h)", rate: "Sazba",
+    extraDay: "Každý další započatý den 200 Kč",
+    nonstop: "Provozní doba: NONSTOP",
+    czk30: "30 Kč", czk50: "50 Kč", czk80: "80 Kč", czk100: "100 Kč", czk120: "120 Kč", czk150: "150 Kč", czk200: "200 Kč", czk250: "250 Kč", czk320: "320 Kč", czk80hour: "80 Kč / hod"
+  },
+  de: {
+    hour1: "1 Stunde", hour2: "2 Stunden", hour3: "3 Stunden", hour4: "4 Stunden",
+    day: "1 Tag (24 Std.)", rate: "Tarif",
+    extraDay: "Jeder weitere angefangene Tag 200 CZK",
+    nonstop: "Betriebszeit: NONSTOP",
+    czk30: "30 CZK", czk50: "50 CZK", czk80: "80 CZK", czk100: "100 CZK", czk120: "120 CZK", czk150: "150 CZK", czk200: "200 CZK", czk250: "250 CZK", czk320: "320 CZK", czk80hour: "80 CZK / Std."
+  },
+  pl: {
+    hour1: "1 godzina", hour2: "2 godziny", hour3: "3 godziny", hour4: "4 godziny",
+    day: "1 dzień (24 h)", rate: "Stawka",
+    extraDay: "Każdy kolejny rozpoczęty dzień 200 CZK",
+    nonstop: "Godziny otwarcia: NONSTOP",
+    czk30: "30 CZK", czk50: "50 CZK", czk80: "80 CZK", czk100: "100 CZK", czk120: "120 CZK", czk150: "150 CZK", czk200: "200 CZK", czk250: "250 CZK", czk320: "320 CZK", czk80hour: "80 CZK / godz."
+  },
+  en: {
+    hour1: "1 hour", hour2: "2 hours", hour3: "3 hours", hour4: "4 hours",
+    day: "1 day (24 h)", rate: "Rate",
+    extraDay: "Each additional started day 200 CZK",
+    nonstop: "Operating hours: NONSTOP",
+    czk30: "30 CZK", czk50: "50 CZK", czk80: "80 CZK", czk100: "100 CZK", czk120: "120 CZK", czk150: "150 CZK", czk200: "200 CZK", czk250: "250 CZK", czk320: "320 CZK", czk80hour: "80 CZK / hour"
+  }
+};
+
+function setAll(selector, text) {
+  document.querySelectorAll(selector).forEach(el => el.innerText = text);
+}
+
+function updateParkingLabels(lang) {
+  const p = parkingLabels[lang] || parkingLabels.en;
+  setAll('.price-hour-1', p.hour1);
+  setAll('.price-hour-2', p.hour2);
+  setAll('.price-hour-3', p.hour3);
+  setAll('.price-hour-4', p.hour4);
+  setAll('.price-day', p.day);
+  setAll('.price-rate', p.rate);
+  setAll('.price-extra-day', p.extraDay);
+  setAll('.price-nonstop', p.nonstop);
+  setAll('.price-30', p.czk30);
+  setAll('.price-50', p.czk50);
+  setAll('.price-80', p.czk80);
+  setAll('.price-100', p.czk100);
+  setAll('.price-120', p.czk120);
+  setAll('.price-150', p.czk150);
+  setAll('.price-200', p.czk200);
+  setAll('.price-250', p.czk250);
+  setAll('.price-320', p.czk320);
+  setAll('.price-80-hour', p.czk80hour);
+}
 
 let currentLang = 'cs';
 let weatherData = null;
@@ -288,8 +345,9 @@ function updateEl(id, prop, value) {
 }
 
 function setLang(lang) {
+  if (!['cs','de','pl','en'].includes(lang)) lang = 'en';
   currentLang = lang;
-  localStorage.setItem('spindlLang', lang);
+  try { localStorage.setItem('spindlLang', lang); } catch (e) {}
   document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
   document.getElementById('btn-' + lang).classList.add('active');
   const t = translations[lang] || translations['en'];
@@ -325,11 +383,13 @@ function setLang(lang) {
   updateEl('txt-back', 'innerText', t.back);
   updateEl('txt-spindlerovka', 'innerText', t.spindlBus);
   updateEl('txt-spindlerovka', 'href', t.urlBus);
+  updateEl('txt-parking-title', 'innerText', t.parkingTitle);
   updateEl('txt-sec-shop', 'innerText', t.secShop);
   updateEl('txt-p1-closed', 'innerText', t.p1Closed);
   updateEl('txt-feedback-ph', 'placeholder', t.feedPh);
   updateEl('btn-feedback', 'innerText', t.feedBtn);
   document.querySelectorAll('.txt-price-btn').forEach(el => el.innerText = t.priceBtn);
+  updateParkingLabels(lang);
   updateEl('lnk-web', 'href', t.urlWeb);
   updateWeatherUI();
 }
@@ -370,8 +430,10 @@ function getInitialLang() {
     const params = new URLSearchParams(window.location.search);
     const forced = (params.get('lang') || '').toLowerCase();
     if (['cs','de','pl','en'].includes(forced)) return forced;
-    const saved = (localStorage.getItem('spindlLang') || '').toLowerCase();
-    if (['cs','de','pl','en'].includes(saved)) return saved;
+    try {
+        const saved = (localStorage.getItem('spindlLang') || '').toLowerCase();
+        if (['cs','de','pl','en'].includes(saved)) return saved;
+    } catch (e) {}
     const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
     if (nav.startsWith('cs')) return 'cs';
     if (nav.startsWith('de')) return 'de';
