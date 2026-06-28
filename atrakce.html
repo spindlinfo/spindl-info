@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SPINDL info - Atrakce ve Špindlerově Mlýně</title>
-<meta name="description" content="Atrakce ve Špindlerově Mlýně s trasou z infocentra, odkazem do Mapy.com a odkazem na oficiální web." />
+<meta name="description" content="Atrakce ve Špindlerově Mlýně s odkazem do Mapy.com a odkazem na oficiální web." />
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -79,9 +79,9 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
   <section class="content">
     <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
     <h1 class="hero-title" id="txt-title">Atrakce ve Špindlerově Mlýně</h1>
-    <p class="hero-lead" id="txt-lead">Vyberte si atrakci. U každé najdete trasu z infocentra a odkaz na oficiální web.</p>
+    <p class="hero-lead" id="txt-lead">Vyberte si atrakci. U každé najdete odkaz do Mapy.com a odkaz na oficiální web.</p>
     <div class="tap-hint notice-hint" id="txt-notice">Provoz, ceny a otevírací dobu si vždy ověřte na oficiálním webu. Některé atrakce jsou sezónní a závislé na počasí.</div>
-    <div class="tap-hint" id="txt-tap-hint">Klepněte na atrakci pro popis, trasu v Mapy.com a web provozovatele.</div>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na atrakci pro popis, mapu a web provozovatele.</div>
 
     <div class="section-title" id="txt-section">Atrakce</div>
     <div id="routes"></div>
@@ -213,10 +213,74 @@ const attractions=[
 ];
 
 const T={
-  cs:{subtitle:"Atrakce ve Špindlerově Mlýně",title:"Atrakce ve Špindlerově Mlýně",lead:"Vyberte si atrakci. U každé najdete trasu z infocentra a odkaz na oficiální web.",notice:"Provoz, ceny a otevírací dobu si vždy ověřte na oficiálním webu. Některé atrakce jsou sezónní a závislé na počasí.",tapHint:"Klepněte na atrakci pro popis, trasu v Mapy.com a web provozovatele.",back:"⬅ Zpět na hlavního průvodce",section:"Atrakce",category:"Kategorie",location:"Poloha",season:"Sezóna",suitable:"Vhodné pro",route:"Trasa",routeValue:"z infocentra",webLang:"Web",webLangValue:"dle jazyka",openMap:"🗺️ Trasa z infocentra",openWeb:"🌐 Oficiální web",fallback:"Pokud provozovatel nemá danou jazykovou mutaci, otevře se nejbližší dostupná verze webu.",footer:"Trasy vedou od infocentra. Aktuální provoz, ceny a omezení ověřte u provozovatele.",homeUrl:"index.html?lang=cs"},
-  de:{subtitle:"Attraktionen in Špindlerův Mlýn",title:"Attraktionen in Špindlerův Mlýn",lead:"Wählen Sie eine Attraktion. Bei jeder finden Sie den Weg ab dem Infozentrum und den Link zur offiziellen Website.",notice:"Bitte prüfen Sie Betrieb, Preise und Öffnungszeiten immer auf der offiziellen Website. Manche Attraktionen sind saisonal und wetterabhängig.",tapHint:"Tippen Sie auf eine Attraktion für Beschreibung, Route in Mapy.com und Betreiber-Website.",back:"⬅ Zurück zum Hauptführer",section:"Attraktionen",category:"Kategorie",location:"Lage",season:"Saison",suitable:"Geeignet für",route:"Route",routeValue:"ab Infozentrum",webLang:"Website",webLangValue:"nach Sprache",openMap:"🗺️ Route ab Infozentrum",openWeb:"🌐 Offizielle Website",fallback:"Wenn der Betreiber keine passende Sprachversion anbietet, wird die nächste verfügbare Version geöffnet.",footer:"Die Routen beginnen am Infozentrum. Aktuellen Betrieb, Preise und Einschränkungen beim Betreiber prüfen.",homeUrl:"index.html?lang=de"},
-  pl:{subtitle:"Atrakcje w Szpindlerowym Młynie",title:"Atrakcje w Szpindlerowym Młynie",lead:"Wybierz atrakcję. Przy każdej znajdziesz trasę z informacji turystycznej i link do oficjalnej strony.",notice:"Godziny otwarcia, ceny i aktualne działanie zawsze sprawdźcie na oficjalnej stronie. Niektóre atrakcje są sezonowe i zależne od pogody.",tapHint:"Dotknij atrakcji, aby zobaczyć opis, trasę w Mapy.com i stronę operatora.",back:"⬅ Powrót do głównego przewodnika",section:"Atrakcje",category:"Kategoria",location:"Lokalizacja",season:"Sezon",suitable:"Dla kogo",route:"Trasa",routeValue:"z informacji",webLang:"Strona",webLangValue:"wg języka",openMap:"🗺️ Trasa z informacji",openWeb:"🌐 Oficjalna strona",fallback:"Jeśli operator nie ma danej wersji językowej, otworzy się najbliższa dostępna wersja strony.",footer:"Trasy prowadzą z informacji turystycznej. Aktualne działanie, ceny i ograniczenia sprawdźcie u operatora.",homeUrl:"index.html?lang=pl"},
-  en:{subtitle:"Attractions in Špindlerův Mlýn",title:"Attractions in Špindlerův Mlýn",lead:"Choose an attraction. Each item includes a route from the info centre and a link to the official website.",notice:"Always check operation, prices and opening hours on the official website. Some attractions are seasonal and weather dependent.",tapHint:"Tap an attraction for a description, Mapy.com route and operator website.",back:"⬅ Back to main guide",section:"Attractions",category:"Category",location:"Location",season:"Season",suitable:"Suitable for",route:"Route",routeValue:"from info centre",webLang:"Website",webLangValue:"by language",openMap:"🗺️ Route from info centre",openWeb:"🌐 Official website",fallback:"If the operator does not provide the selected language version, the nearest available website version opens.",footer:"Routes start at the info centre. Check current operation, prices and restrictions with the operator.",homeUrl:"index.html?lang=en"}
+  cs:{
+    subtitle:"Atrakce ve Špindlerově Mlýně",
+    title:"Atrakce ve Špindlerově Mlýně",
+    lead:"Vyberte si atrakci. U každé najdete odkaz do Mapy.com a odkaz na oficiální web.",
+    notice:"Provoz, ceny a otevírací dobu si vždy ověřte na oficiálním webu. Některé atrakce jsou sezónní a závislé na počasí.",
+    tapHint:"Klepněte na atrakci pro popis, mapu a web provozovatele.",
+    back:"⬅ Zpět na hlavního průvodce",
+    section:"Atrakce",
+    category:"Kategorie",
+    location:"Poloha",
+    season:"Sezóna",
+    suitable:"Vhodné pro",
+    openMap:"🗺️ Otevřít v Mapy.com",
+    openWeb:"🌐 Oficiální web",
+    footer:"Aktuální provoz, ceny a omezení ověřte u provozovatele.",
+    homeUrl:"index.html?lang=cs"
+  },
+  de:{
+    subtitle:"Attraktionen in Špindlerův Mlýn",
+    title:"Attraktionen in Špindlerův Mlýn",
+    lead:"Wählen Sie eine Attraktion. Bei jeder finden Sie einen Link zu Mapy.com und zur offiziellen Website.",
+    notice:"Bitte prüfen Sie Betrieb, Preise und Öffnungszeiten immer auf der offiziellen Website. Manche Attraktionen sind saisonal und wetterabhängig.",
+    tapHint:"Tippen Sie auf eine Attraktion für Beschreibung, Karte und Betreiber-Website.",
+    back:"⬅ Zurück zum Hauptführer",
+    section:"Attraktionen",
+    category:"Kategorie",
+    location:"Lage",
+    season:"Saison",
+    suitable:"Geeignet für",
+    openMap:"🗺️ In Mapy.com öffnen",
+    openWeb:"🌐 Offizielle Website",
+    footer:"Aktuellen Betrieb, Preise und Einschränkungen beim Betreiber prüfen.",
+    homeUrl:"index.html?lang=de"
+  },
+  pl:{
+    subtitle:"Atrakcje w Szpindlerowym Młynie",
+    title:"Atrakcje w Szpindlerowym Młynie",
+    lead:"Wybierz atrakcję. Przy każdej znajdziesz link do Mapy.com i oficjalnej strony.",
+    notice:"Godziny otwarcia, ceny i aktualne działanie zawsze sprawdźcie na oficjalnej stronie. Niektóre atrakcje są sezonowe i zależne od pogody.",
+    tapHint:"Dotknij atrakcji, aby zobaczyć opis, mapę i stronę operatora.",
+    back:"⬅ Powrót do głównego przewodnika",
+    section:"Atrakcje",
+    category:"Kategoria",
+    location:"Lokalizacja",
+    season:"Sezon",
+    suitable:"Dla kogo",
+    openMap:"🗺️ Otwórz w Mapy.com",
+    openWeb:"🌐 Oficjalna strona",
+    footer:"Aktualne działanie, ceny i ograniczenia sprawdźcie u operatora.",
+    homeUrl:"index.html?lang=pl"
+  },
+  en:{
+    subtitle:"Attractions in Špindlerův Mlýn",
+    title:"Attractions in Špindlerův Mlýn",
+    lead:"Choose an attraction. Each item includes a Mapy.com link and the official website.",
+    notice:"Always check operation, prices and opening hours on the official website. Some attractions are seasonal and weather dependent.",
+    tapHint:"Tap an attraction for a description, map and operator website.",
+    back:"⬅ Back to main guide",
+    section:"Attractions",
+    category:"Category",
+    location:"Location",
+    season:"Season",
+    suitable:"Suitable for",
+    openMap:"🗺️ Open in Mapy.com",
+    openWeb:"🌐 Official website",
+    footer:"Check current operation, prices and restrictions with the operator.",
+    homeUrl:"index.html?lang=en"
+  }
 };
 
 function getLang() {
@@ -297,7 +361,7 @@ function render() {
               <div class="quick-stats">
                 <div class="quick-stat"><span class="quick-label">${esc(t.category)}</span><span class="quick-value">${esc(kind)}</span></div>
                 <div class="quick-stat"><span class="quick-label">${esc(t.location)}</span><span class="quick-value">${esc(area)}</span></div>
-                <div class="quick-stat"><span class="quick-label">${esc(t.route)}</span><span class="quick-value">${esc(t.routeValue)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.season)}</span><span class="quick-value">${esc(season)}</span></div>
               </div>
             </div>
           </div>
@@ -308,11 +372,8 @@ function render() {
             <div class="stat"><span class="stat-label">${esc(t.location)}</span><span class="stat-value">${esc(area)}</span></div>
             <div class="stat"><span class="stat-label">${esc(t.season)}</span><span class="stat-value">${esc(season)}</span></div>
             <div class="stat"><span class="stat-label">${esc(t.suitable)}</span><span class="stat-value">${esc(suitable)}</span></div>
-            <div class="stat"><span class="stat-label">${esc(t.route)}</span><span class="stat-value">${esc(t.routeValue)}</span></div>
-            <div class="stat"><span class="stat-label">${esc(t.webLang)}</span><span class="stat-value">${esc(t.webLangValue)}</span></div>
           </div>
           <p class="route-desc">${esc(desc)}</p>
-          <p class="route-desc">${esc(t.fallback)}</p>
           <div class="button-row">
             <a class="button btn-map" href="${esc(item.mapUrl)}" target="_blank" rel="noopener">${esc(t.openMap)}</a>
             <a class="button btn-web" href="${esc(url)}" target="_blank" rel="noopener">${esc(t.openWeb)}</a>
