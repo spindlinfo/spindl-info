@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Cyklotrasy okolo Špindlu</title>
+<meta name="description" content="Cyklotrasy okolo Špindlerova Mlýna s délkou, časem, převýšením a odkazem do Mapy.com." />
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12204a">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJQ8FH9BRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PJQ8FH9BRE');
+</script>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: flex-start; justify-content: center; padding: 15px; color: #333; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; position: relative; }
+.top { background: #12b800; padding: 28px 20px 24px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; }
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 700; opacity: 0.96; }
+.content { padding: 22px 18px; }
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+.btn-main { background: #12204a; color: white !important; }
+.btn-transport { background: #12b800; color: #ffffff !important; }
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 22px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.hero-title { color: #12204a; font-size: 25px; line-height: 1.05; margin: 0 0 10px; font-weight: 900; letter-spacing: -0.6px; }
+.hero-lead { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 12px; text-align: left; }
+.tap-hint { background: #f0f2f5; border-radius: 12px; color: #555; font-size: 12.5px; line-height: 1.45; padding: 10px 12px; margin: 0 0 12px; text-align: left; border-left: 5px solid #12b800; }
+.notice-hint { background: #fff8e8; border-left-color: #f2a900; color: #4a3a10; font-weight: 650; }
+.route-card { background: #f8f9fa; border-radius: 14px; margin-bottom: 11px; text-align: left; border-left: 5px solid #12b800; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; }
+.route-trigger { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; padding: 14px 13px; text-align: left; cursor: pointer; display: block; }
+.route-trigger:active { background: #eef2f4; }
+.route-head { display: flex; gap: 10px; align-items: flex-start; }
+.route-number { width: 32px; height: 32px; border-radius: 10px; background: #12204a; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex: 0 0 32px; font-size: 14px; }
+.route-main { flex: 1; min-width: 0; }
+.route-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-title { margin: 0; color: #12204a; font-size: 17px; line-height: 1.15; font-weight: 900; }
+.route-type { margin-top: 3px; color: #666; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.chevron { color: #12204a; font-size: 18px; font-weight: 900; line-height: 1; transition: transform .2s ease; margin-top: 1px; }
+.route-card.open .chevron { transform: rotate(180deg); }
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; margin: 11px 0 0; }
+.quick-stat { background: #ffffff; border: 1px solid #eee; border-radius: 9px; padding: 7px 8px; min-width: 0; }
+.quick-label { display: block; color: #888; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.quick-value { display: block; color: #12204a; font-size: 12.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-details { display: none; padding: 0 13px 14px 13px; border-top: 1px solid #e8eaed; }
+.route-card.open .route-details { display: block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 13px 0 12px; }
+.stat { background: #ffffff; border-radius: 10px; padding: 9px 10px; border: 1px solid #eee; }
+.stat-label { display: block; color: #888; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.stat-value { color: #12204a; font-weight: 900; font-size: 15px; }
+.route-desc { margin: 0 0 11px; color: #333; font-size: 13px; line-height: 1.5; }
+.footer { font-size: 12px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding: 18px 18px 22px; line-height: 1.45; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 800; }
+.footer-note { margin: 8px 0 0; }
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .quick-stats { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="SPINDL info"></div>
+    <div class="subtitle" id="txt-subtitle">Cyklotrasy okolo Špindlu</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
+    <h1 class="hero-title" id="txt-title">Cyklotrasy okolo Špindlu</h1>
+    <p class="hero-lead" id="txt-lead">Vyberte si cyklotrasu podle délky, převýšení a náročnosti.</p>
+    <div class="tap-hint notice-hint" id="txt-notice">Uvedené časy jsou orientační podle plánování trasy na Mapy.com. Před jízdou zkontrolujte aktuální provoz lanovek, počasí, uzavírky tras a pravidla pohybu cyklistů v KRNAP.</div>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na trasu pro popis, převýšení a přímý odkaz do Mapy.com.</div>
+
+    <div class="section-title" id="txt-section">Cyklotrasy</div>
+    <div id="routes"></div>
+  </section>
+  <div class="footer"><a href="https://www.spindleruv-mlyn.com/" target="_blank" rel="noopener">WWW.SPINDLERUV-MLYN.COM</a><p class="footer-note" id="txt-footer"></p></div>
+</main>
+
+<script>
+const routes=[{"url":"https://mapy.com/s/cerutomucu","km":"11,1 km","time":"1:01 h","up":394,"down":394,"maxEle":1095,"start":"spindl","difficulty":"medium","names":{"cs":"Údolí Bílého Labe a zpět do Špindlu","de":"Tal der Weißen Elbe und zurück nach Špindl","pl":"Dolina Białej Łaby i powrót do Szpindla","en":"White Elbe Valley and back to Špindl"},"texts":{"cs":"Kratší výlet do údolí Bílého Labe s návratem zpět do Špindlerova Mlýna. Dobrá volba, když chcete zůstat blízko centra a mít jasný návrat.","de":"Kürzere Tour in das Tal der Weißen Elbe mit Rückkehr nach Špindlerův Mlýn. Eine gute Wahl, wenn Sie in der Nähe des Zentrums bleiben möchten.","pl":"Krótsza trasa do doliny Białej Łaby z powrotem do Szpindlerowego Młyna. Dobra opcja, gdy chcecie zostać blisko centrum.","en":"A shorter ride into the White Elbe Valley and back to Špindlerův Mlýn. A good option if you want to stay close to the centre."}},{"url":"https://mapy.com/s/lalepevodu","km":"11,7 km","time":"51 min","up":201,"down":201,"maxEle":893,"start":"spindl","difficulty":"easy","names":{"cs":"Labský důl a zpět do Špindlu","de":"Elbgrund und zurück nach Špindl","pl":"Labský důl i powrót do Szpindla","en":"Labský důl valley and back to Špindl"},"texts":{"cs":"Kratší trasa do Labského dolu s návratem zpět do Špindlu. Vhodná jako nenáročnější varianta s menším převýšením.","de":"Kürzere Route in den Elbgrund mit Rückkehr nach Špindl. Geeignet als leichtere Variante mit weniger Höhenmetern.","pl":"Krótsza trasa do doliny Labský důl z powrotem do Szpindla. Dobra jako łatwiejszy wariant z mniejszym przewyższeniem.","en":"A shorter route into the Labský důl valley and back to Špindl. A lighter option with less elevation gain."}},{"url":"https://mapy.com/s/rabejolozu","km":"22 km","time":"1:43 h","up":517,"down":1031,"maxEle":1405,"start":"medvedin","difficulty":"medium","names":{"cs":"Medvědín, Labská bouda a zpět do Špindlu","de":"Medvědín, Labská bouda und zurück nach Špindl","pl":"Medvědín, Labská bouda i powrót do Szpindla","en":"Medvědín, Labská bouda and back to Špindl"},"texts":{"cs":"Horská varianta se startem na Medvědíně, přes Labskou boudu a zpět do Špindlu. Předem zkontrolujte provoz lanovky a aktuální podmínky nahoře.","de":"Bergvariante ab Medvědín über Labská bouda und zurück nach Špindl. Prüfen Sie vorher den Liftbetrieb und die aktuellen Bedingungen oben.","pl":"Górski wariant ze startem na Medvědínie, przez Labską boudę i z powrotem do Szpindla. Sprawdźcie wcześniej działanie kolejki i aktualne warunki.","en":"A mountain option starting at Medvědín, via Labská bouda and back to Špindl. Check lift operation and current conditions before riding."}},{"url":"https://mapy.com/s/madugahepa","km":"16,5 km","time":"1:02 h","up":121,"down":635,"maxEle":1230,"start":"medvedin","difficulty":"medium","names":{"cs":"Medvědín, Rovinka a zpět do Špindlu","de":"Medvědín, Rovinka und zurück nach Špindl","pl":"Medvědín, Rovinka i powrót do Szpindla","en":"Medvědín, Rovinka and back to Špindl"},"texts":{"cs":"Varianta z Medvědína přes Rovinku a dolů zpět do Špindlu. Většina převýšení je směrem dolů, přesto počítejte s horským terénem.","de":"Route ab Medvědín über Rovinka und bergab zurück nach Špindl. Die meisten Höhenmeter gehen bergab, trotzdem ist es Berggelände.","pl":"Wariant z Medvědína przez Rovinkę i zjazd z powrotem do Szpindla. Większość przewyższenia jest w dół, ale to nadal teren górski.","en":"A route from Medvědín via Rovinka and downhill back to Špindl. Most of the elevation is descending, but it is still mountain terrain."}},{"url":"https://mapy.com/s/homufububa","km":"18,8 km","time":"1:12 h","up":159,"down":673,"maxEle":1230,"start":"medvedin","difficulty":"medium","names":{"cs":"Medvědín, Rovinka (alternativa) a zpět do Špindlu","de":"Medvědín, Rovinka (Alternative) und zurück nach Špindl","pl":"Medvědín, Rovinka (wariant) i powrót do Szpindla","en":"Medvědín, Rovinka alternative and back to Špindl"},"texts":{"cs":"Alternativní trasa z Medvědína přes Rovinku zpět do Špindlu. Je o něco delší než základní varianta a hodí se jako klidnější prodloužení.","de":"Alternative Route ab Medvědín über Rovinka zurück nach Špindl. Etwas länger als die Grundvariante und gut als ruhige Verlängerung.","pl":"Alternatywna trasa z Medvědína przez Rovinkę z powrotem do Szpindla. Jest trochę dłuższa od podstawowego wariantu.","en":"An alternative route from Medvědín via Rovinka back to Špindl. Slightly longer than the basic option and useful as an extended variant."}},{"url":"https://mapy.com/s/lasujudoza","km":"46 km","time":"4 h","up":1449,"down":1449,"maxEle":1510,"start":"spindl","difficulty":"hard","names":{"cs":"Špindl, Luční bouda a zpět","de":"Špindl, Luční bouda und zurück","pl":"Szpindl, Luční bouda i powrót","en":"Špindl, Luční bouda and back"},"texts":{"cs":"Dlouhá horská cyklotrasa s výrazným převýšením. Počítejte s celodennějším výletem, počasím na hřebenech a nutností ověřit aktuální průjezdnost trasy.","de":"Lange Berg-Radtour mit deutlichen Höhenmetern. Rechnen Sie mit einer längeren Tagestour, Wetter am Kamm und prüfen Sie die aktuelle Befahrbarkeit.","pl":"Długa górska trasa rowerowa z dużym przewyższeniem. Liczcie się z dłuższą wycieczką, pogodą na grzbiecie i sprawdzeniem przejezdności.","en":"A long mountain bike route with significant elevation gain. Expect a longer day out, ridge weather and the need to check current route access."}},{"url":"https://mapy.com/s/busoromoca","km":"8,3 km","time":"29 min","up":29,"down":495,"maxEle":1182,"start":"plane","difficulty":"easy","names":{"cs":"Z Plání do Špindlu","de":"Von Pláň nach Špindl","pl":"Z Plání do Szpindla","en":"From Pláň to Špindl"},"texts":{"cs":"Krátká sjezdová varianta z Plání zpět do Špindlu. Před cestou zkontrolujte provoz lanovky na Pláň.","de":"Kurze Abfahrtsvariante von Pláň zurück nach Špindl. Prüfen Sie vor der Fahrt den Betrieb der Seilbahn nach Pláň.","pl":"Krótki wariant zjazdowy z Plání z powrotem do Szpindla. Przed wyjazdem sprawdźcie działanie kolejki na Pláň.","en":"A short downhill option from Pláň back to Špindl. Check operation of the Pláň cable car before setting off."}},{"url":"https://mapy.com/s/honozomela","km":"41,8 km","time":"3:29 h","up":1160,"down":1626,"maxEle":1510,"start":"plane","difficulty":"hard","names":{"cs":"Z Plání na Luční boudu a zpět do Špindlu","de":"Von Pláň zur Luční bouda und zurück nach Špindl","pl":"Z Plání do Luční boudy i powrót do Szpindla","en":"From Pláň to Luční bouda and back to Špindl"},"texts":{"cs":"Náročná horská trasa z Plání k Luční boudě a zpět do Špindlu. Vhodná pro zkušenější cyklisty, stabilní počasí a dobře připravené kolo.","de":"Anspruchsvolle Bergroute von Pláň zur Luční bouda und zurück nach Špindl. Geeignet für erfahrenere Radfahrer, stabiles Wetter und ein gut vorbereitetes Rad.","pl":"Wymagająca trasa górska z Plání do Luční boudy i z powrotem do Szpindla. Dobra dla bardziej doświadczonych rowerzystów i przy stabilnej pogodzie.","en":"A demanding mountain route from Pláň to Luční bouda and back to Špindl. Suitable for more experienced riders, stable weather and a well-prepared bike."}},{"url":"https://mapy.com/s/pedufalabu","km":"18,1 km","time":"1:19 h","up":312,"down":563,"maxEle":920,"start":"spindl","difficulty":"medium","names":{"cs":"Labská stezka - Špindl - Vrchlabí","de":"Elberadweg - Špindl - Vrchlabí","pl":"Łabska trasa - Szpindl - Vrchlabí","en":"Elbe Trail - Špindl - Vrchlabí"},"texts":{"cs":"Varianta Labské stezky ze Špindlu do Vrchlabí. Praktická trasa pro cestu směrem dolů údolím Labe.","de":"Variante des Elberadwegs von Špindl nach Vrchlabí. Praktische Route talwärts durch das Elbtal.","pl":"Wariant Łabskiej trasy ze Szpindla do Vrchlabí. Praktyczna droga w dół doliną Łaby.","en":"An Elbe Trail option from Špindl to Vrchlabí. A practical route heading down the Elbe valley."}},{"url":"https://mapy.com/s/nuhakecozu","km":"20,1 km","time":"1:15 h","up":139,"down":904,"maxEle":1230,"start":"medvedin","difficulty":"medium","names":{"cs":"Labská stezka - Medvědín - Vrchlabí","de":"Elberadweg - Medvědín - Vrchlabí","pl":"Łabska trasa - Medvědín - Vrchlabí","en":"Elbe Trail - Medvědín - Vrchlabí"},"texts":{"cs":"Varianta Labské stezky se startem na Medvědíně a dojezdem do Vrchlabí. Předem ověřte provoz lanovky na Medvědín.","de":"Variante des Elberadwegs mit Start auf dem Medvědín und Ziel in Vrchlabí. Prüfen Sie vorher den Betrieb der Medvědín-Seilbahn.","pl":"Wariant Łabskiej trasy ze startem na Medvědínie i dojazdem do Vrchlabí. Sprawdźcie wcześniej działanie kolejki na Medvědín.","en":"An Elbe Trail option starting at Medvědín and finishing in Vrchlabí. Check Medvědín cable car operation in advance."}},{"url":"https://mapy.com/s/negorudonu","km":"13 km","time":"44 min","up":17,"down":734,"maxEle":1182,"start":"plane","difficulty":"easy","names":{"cs":"Labská stezka - Pláně - Vrchlabí","de":"Elberadweg - Pláň - Vrchlabí","pl":"Łabska trasa - Pláně - Vrchlabí","en":"Elbe Trail - Pláň - Vrchlabí"},"texts":{"cs":"Sjezdová varianta z Plání směrem do Vrchlabí. Kratší trasa s výrazným klesáním a minimálním stoupáním.","de":"Abfahrtsvariante von Pláň Richtung Vrchlabí. Kürzere Strecke mit deutlichem Gefälle und wenig Anstieg.","pl":"Wariant zjazdowy z Plání w stronę Vrchlabí. Krótsza trasa z wyraźnym zjazdem i minimalnym podjazdem.","en":"A downhill option from Pláň towards Vrchlabí. A shorter route with a major descent and very little climbing."}}];
+const T={"cs":{"subtitle":"Cyklotrasy okolo Špindlu","title":"Cyklotrasy okolo Špindlu","lead":"Vyberte si cyklotrasu podle délky, převýšení a náročnosti. Detail se otevře po kliknutí na trasu.","notice":"Uvedené časy jsou orientační podle plánování trasy na Mapy.com. Před jízdou zkontrolujte aktuální provoz lanovek, počasí, uzavírky tras a pravidla pohybu cyklistů v KRNAP.","tapHint":"Klepněte na trasu pro popis, převýšení, nejvyšší bod a přímý odkaz do Mapy.com.","back":"⬅ Zpět na hlavního průvodce","section":"Cyklotrasy","dist":"Délka","time":"Čas","elev":"Převýšení","highest":"Nejvyšší bod","start":"Start","diff":"Náročnost","open":"🗺️ Otevřít v Mapy.com","footer":"Data: GPX export z Mapy.com. Před vyjetím zkontrolujte počasí, uzavírky tras a provoz lanovek.","homeUrl":"index.html?lang=cs","starts":{"spindl":"Špindl","medvedin":"Medvědín","plane":"Pláně"},"diffLabels":{"easy":"lehká","medium":"střední","hard":"náročná"}},"de":{"subtitle":"Radstrecken rund um Špindl","title":"Radstrecken rund um Špindl","lead":"Wählen Sie eine Radstrecke nach Länge, Höhenmetern und Schwierigkeit. Details öffnen sich nach dem Antippen.","notice":"Die angegebenen Zeiten sind Orientierungswerte aus der Routenplanung auf Mapy.com. Prüfen Sie vor der Fahrt den aktuellen Liftbetrieb, das Wetter, Streckensperrungen und die Regeln für Radfahrer im KRNAP.","tapHint":"Tippen Sie auf eine Route für Beschreibung, Höhenmeter, höchsten Punkt und den direkten Link zu Mapy.com.","back":"⬅ Zurück zum Hauptführer","section":"Radstrecken","dist":"Länge","time":"Zeit","elev":"Höhenmeter","highest":"Höchster Punkt","start":"Start","diff":"Schwierigkeit","open":"🗺️ In Mapy.com öffnen","footer":"Daten: GPX-Export von Mapy.com. Prüfen Sie vor der Fahrt Wetter, Sperrungen und Liftbetrieb.","homeUrl":"index.html?lang=de","starts":{"spindl":"Špindl","medvedin":"Medvědín","plane":"Pláň"},"diffLabels":{"easy":"leicht","medium":"mittel","hard":"anspruchsvoll"}},"pl":{"subtitle":"Trasy rowerowe wokół Szpindla","title":"Trasy rowerowe wokół Szpindla","lead":"Wybierz trasę rowerową według długości, przewyższenia i trudności. Szczegóły otworzą się po kliknięciu.","notice":"Podane czasy są orientacyjne według planowania trasy w Mapy.com. Przed wyjazdem sprawdźcie aktualne działanie kolejek, pogodę, zamknięcia tras i zasady ruchu rowerowego w KRNAP.","tapHint":"Dotknij trasy, aby zobaczyć opis, przewyższenie, najwyższy punkt i bezpośredni link do Mapy.com.","back":"⬅ Powrót do głównego przewodnika","section":"Trasy rowerowe","dist":"Długość","time":"Czas","elev":"Przewyższenie","highest":"Najwyższy punkt","start":"Start","diff":"Trudność","open":"🗺️ Otwórz w Mapy.com","footer":"Dane: eksport GPX z Mapy.com. Przed wyjazdem sprawdźcie pogodę, zamknięcia tras i działanie kolejek.","homeUrl":"index.html?lang=pl","starts":{"spindl":"Szpindl","medvedin":"Medvědín","plane":"Pláně"},"diffLabels":{"easy":"łatwa","medium":"średnia","hard":"wymagająca"}},"en":{"subtitle":"Bike routes around Špindl","title":"Bike routes around Špindl","lead":"Choose a bike route by distance, elevation and difficulty. Details open after tapping the route.","notice":"The stated times are approximate according to route planning on Mapy.com. Before riding, check current lift operation, weather, route closures and cycling rules in KRNAP.","tapHint":"Tap a route to see the description, elevation, highest point and a direct Mapy.com link.","back":"⬅ Back to main guide","section":"Bike routes","dist":"Distance","time":"Time","elev":"Elevation","highest":"Highest point","start":"Start","diff":"Difficulty","open":"🗺️ Open in Mapy.com","footer":"Data: GPX export from Mapy.com. Before riding, check weather, closures and lift operation.","homeUrl":"index.html?lang=en","starts":{"spindl":"Špindl","medvedin":"Medvědín","plane":"Pláň"},"diffLabels":{"easy":"easy","medium":"moderate","hard":"difficult"}}};
+
+function getLang() {
+  const params = new URLSearchParams(window.location.search);
+  const forced = (params.get('lang') || '').toLowerCase();
+  if (['cs','de','pl','en'].includes(forced)) return forced;
+  const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('cs')) return 'cs';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('pl')) return 'pl';
+  return 'en';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function toggleRoute(routeId) {
+  const target = document.getElementById('route-' + routeId);
+  if (!target) return;
+  const shouldOpen = !target.classList.contains('open');
+  document.querySelectorAll('.route-card.open').forEach(card => {
+    card.classList.remove('open');
+    const btn = card.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (shouldOpen) {
+    target.classList.add('open');
+    const btn = target.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+function diffLabel(route, lang) {
+  const t = T[lang] || T.cs;
+  return (t.diffLabels && t.diffLabels[route.difficulty]) || route.difficulty;
+}
+function startLabel(route, lang) {
+  const t = T[lang] || T.cs;
+  return (t.starts && t.starts[route.start]) || route.start;
+}
+function elevationLabel(route) {
+  return `+${route.up} / −${route.down} m`;
+}
+function routeKind(route, lang) {
+  return `${route.km} • ${route.time} • ${diffLabel(route, lang)}`;
+}
+function render() {
+  const lang = getLang();
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.title = t.title + ' | SPINDL info';
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute('content', t.lead);
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-title').textContent = t.title;
+  document.getElementById('txt-lead').textContent = t.lead;
+  document.getElementById('txt-notice').textContent = t.notice;
+  document.getElementById('txt-tap-hint').textContent = t.tapHint;
+  document.getElementById('btn-back').textContent = t.back;
+  document.getElementById('btn-back').href = t.homeUrl;
+  document.getElementById('txt-section').textContent = t.section;
+  document.getElementById('txt-footer').textContent = t.footer;
+
+  const wrap = document.getElementById('routes');
+  wrap.innerHTML = routes.map((r, i) => {
+    const id = 'cyklo-' + i;
+    const title = (r.names && (r.names[lang] || r.names.cs)) || 'Route';
+    const desc = (r.texts && (r.texts[lang] || r.texts.cs)) || '';
+    const diff = diffLabel(r, lang);
+    const start = startLabel(r, lang);
+    const elev = elevationLabel(r);
+    return `
+      <article class="route-card" id="route-${id}">
+        <button class="route-trigger" type="button" onclick="toggleRoute('${id}')" aria-expanded="false" aria-controls="detail-${id}">
+          <div class="route-head">
+            <div class="route-number">${i + 1}</div>
+            <div class="route-main">
+              <div class="route-topline">
+                <div>
+                  <h2 class="route-title">${esc(title)}</h2>
+                  <div class="route-type">${esc(routeKind(r, lang))}</div>
+                </div>
+                <div class="chevron">⌄</div>
+              </div>
+              <div class="quick-stats">
+                <div class="quick-stat"><span class="quick-label">${esc(t.dist)}</span><span class="quick-value">${esc(r.km)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.time)}</span><span class="quick-value">${esc(r.time)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.diff)}</span><span class="quick-value">${esc(diff)}</span></div>
+              </div>
+            </div>
+          </div>
+        </button>
+        <div class="route-details" id="detail-${id}">
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-label">${esc(t.dist)}</span><span class="stat-value">${esc(r.km)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.time)}</span><span class="stat-value">${esc(r.time)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.elev)}</span><span class="stat-value">${esc(elev)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.highest)}</span><span class="stat-value">${r.maxEle} m</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.start)}</span><span class="stat-value">${esc(start)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.diff)}</span><span class="stat-value">${esc(diff)}</span></div>
+          </div>
+          <p class="route-desc">${esc(desc)}</p>
+          <a class="button btn-transport" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t.open)}</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>

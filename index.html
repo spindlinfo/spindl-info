@@ -75,7 +75,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
     <section class="content">
         <a class="button btn-google" href="https://g.page/r/Ca_VRigL1XZyEBM/review" id="txt-review" target="_blank">⭐ Ohodnoťte nás na Google</a>
         
-        <div class="section-title" id="txt-sec-tourism">Turistika</div>
+        <div class="section-title" id="txt-sec-tourism">Turistika & Cykloturistika</div>
         <button class="button btn-mlynar" id="btn-tourism" type="button" onclick="toggleTourism()" aria-expanded="false">🥾 Turistika</button>
         <div class="tourism-list" id="tourism-list">
             <a class="button" id="lnk-mlynar" href="mlynar.html?lang=cs">🚶 Mlynářovy okruhy</a>
@@ -84,6 +84,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
             <a class="button" id="lnk-medvedin" href="medvedin.html?lang=cs">🚡 Trasy z Medvědína</a>
             <a class="button" id="lnk-plan" href="plan.html?lang=cs">🚡 Trasy z Plání</a>
         </div>
+        <a class="button btn-mlynar" id="lnk-cyklo" href="cyklo.html?lang=cs">🚴 Cykloturistika</a>
 
         <div class="section-title" id="txt-sec-weather">Webkamery & Počasí</div>
         <a class="button btn-news" id="lnk-cams" href="#" target="_blank">🎥 Webkamery Špindl</a>
@@ -192,7 +193,7 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 const translations = {
   cs: {
     subtitle: "Digitální průvodce Špindlerovým Mlýnem", review: "⭐ Ohodnoťte nás na Google", 
-    secTourism: "Turistika", tourismBtn: "🥾 Turistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy", medvedinBtn: "🚡 Trasy z Medvědína", planBtn: "🚡 Trasy z Plání",
+    secTourism: "Turistika & Cykloturistika", tourismBtn: "🥾 Turistika", cykloBtn: "🚴 Cykloturistika", mlynarBtn: "🚶 Mlynářovy okruhy", infotrasyBtn: "🥾 Turistické trasy z infocentra", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovy boudy", medvedinBtn: "🚡 Trasy z Medvědína", planBtn: "🚡 Trasy z Plání",
     secWeather: "Webkamery & Počasí", cams: "🎥 Webkamery Špindl", wBlueS: "☁️ Špindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Předpověď (Web)",
     secSafe: "Bezpečnost", zachranka: "Aplikace ZÁCHRANKA", secTrans: "Doprava a parkování", 
     busLocal: "🅿️ Parkování & MHD", idos: "🔍 IDOS", back: "Zpět", spindlBus: "Bus Špindlerovka", priceBtn: "Ceník", parkingTitle: "Parkoviště",
@@ -209,7 +210,7 @@ const translations = {
   },
   de: {
     subtitle: "Digitaler Reiseführer Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
-    secTourism: "Wandern", tourismBtn: "🥾 Wandern", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude", medvedinBtn: "🚡 Touren ab Medvědín", planBtn: "🚡 Touren ab Pláň",
+    secTourism: "Wandern & Radtourismus", tourismBtn: "🥾 Wandern", cykloBtn: "🚴 Radtourismus", mlynarBtn: "🚶 Müller-Lehrpfade", infotrasyBtn: "🥾 Wanderwege ab Infozentrum", spindlerovkaBtn: "🏔️ Touren ab Spindlerbaude", medvedinBtn: "🚡 Touren ab Medvědín", planBtn: "🚡 Touren ab Pláň",
     secWeather: "Webcams & Wetter", cams: "🎥 Webcams Spindl", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Sněžka", wMain: "☀️ Wetter (Web)",
     secSafe: "Sicherheit", zachranka: "Notfall-App ZÁCHRANKA", secTrans: "Verkehr & Parken", 
     busLocal: "🅿️ Parken & Bus", idos: "🔍 Fahrpläne", back: "Zurück", spindlBus: "Bus Spindlerbaude", priceBtn: "Preisliste", parkingTitle: "Parkplätze",
@@ -226,7 +227,7 @@ const translations = {
   },
   pl: {
     subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nas w Google", 
-    secTourism: "Turystyka", tourismBtn: "🥾 Turystyka", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki", medvedinBtn: "🚡 Trasy z Medvědína", planBtn: "🚡 Trasy z Plání",
+    secTourism: "Turystyka piesza i rowerowa", tourismBtn: "🥾 Turystyka piesza", cykloBtn: "🚴 Turystyka rowerowa", mlynarBtn: "🚶 Ścieżki Młynarza", infotrasyBtn: "🥾 Trasy z informacji turystycznej", spindlerovkaBtn: "🏔️ Trasy ze Špindlerovki", medvedinBtn: "🚡 Trasy z Medvědína", planBtn: "🚡 Trasy z Plání",
     secWeather: "Kamery i Pogoda", cams: "🎥 Kamery internetowe", wBlueS: "☁️ Szpindl", wBlueN: "🏔️ Śnieżka", wMain: "☀️ Pogoda (Web)",
     secSafe: "Bezpieczeństwo", zachranka: "Aplikacja RATUNEK", secTrans: "Transport i parking", 
     busLocal: "🅿️ Parking i autobusy", idos: "🔍 Rozkłady jazdy", back: "Powrót", spindlBus: "Autobus Špindlerovka", priceBtn: "Cennik", parkingTitle: "Parkingi",
@@ -243,7 +244,7 @@ const translations = {
   },
   en: {
     subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
-    secTourism: "Hiking", tourismBtn: "🥾 Hiking", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda", medvedinBtn: "🚡 Routes from Medvědín", planBtn: "🚡 Routes from Pláň",
+    secTourism: "Hiking & Cycling", tourismBtn: "🥾 Hiking", cykloBtn: "🚴 Cycling routes", mlynarBtn: "🚶 Miller's Trails", infotrasyBtn: "🥾 Hiking routes from info centre", spindlerovkaBtn: "🏔️ Routes from Špindlerova Bouda", medvedinBtn: "🚡 Routes from Medvědín", planBtn: "🚡 Routes from Pláň",
     secWeather: "Webcams & Weather", cams: "🎥 Spindl Webcams", wBlueS: "☁️ Spindl", wBlueN: "🏔️ Snezka", wMain: "☀️ Forecast (Web)",
     secSafe: "Safety", zachranka: "Emergency App", secTrans: "Transport & Parking", 
     busLocal: "🅿️ Parking & Bus", idos: "🔍 Timetables", back: "Back", spindlBus: "Bus Spindlerovka", priceBtn: "Prices", parkingTitle: "Parking",
@@ -369,6 +370,8 @@ function setLang(lang) {
   updateEl('lnk-medvedin', 'href', 'medvedin.html?lang=' + lang);
   updateEl('lnk-plan', 'innerText', t.planBtn);
   updateEl('lnk-plan', 'href', 'plan.html?lang=' + lang);
+  updateEl('lnk-cyklo', 'innerText', t.cykloBtn);
+  updateEl('lnk-cyklo', 'href', 'cyklo.html?lang=' + lang);
 
   updateEl('txt-sec-weather', 'innerText', t.secWeather);
   updateEl('lnk-cams', 'innerText', t.cams);
