@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Atrakce ve Špindlerově Mlýně</title>
+<meta name="description" content="Atrakce ve Špindlerově Mlýně s trasou z infocentra, odkazem do Mapy.com a odkazem na oficiální web." />
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12204a">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJQ8FH9BRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PJQ8FH9BRE');
+</script>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: flex-start; justify-content: center; padding: 15px; color: #333; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; position: relative; }
+.top { background: #12b800; padding: 28px 20px 24px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; }
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 700; opacity: 0.96; }
+.content { padding: 22px 18px; }
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+.btn-main { background: #12204a; color: white !important; }
+.btn-map { background: #12b800; color: #ffffff !important; }
+.btn-web { background: #12204a; color: #ffffff !important; }
+.button-row { display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 2px; }
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 22px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.hero-title { color: #12204a; font-size: 25px; line-height: 1.05; margin: 0 0 10px; font-weight: 900; letter-spacing: -0.6px; }
+.hero-lead { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 12px; text-align: left; }
+.tap-hint { background: #f0f2f5; border-radius: 12px; color: #555; font-size: 12.5px; line-height: 1.45; padding: 10px 12px; margin: 0 0 12px; text-align: left; border-left: 5px solid #12b800; }
+.notice-hint { background: #fff8e8; border-left-color: #f2a900; color: #4a3a10; font-weight: 650; }
+.route-card { background: #f8f9fa; border-radius: 14px; margin-bottom: 11px; text-align: left; border-left: 5px solid #12b800; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; }
+.route-trigger { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; padding: 14px 13px; text-align: left; cursor: pointer; display: block; }
+.route-trigger:active { background: #eef2f4; }
+.route-head { display: flex; gap: 10px; align-items: flex-start; }
+.route-number { width: 32px; height: 32px; border-radius: 10px; background: #12204a; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex: 0 0 32px; font-size: 14px; }
+.route-main { flex: 1; min-width: 0; }
+.route-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-title { margin: 0; color: #12204a; font-size: 17px; line-height: 1.15; font-weight: 900; }
+.route-type { margin-top: 3px; color: #666; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.chevron { color: #12204a; font-size: 18px; font-weight: 900; line-height: 1; transition: transform .2s ease; margin-top: 1px; }
+.route-card.open .chevron { transform: rotate(180deg); }
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; margin: 11px 0 0; }
+.quick-stat { background: #ffffff; border: 1px solid #eee; border-radius: 9px; padding: 7px 8px; min-width: 0; }
+.quick-label { display: block; color: #888; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.quick-value { display: block; color: #12204a; font-size: 12.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-details { display: none; padding: 0 13px 14px 13px; border-top: 1px solid #e8eaed; }
+.route-card.open .route-details { display: block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 13px 0 12px; }
+.stat { background: #ffffff; border-radius: 10px; padding: 9px 10px; border: 1px solid #eee; }
+.stat-label { display: block; color: #888; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.stat-value { color: #12204a; font-weight: 900; font-size: 15px; }
+.route-desc { margin: 0 0 11px; color: #333; font-size: 13px; line-height: 1.5; }
+.footer { font-size: 12px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding: 18px 18px 22px; line-height: 1.45; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 800; }
+.footer-note { margin: 8px 0 0; }
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .quick-stats { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="SPINDL info"></div>
+    <div class="subtitle" id="txt-subtitle">Atrakce ve Špindlerově Mlýně</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
+    <h1 class="hero-title" id="txt-title">Atrakce ve Špindlerově Mlýně</h1>
+    <p class="hero-lead" id="txt-lead">Vyberte si atrakci. U každé najdete trasu z infocentra a odkaz na oficiální web.</p>
+    <div class="tap-hint notice-hint" id="txt-notice">Provoz, ceny a otevírací dobu si vždy ověřte na oficiálním webu. Některé atrakce jsou sezónní a závislé na počasí.</div>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na atrakci pro popis, trasu v Mapy.com a web provozovatele.</div>
+
+    <div class="section-title" id="txt-section">Atrakce</div>
+    <div id="routes"></div>
+  </section>
+  <div class="footer"><a href="https://www.spindleruv-mlyn.com/" target="_blank" rel="noopener">WWW.SPINDLERUV-MLYN.COM</a><p class="footer-note" id="txt-footer"></p></div>
+</main>
+
+<script>
+const attractions=[
+  {
+    mapUrl:"https://mapy.com/s/husanemevo",
+    webUrls:{cs:"https://snowtubingpark.cz",en:"https://snowtubingpark.cz/?lang=en",de:"https://snowtubingpark.cz/?lang=de"},
+    icon:"1",
+    kind:{cs:"Tubing",de:"Tubing",pl:"Tubing",en:"Tubing"},
+    area:{cs:"Bedřichov",de:"Bedřichov",pl:"Bedřichov",en:"Bedřichov"},
+    season:{cs:"léto / zima",de:"Sommer / Winter",pl:"lato / zima",en:"summer / winter"},
+    suitable:{cs:"rodiny",de:"Familien",pl:"rodziny",en:"families"},
+    names:{cs:"Tubing Park",de:"Tubing Park",pl:"Tubing Park",en:"Tubing Park"},
+    types:{cs:"snowtubing, summertubing, malý areál",de:"Snowtubing, Summertubing, kleiner Park",pl:"snowtubing, summertubing, mały park",en:"snow tubing, summer tubing, small park"},
+    texts:{
+      cs:"Tubing Park v Bedřichově je kousek od centra. Hodí se pro rychlou zábavu s dětmi i jako nenáročná zastávka při procházce po Špindlu.",
+      de:"Der Tubing Park in Bedřichov liegt nur wenige Minuten vom Zentrum entfernt. Gut für eine kurze Familienaktivität oder als einfacher Stopp beim Spaziergang durch Špindl.",
+      pl:"Tubing Park w Bedřichovie znajduje się blisko centrum. Dobry wybór na krótką rodzinną atrakcję albo łatwy przystanek podczas spaceru po Szpindlu.",
+      en:"Tubing Park in Bedřichov is close to the centre. A good choice for a quick family activity or an easy stop during a walk around Špindl."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/jezetabuva",
+    webUrls:{cs:"https://www.yellow-point.cz/sportovni-aktivity/spindleruv-mlyn/adventure-park_35/",en:"https://www.yellow-point.cz/en/sportovni-aktivity/spindleruv-mlyn/adventure-park_35/",de:"https://www.yellow-point.cz/de/sportovni-aktivity/spindleruv-mlyn/adventure-park_35/",pl:"https://www.yellow-point.cz/pl/sportovni-aktivity/spindleruv-mlyn/adventure-park_35/"},
+    icon:"2",
+    kind:{cs:"Outdoor park",de:"Outdoor-Park",pl:"park outdoor",en:"outdoor park"},
+    area:{cs:"u cesty na Medvědín",de:"Richtung Medvědín",pl:"w stronę Medvědína",en:"towards Medvědín"},
+    season:{cs:"hlavně léto",de:"vor allem Sommer",pl:"głównie lato",en:"mainly summer"},
+    suitable:{cs:"děti i dospělí",de:"Kinder & Erwachsene",pl:"dzieci i dorośli",en:"kids & adults"},
+    names:{cs:"Adventure Park",de:"Adventure Park",pl:"Adventure Park",en:"Adventure Park"},
+    types:{cs:"obří houpačka, trampolína, hřiště",de:"Riesenschaukel, Trampolin, Spielplatz",pl:"wielka huśtawka, trampolina, plac zabaw",en:"giant swing, trampoline, playground"},
+    texts:{
+      cs:"Adventure Park najdete po cestě z centra k lanovce Medvědín. Na jednom místě jsou aktivity pro děti i dospělé, od dětského hřiště až po adrenalinovější prvky.",
+      de:"Der Adventure Park liegt auf dem Weg vom Zentrum zur Medvědín-Seilbahn. Hier finden Kinder und Erwachsene mehrere Aktivitäten an einem Ort.",
+      pl:"Adventure Park znajduje się po drodze z centrum do kolejki na Medvědín. W jednym miejscu są atrakcje dla dzieci i dorosłych.",
+      en:"Adventure Park is on the way from the centre to the Medvědín cable car. It brings several activities for children and adults into one place."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/dapabupeje",
+    webUrls:{cs:"https://www.bobovka.cz/spindleruvmlyn",en:"https://www.bobovka.cz/en/spindleruvmlyn"},
+    icon:"3",
+    kind:{cs:"Bobová dráha",de:"Sommerrodelbahn",pl:"tor saneczkowy",en:"bobsleigh track"},
+    area:{cs:"Bedřichov",de:"Bedřichov",pl:"Bedřichov",en:"Bedřichov"},
+    season:{cs:"sezónně",de:"saisonal",pl:"sezonowo",en:"seasonal"},
+    suitable:{cs:"rodiny",de:"Familien",pl:"rodziny",en:"families"},
+    names:{cs:"Bobová dráha",de:"Sommerrodelbahn",pl:"Tor saneczkowy",en:"Bobsleigh Track"},
+    types:{cs:"1400 m, 22 zatáček, 3 tunely",de:"1400 m, 22 Kurven, 3 Tunnel",pl:"1400 m, 22 zakręty, 3 tunele",en:"1400 m, 22 turns, 3 tunnels"},
+    texts:{
+      cs:"Bobová dráha v Bedřichově je klasická rodinná atrakce ve Špindlu. Rychlost si jezdec reguluje sám, proto se hodí i pro pohodovější návštěvu s dětmi.",
+      de:"Die Sommerrodelbahn in Bedřichov ist eine klassische Familienattraktion in Špindl. Die Geschwindigkeit reguliert jeder Fahrer selbst.",
+      pl:"Tor saneczkowy w Bedřichovie to klasyczna rodzinna atrakcja w Szpindlu. Prędkość reguluje sam jadący.",
+      en:"The bobsleigh track in Bedřichov is a classic family attraction in Špindl. Riders control their own speed, so it also works well for a relaxed family visit."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/gezopesoku",
+    webUrls:{cs:"https://www.bobovka.cz/spindleruvmlyn",en:"https://www.bobovka.cz/en/spindleruvmlyn"},
+    icon:"4",
+    kind:{cs:"Lanový park",de:"Seilpark",pl:"park linowy",en:"rope park"},
+    area:{cs:"u bobové dráhy",de:"bei der Rodelbahn",pl:"przy torze saneczkowym",en:"by the bobsleigh track"},
+    season:{cs:"sezónně",de:"saisonal",pl:"sezonowo",en:"seasonal"},
+    suitable:{cs:"od 140 cm",de:"ab 140 cm",pl:"od 140 cm",en:"from 140 cm"},
+    names:{cs:"Monkey Park",de:"Monkey Park",pl:"Monkey Park",en:"Monkey Park"},
+    types:{cs:"lanový park v lese",de:"Seilpark im Wald",pl:"park linowy w lesie",en:"forest rope park"},
+    texts:{
+      cs:"Monkey Park leží přímo u bobové dráhy. Lanový park v lese je vhodný pro děti od 140 cm výšky i pro dospělé.",
+      de:"Der Monkey Park liegt direkt bei der Sommerrodelbahn. Der Seilpark im Wald ist für Kinder ab 140 cm Körpergröße und Erwachsene geeignet.",
+      pl:"Monkey Park znajduje się bezpośrednio przy torze saneczkowym. Leśny park linowy jest odpowiedni dla dzieci od 140 cm wzrostu i dorosłych.",
+      en:"Monkey Park is located right by the bobsleigh track. The forest rope park is suitable for children from 140 cm in height and adults."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/degolapuja",
+    webUrls:{cs:"https://www.yellow-point.cz/sportovni-aktivity/spindleruv-mlyn/zip-line_3/",en:"https://www.yellow-point.cz/en/sportovni-aktivity/spindleruv-mlyn/zip-line_3/",de:"https://www.yellow-point.cz/de/sportovni-aktivity/spindleruv-mlyn/zip-line_3/",pl:"https://www.yellow-point.cz/pl/sportovni-aktivity/spindleruv-mlyn/zip-line_3/"},
+    icon:"5",
+    kind:{cs:"Zip line",de:"Zip Line",pl:"zip line",en:"zip line"},
+    area:{cs:"Labská přehrada",de:"Labská-Talsperre",pl:"zapora Labská",en:"Labská Dam"},
+    season:{cs:"dle provozu",de:"je nach Betrieb",pl:"wg działania",en:"by operation"},
+    suitable:{cs:"adrenalin",de:"Adrenalin",pl:"adrenalina",en:"adrenaline"},
+    names:{cs:"ZIP LINE",de:"ZIP LINE",pl:"ZIP LINE",en:"ZIP LINE"},
+    types:{cs:"přejezd podél hráze",de:"Fahrt entlang der Staumauer",pl:"przejazd wzdłuż zapory",en:"ride along the dam"},
+    texts:{
+      cs:"Zip line je na hrázi Labské přehrady. Je to krátká adrenalinová atrakce s výhledem na jednu z dominant při příjezdu do Špindlu.",
+      de:"Die Zip Line befindet sich an der Labská-Talsperre. Eine kurze Adrenalinattraktion mit Blick auf eines der Wahrzeichen bei der Anfahrt nach Špindl.",
+      pl:"Zip line znajduje się na zaporze Labská. To krótka atrakcja adrenalinowa z widokiem na jeden z charakterystycznych punktów przy wjeździe do Szpindla.",
+      en:"The zip line is at the Labská Dam. It is a short adrenaline activity with a view of one of the landmarks on the way into Špindl."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/cebetovaga",
+    webUrls:{cs:"https://www.skiareal.cz/resort/lanove-drahy",en:"https://www.skiareal.cz/en/ski-resort/chairlifts",de:"https://www.skiareal.cz/de/ressort/seilbahnen",pl:"https://www.skiareal.cz/pl/osrodek-narciarski/kolejki-linowe"},
+    icon:"6",
+    kind:{cs:"Lanovka",de:"Seilbahn",pl:"kolejka linowa",en:"chairlift"},
+    area:{cs:"Svatý Petr / Pláň",de:"Svatý Petr / Pláň",pl:"Svatý Petr / Pláň",en:"Svatý Petr / Pláň"},
+    season:{cs:"léto / zima",de:"Sommer / Winter",pl:"lato / zima",en:"summer / winter"},
+    suitable:{cs:"výlet, kolo",de:"Ausflug, Rad",pl:"wycieczka, rower",en:"trip, bike"},
+    names:{cs:"Lanová dráha Svatý Petr - Pláň",de:"Seilbahn Svatý Petr - Pláň",pl:"Kolejka Svatý Petr - Pláň",en:"Svatý Petr - Pláň Chairlift"},
+    types:{cs:"výjezd na Přední Planinu",de:"Auffahrt zur Přední Planina",pl:"wjazd na Přední Planinę",en:"ride to Přední Planina"},
+    texts:{
+      cs:"Lanovka ze Svatého Petra vás vyveze na Pláň / Přední Planinu. Nahoře je restaurace, výhledy a návazné trasy zpět do údolí.",
+      de:"Die Seilbahn ab Svatý Petr bringt Sie nach Pláň / Přední Planina. Oben finden Sie ein Restaurant, Aussichten und Anschlusswege zurück ins Tal.",
+      pl:"Kolejka ze Svatého Petra wywozi na Pláň / Přední Planinę. Na górze są widoki, restauracja i trasy powrotne do doliny.",
+      en:"The chairlift from Svatý Petr takes you up to Pláň / Přední Planina. At the top there are views, a restaurant and routes back down to the valley."
+    }
+  },
+  {
+    mapUrl:"https://mapy.com/s/henakucula",
+    webUrls:{cs:"https://www.skiareal.cz/resort/lanove-drahy",en:"https://www.skiareal.cz/en/ski-resort/chairlifts",de:"https://www.skiareal.cz/de/ressort/seilbahnen",pl:"https://www.skiareal.cz/pl/osrodek-narciarski/kolejki-linowe"},
+    icon:"7",
+    kind:{cs:"Lanovka",de:"Seilbahn",pl:"kolejka linowa",en:"chairlift"},
+    area:{cs:"Medvědín",de:"Medvědín",pl:"Medvědín",en:"Medvědín"},
+    season:{cs:"léto / zima",de:"Sommer / Winter",pl:"lato / zima",en:"summer / winter"},
+    suitable:{cs:"výlet, výhledy",de:"Ausflug, Aussicht",pl:"wycieczka, widoki",en:"trip, views"},
+    names:{cs:"Lanová dráha Medvědín",de:"Seilbahn Medvědín",pl:"Kolejka Medvědín",en:"Medvědín Chairlift"},
+    types:{cs:"výjezd na Medvědín",de:"Auffahrt auf den Medvědín",pl:"wjazd na Medvědín",en:"ride up to Medvědín"},
+    texts:{
+      cs:"Lanovka na Medvědín je praktický start pro výlety, vyhlídky a naučné stezky. Před cestou ověřte aktuální provoz lanovky.",
+      de:"Die Seilbahn auf den Medvědín ist ein praktischer Startpunkt für Ausflüge, Aussichten und Lehrpfade. Prüfen Sie vorab den aktuellen Betrieb.",
+      pl:"Kolejka na Medvědín to wygodny punkt startowy na wycieczki, widoki i ścieżki edukacyjne. Przed wyjściem sprawdźcie aktualne działanie kolejki.",
+      en:"The Medvědín chairlift is a practical starting point for trips, views and educational trails. Check current operation before you go."
+    }
+  }
+];
+
+const T={
+  cs:{subtitle:"Atrakce ve Špindlerově Mlýně",title:"Atrakce ve Špindlerově Mlýně",lead:"Vyberte si atrakci. U každé najdete trasu z infocentra a odkaz na oficiální web.",notice:"Provoz, ceny a otevírací dobu si vždy ověřte na oficiálním webu. Některé atrakce jsou sezónní a závislé na počasí.",tapHint:"Klepněte na atrakci pro popis, trasu v Mapy.com a web provozovatele.",back:"⬅ Zpět na hlavního průvodce",section:"Atrakce",category:"Kategorie",location:"Poloha",season:"Sezóna",suitable:"Vhodné pro",route:"Trasa",routeValue:"z infocentra",webLang:"Web",webLangValue:"dle jazyka",openMap:"🗺️ Trasa z infocentra",openWeb:"🌐 Oficiální web",fallback:"Pokud provozovatel nemá danou jazykovou mutaci, otevře se nejbližší dostupná verze webu.",footer:"Trasy vedou od infocentra. Aktuální provoz, ceny a omezení ověřte u provozovatele.",homeUrl:"index.html?lang=cs"},
+  de:{subtitle:"Attraktionen in Špindlerův Mlýn",title:"Attraktionen in Špindlerův Mlýn",lead:"Wählen Sie eine Attraktion. Bei jeder finden Sie den Weg ab dem Infozentrum und den Link zur offiziellen Website.",notice:"Bitte prüfen Sie Betrieb, Preise und Öffnungszeiten immer auf der offiziellen Website. Manche Attraktionen sind saisonal und wetterabhängig.",tapHint:"Tippen Sie auf eine Attraktion für Beschreibung, Route in Mapy.com und Betreiber-Website.",back:"⬅ Zurück zum Hauptführer",section:"Attraktionen",category:"Kategorie",location:"Lage",season:"Saison",suitable:"Geeignet für",route:"Route",routeValue:"ab Infozentrum",webLang:"Website",webLangValue:"nach Sprache",openMap:"🗺️ Route ab Infozentrum",openWeb:"🌐 Offizielle Website",fallback:"Wenn der Betreiber keine passende Sprachversion anbietet, wird die nächste verfügbare Version geöffnet.",footer:"Die Routen beginnen am Infozentrum. Aktuellen Betrieb, Preise und Einschränkungen beim Betreiber prüfen.",homeUrl:"index.html?lang=de"},
+  pl:{subtitle:"Atrakcje w Szpindlerowym Młynie",title:"Atrakcje w Szpindlerowym Młynie",lead:"Wybierz atrakcję. Przy każdej znajdziesz trasę z informacji turystycznej i link do oficjalnej strony.",notice:"Godziny otwarcia, ceny i aktualne działanie zawsze sprawdźcie na oficjalnej stronie. Niektóre atrakcje są sezonowe i zależne od pogody.",tapHint:"Dotknij atrakcji, aby zobaczyć opis, trasę w Mapy.com i stronę operatora.",back:"⬅ Powrót do głównego przewodnika",section:"Atrakcje",category:"Kategoria",location:"Lokalizacja",season:"Sezon",suitable:"Dla kogo",route:"Trasa",routeValue:"z informacji",webLang:"Strona",webLangValue:"wg języka",openMap:"🗺️ Trasa z informacji",openWeb:"🌐 Oficjalna strona",fallback:"Jeśli operator nie ma danej wersji językowej, otworzy się najbliższa dostępna wersja strony.",footer:"Trasy prowadzą z informacji turystycznej. Aktualne działanie, ceny i ograniczenia sprawdźcie u operatora.",homeUrl:"index.html?lang=pl"},
+  en:{subtitle:"Attractions in Špindlerův Mlýn",title:"Attractions in Špindlerův Mlýn",lead:"Choose an attraction. Each item includes a route from the info centre and a link to the official website.",notice:"Always check operation, prices and opening hours on the official website. Some attractions are seasonal and weather dependent.",tapHint:"Tap an attraction for a description, Mapy.com route and operator website.",back:"⬅ Back to main guide",section:"Attractions",category:"Category",location:"Location",season:"Season",suitable:"Suitable for",route:"Route",routeValue:"from info centre",webLang:"Website",webLangValue:"by language",openMap:"🗺️ Route from info centre",openWeb:"🌐 Official website",fallback:"If the operator does not provide the selected language version, the nearest available website version opens.",footer:"Routes start at the info centre. Check current operation, prices and restrictions with the operator.",homeUrl:"index.html?lang=en"}
+};
+
+function getLang() {
+  const params = new URLSearchParams(window.location.search);
+  const forced = (params.get('lang') || '').toLowerCase();
+  if (['cs','de','pl','en'].includes(forced)) return forced;
+  const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('cs')) return 'cs';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('pl')) return 'pl';
+  return 'en';
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function local(item, key, lang) {
+  const obj = item[key] || {};
+  return obj[lang] || obj.en || obj.cs || '';
+}
+function webUrl(item, lang) {
+  const urls = item.webUrls || {};
+  return urls[lang] || urls.en || urls.cs || Object.values(urls)[0] || '#';
+}
+function toggleRoute(routeId) {
+  const target = document.getElementById('route-' + routeId);
+  if (!target) return;
+  const shouldOpen = !target.classList.contains('open');
+  document.querySelectorAll('.route-card.open').forEach(card => {
+    card.classList.remove('open');
+    const btn = card.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (shouldOpen) {
+    target.classList.add('open');
+    const btn = target.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+function render() {
+  const lang = getLang();
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.title = t.title + ' | SPINDL info';
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) meta.setAttribute('content', t.lead);
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-title').textContent = t.title;
+  document.getElementById('txt-lead').textContent = t.lead;
+  document.getElementById('txt-notice').textContent = t.notice;
+  document.getElementById('txt-tap-hint').textContent = t.tapHint;
+  document.getElementById('btn-back').textContent = t.back;
+  document.getElementById('btn-back').href = t.homeUrl;
+  document.getElementById('txt-section').textContent = t.section;
+  document.getElementById('txt-footer').textContent = t.footer;
+
+  const wrap = document.getElementById('routes');
+  wrap.innerHTML = attractions.map((item, i) => {
+    const id = 'atrakce-' + i;
+    const title = local(item, 'names', lang);
+    const desc = local(item, 'texts', lang);
+    const kind = local(item, 'kind', lang);
+    const area = local(item, 'area', lang);
+    const season = local(item, 'season', lang);
+    const suitable = local(item, 'suitable', lang);
+    const type = local(item, 'types', lang);
+    const url = webUrl(item, lang);
+    return `
+      <article class="route-card" id="route-${id}">
+        <button class="route-trigger" type="button" onclick="toggleRoute('${id}')" aria-expanded="false" aria-controls="detail-${id}">
+          <div class="route-head">
+            <div class="route-number">${esc(item.icon || (i + 1))}</div>
+            <div class="route-main">
+              <div class="route-topline">
+                <div>
+                  <h2 class="route-title">${esc(title)}</h2>
+                  <div class="route-type">${esc(type)}</div>
+                </div>
+                <div class="chevron">⌄</div>
+              </div>
+              <div class="quick-stats">
+                <div class="quick-stat"><span class="quick-label">${esc(t.category)}</span><span class="quick-value">${esc(kind)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.location)}</span><span class="quick-value">${esc(area)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.route)}</span><span class="quick-value">${esc(t.routeValue)}</span></div>
+              </div>
+            </div>
+          </div>
+        </button>
+        <div class="route-details" id="detail-${id}">
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-label">${esc(t.category)}</span><span class="stat-value">${esc(kind)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.location)}</span><span class="stat-value">${esc(area)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.season)}</span><span class="stat-value">${esc(season)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.suitable)}</span><span class="stat-value">${esc(suitable)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.route)}</span><span class="stat-value">${esc(t.routeValue)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.webLang)}</span><span class="stat-value">${esc(t.webLangValue)}</span></div>
+          </div>
+          <p class="route-desc">${esc(desc)}</p>
+          <p class="route-desc">${esc(t.fallback)}</p>
+          <div class="button-row">
+            <a class="button btn-map" href="${esc(item.mapUrl)}" target="_blank" rel="noopener">${esc(t.openMap)}</a>
+            <a class="button btn-web" href="${esc(url)}" target="_blank" rel="noopener">${esc(t.openWeb)}</a>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
