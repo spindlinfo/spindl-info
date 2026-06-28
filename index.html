@@ -52,6 +52,9 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
 .price-table td { padding: 8px; border-bottom: 1px solid #eee; }
 .price-table td:last-child { text-align: right; font-weight: bold; color: #12204a; }
 .feedback-box { background: #f0f2f5; padding: 15px; border-radius: 12px; margin-top: 20px; }
+.more-info-box { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-top: 20px; text-align: left; border-left: 5px solid #12204a; color: #333; font-size: 14px; line-height: 1.5; }
+.more-info-box p { margin: 0 0 12px; }
+.more-info-box .button { margin-bottom: 0; text-align: center; }
 .footer { font-size: 12px; color: #999; margin-top: 30px; border-top: 1px solid #eee; padding: 20px 0; }
 .tourism-list { display: none; margin: -4px 0 6px; padding-left: 10px; border-left: 3px solid #12b800; }
 .tourism-list.open { display: block; }
@@ -118,6 +121,11 @@ body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica,
                 <textarea name="message" class="feedback-input" rows="2" id="txt-feedback-ph" placeholder="Co byste v aplikaci vylepšili?" required></textarea>
                 <button type="submit" class="feedback-submit" id="btn-feedback">Odeslat</button>
             </form>
+        </div>
+
+        <div class="more-info-box">
+            <p id="txt-more-info">Pro více informací, tipy na výlety, aktuální akce a praktické informace navštivte náš web Spindl.info.</p>
+            <a class="button btn-main" id="lnk-more-info" href="https://spindl.info/" target="_blank" rel="noopener">🌐 Více informací na Spindl.info</a>
         </div>
     </section>
   </div>
@@ -206,7 +214,9 @@ const translations = {
     urlIdos: "https://idos.idnes.cz/vlakyautobusymhdvse/spojeni/",
     blueSpindl: "https://www.meteoblue.com/cs/po%C4%8Das%C3%AD/t%C3%BDden/%C5%A0pindler%C5%AFv-ml%C3%BDn_%C4%8Cesko_3065522",
     blueSnezka: "https://www.meteoblue.com/cs/po%C4%8Das%C3%AD/t%C3%BDden/sn%C4%9B%C5%BEka_%C4%8Cesko_3085294",
-    feedPh: "Co byste v aplikaci vylepšili?", feedBtn: "Odeslat"
+    feedPh: "Co byste v aplikaci vylepšili?", feedBtn: "Odeslat",
+    moreInfoText: "Pro více informací, tipy na výlety, aktuální akce a praktické informace navštivte náš web Spindl.info.",
+    moreInfoBtn: "🌐 Více informací na Spindl.info", spindlInfoUrl: "https://spindl.info/"
   },
   de: {
     subtitle: "Digitaler Reiseführer Spindlermühle", review: "⭐ Bewerten Sie uns auf Google", 
@@ -223,7 +233,9 @@ const translations = {
     urlIdos: "https://idos.idnes.cz/de/vlakyautobusymhdvse/spojeni/?L=DE",
     blueSpindl: "https://www.meteoblue.com/de/wetter/woche/%C5%A0pindler%C5%AFv-ml%C3%BDn_tschechische-republik_3065522",
     blueSnezka: "https://www.meteoblue.com/de/wetter/woche/schneekoppe_tschechische-republik_3085294",
-    feedPh: "Was können wir verbessern?", feedBtn: "Absenden"
+    feedPh: "Was können wir verbessern?", feedBtn: "Absenden",
+    moreInfoText: "Weitere Informationen, Ausflugstipps, aktuelle Veranstaltungen und praktische Hinweise finden Sie auf Spindl.info.",
+    moreInfoBtn: "🌐 Mehr Informationen auf Spindl.info", spindlInfoUrl: "https://spindl.info/"
   },
   pl: {
     subtitle: "Cyfrowy przewodnik po Szpindlerowym Młynie", review: "⭐ Oceń nas w Google", 
@@ -240,7 +252,9 @@ const translations = {
     urlIdos: "https://idos.idnes.cz/en/vlakyautobusymhdvse/spojeni/?L=en",
     blueSpindl: "https://www.meteoblue.com/pl/pogoda/tydzie%C5%84/szpindlerowy-m%C5%82yn_czechy_3065522",
     blueSnezka: "https://www.meteoblue.com/pl/pogoda/tydzie%C5%84/%C5%9Bnie%C5%BCka_czechy_3085294",
-    feedPh: "Co możemy ulepszyć?", feedBtn: "Wyślij"
+    feedPh: "Co możemy ulepszyć?", feedBtn: "Wyślij",
+    moreInfoText: "Więcej informacji, pomysły na wycieczki, aktualne wydarzenia i praktyczne wskazówki znajdziesz na Spindl.info.",
+    moreInfoBtn: "🌐 Więcej informacji na Spindl.info", spindlInfoUrl: "https://spindl.info/"
   },
   en: {
     subtitle: "Digital Guide to Spindleruv Mlyn", review: "⭐ Rate us on Google", 
@@ -257,7 +271,9 @@ const translations = {
     urlIdos: "https://idos.idnes.cz/en/vlakyautobusymhdvse/spojeni/?L=en",
     blueSpindl: "https://www.meteoblue.com/en/weather/week/%C5%A0pindler%C5%AFv-ml%C3%BDn_czech-republic_3065522",
     blueSnezka: "https://www.meteoblue.com/en/weather/week/snezka_czech-republic_3085294",
-    feedPh: "How can we improve?", feedBtn: "Send"
+    feedPh: "How can we improve?", feedBtn: "Send",
+    moreInfoText: "For more information, trip tips, current events and practical details, visit Spindl.info.",
+    moreInfoBtn: "🌐 More information on Spindl.info", spindlInfoUrl: "https://spindl.info/"
   }
 };
 
@@ -394,6 +410,9 @@ function setLang(lang) {
   updateEl('txt-p1-closed', 'innerText', t.p1Closed);
   updateEl('txt-feedback-ph', 'placeholder', t.feedPh);
   updateEl('btn-feedback', 'innerText', t.feedBtn);
+  updateEl('txt-more-info', 'innerText', t.moreInfoText);
+  updateEl('lnk-more-info', 'innerText', t.moreInfoBtn);
+  updateEl('lnk-more-info', 'href', t.spindlInfoUrl);
   document.querySelectorAll('.txt-price-btn').forEach(el => el.innerText = t.priceBtn);
   updateParkingLabels(lang);
   updateEl('lnk-web', 'href', t.urlWeb);
