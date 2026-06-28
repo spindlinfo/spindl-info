@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SPINDL info - Trasy z Pláně</title>
+<meta name="description" content="Turistické trasy z lanovky Pláň s délkou, časem, převýšením a náročností." />
+<link rel="manifest" href="manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12204a">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PJQ8FH9BRE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PJQ8FH9BRE');
+</script>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #12204a; display: flex; align-items: flex-start; justify-content: center; padding: 15px; color: #333; }
+.card { width: 100%; max-width: 430px; background: #ffffff; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); text-align: center; position: relative; }
+.top { background: #12b800; padding: 28px 20px 24px; }
+.logo-box { width: 100%; max-width: 260px; margin: 0 auto 10px; }
+.logo-box img { width: 100%; height: auto; display: block; }
+.subtitle { color: #ffffff; font-size: 15px; font-weight: 700; opacity: 0.96; }
+.content { padding: 22px 18px; }
+.button { display: block; width: 100%; color: #ffffff; text-decoration: none; padding: 15px; border-radius: 12px; font-size: 15px; font-weight: 800; margin-bottom: 12px; border: none; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.2; text-align: center; }
+.button:active { transform: translateY(2px); box-shadow: none; }
+.btn-main { background: #12204a; color: white !important; }
+.btn-transport { background: #12b800; color: #ffffff !important; }
+.section-title { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #a0a0a0; margin: 22px 0 12px; display: flex; align-items: center; justify-content: center; letter-spacing: 1px; }
+.section-title::before, .section-title::after { content: ""; flex: 1; height: 1px; background: #eee; margin: 0 10px; }
+.hero-title { color: #12204a; font-size: 25px; line-height: 1.05; margin: 0 0 10px; font-weight: 900; letter-spacing: -0.6px; }
+.hero-lead { color: #555; font-size: 14px; line-height: 1.5; margin: 0 0 12px; text-align: left; }
+.tap-hint { background: #f0f2f5; border-radius: 12px; color: #555; font-size: 12.5px; line-height: 1.45; padding: 10px 12px; margin: 0 0 12px; text-align: left; border-left: 5px solid #12b800; }
+.route-card { background: #f8f9fa; border-radius: 14px; margin-bottom: 11px; text-align: left; border-left: 5px solid #12b800; box-shadow: 0 4px 12px rgba(0,0,0,0.04); overflow: hidden; }
+.route-trigger { appearance: none; -webkit-appearance: none; width: 100%; background: transparent; border: 0; padding: 14px 13px; text-align: left; cursor: pointer; display: block; }
+.route-trigger:active { background: #eef2f4; }
+.route-head { display: flex; gap: 10px; align-items: flex-start; }
+.route-number { width: 32px; height: 32px; border-radius: 10px; background: #12204a; color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex: 0 0 32px; font-size: 14px; }
+.route-main { flex: 1; min-width: 0; }
+.route-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.route-title { margin: 0; color: #12204a; font-size: 17px; line-height: 1.15; font-weight: 900; }
+.route-type { margin-top: 3px; color: #666; font-size: 12px; font-weight: 700; line-height: 1.3; }
+.chevron { color: #12204a; font-size: 18px; font-weight: 900; line-height: 1; transition: transform .2s ease; margin-top: 1px; }
+.route-card.open .chevron { transform: rotate(180deg); }
+.quick-stats { display: grid; grid-template-columns: 1fr 1fr 1.15fr; gap: 6px; margin: 11px 0 0; }
+.quick-stat { background: #ffffff; border: 1px solid #eee; border-radius: 9px; padding: 7px 8px; min-width: 0; }
+.quick-label { display: block; color: #888; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.quick-value { display: block; color: #12204a; font-size: 12.5px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.route-details { display: none; padding: 0 13px 14px 13px; border-top: 1px solid #e8eaed; }
+.route-card.open .route-details { display: block; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 13px 0 12px; }
+.stat { background: #ffffff; border-radius: 10px; padding: 9px 10px; border: 1px solid #eee; }
+.stat-label { display: block; color: #888; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.stat-value { color: #12204a; font-weight: 900; font-size: 15px; }
+.route-desc { margin: 0 0 11px; color: #333; font-size: 13px; line-height: 1.5; }
+.footer { font-size: 12px; color: #999; margin-top: 20px; border-top: 1px solid #eee; padding: 18px 18px 22px; line-height: 1.45; }
+.footer a { color: #12b800; text-decoration: none; font-weight: 800; }
+@media (max-width: 360px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .quick-stats { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 23px; }
+}
+</style>
+</head>
+<body>
+<main class="card">
+  <section class="top">
+    <div class="logo-box"><img src="hora.png" alt="SPINDL info"></div>
+    <div class="subtitle" id="txt-subtitle">Trasy z Pláně</div>
+  </section>
+
+  <section class="content">
+    <a class="button btn-main" id="btn-back" href="index.html?lang=cs">⬅ Zpět na hlavního průvodce</a>
+    <h1 class="hero-title" id="txt-title">Trasy z lanovky Pláň</h1>
+    <p class="hero-lead" id="txt-lead">Vyberte si trasu podle délky a náročnosti.</p>
+    <div class="tap-hint" id="txt-tap-hint">Klepněte na trasu pro detail a odkaz do Mapy.com.</div>
+
+    <div class="section-title" id="txt-section">Turistické trasy</div>
+    <div id="routes"></div>
+  </section>
+  <div class="footer"><a href="https://www.spindleruv-mlyn.com/" target="_blank" rel="noopener">WWW.SPINDLERUV-MLYN.COM</a></div>
+</main>
+
+<script>
+const routes=[{"url":"https://mapy.com/s/lenesalope","km":1.8,"up":34,"down":34,"time":"31 min","difficulty":"easy","names":{"cz":"Jelení Hravá NS","de":"Jelení Hravá NS","pl":"Jelení Hravá NS","en":"Jelení Hravá NS"},"texts":{"cz":"Nejkratší naučný okruh u horní stanice lanovky Pláň. Hodí se jako rychlá procházka nebo nenáročná varianta pro děti.","de":"Die kürzeste Lernrunde an der Bergstation Pláň. Gut für einen kurzen Spaziergang oder als leichte Variante mit Kindern.","pl":"Najkrótsza ścieżka edukacyjna przy górnej stacji kolejki Pláň. Dobra na krótki spacer albo łatwy wariant z dziećmi.","en":"The shortest educational loop near the Pláň cable car top station. Good for a quick walk or an easy option with children."},"diffLabels":{"cz":"lehká","de":"leicht","pl":"łatwa","en":"easy"}},{"url":"https://mapy.com/s/doponaveho","km":3.7,"up":8,"down":443,"time":"1:09 h","difficulty":"easy","names":{"cz":"Mechová Pěšinka","de":"Mechová Pěšinka","pl":"Mechová Pěšinka","en":"Mechová Pěšinka"},"texts":{"cz":"Krátká trasa z Pláně se sestupem směrem do Svatého Petra. Dobrá volba, když chcete po lanovce kratší výlet bez dlouhého návratu.","de":"Kurze Route ab Pláň mit Abstieg Richtung Svatý Petr. Eine gute Wahl nach der Seilbahn, wenn die Tour nicht zu lang sein soll.","pl":"Krótka trasa z Pláň ze zejściem w stronę Svatého Petra. Dobra po wjeździe kolejką, gdy nie chcecie długiej wycieczki.","en":"A short route from Pláň descending towards Svatý Petr. A good choice after the cable car when you do not want a long hike."},"diffLabels":{"cz":"lehká","de":"leicht","pl":"łatwa","en":"easy"}},{"url":"https://mapy.com/s/magamokalo","km":7.7,"up":37,"down":472,"time":"2:05 h","difficulty":"medium","names":{"cz":"Cesta za zvířátky","de":"Cesta za zvířátky","pl":"Cesta za zvířátky","en":"Cesta za zvířátky"},"texts":{"cz":"Středně dlouhá rodinnější trasa z Pláně směrem do Svatého Petra a k infocentru. Praktická varianta s pohodlným návratem dolů.","de":"Mittellange, familienfreundlichere Route ab Pláň Richtung Svatý Petr und Infozentrum. Praktisch mit bequemem Abstieg.","pl":"Średniej długości, bardziej rodzinna trasa z Pláň w stronę Svatého Petra i informacji turystycznej. Praktyczny wariant zejścia.","en":"A medium-length, family-friendly route from Pláň towards Svatý Petr and the information centre. A practical descent option."},"diffLabels":{"cz":"střední","de":"mittel","pl":"średnia","en":"moderate"}},{"url":"https://mapy.com/s/mazohebeke","km":10.1,"up":217,"down":652,"time":"3:13 h","difficulty":"medium","names":{"cz":"Klínové boudy a přes Stoh do Špindlu","de":"Klínové boudy a přes Stoh do Špindlu","pl":"Klínové boudy a přes Stoh do Špindlu","en":"Klínové boudy a přes Stoh do Špindlu"},"texts":{"cz":"Delší trasa přes Klínové boudy a Stoh zpět do Špindlu. Už je to poctivější horská procházka s větším sestupem.","de":"Längere Tour über Klínové boudy und Stoh zurück nach Špindl. Schon eine ordentlichere Bergwanderung mit längerem Abstieg.","pl":"Dłuższa trasa przez Klínové boudy i Stoh z powrotem do Szpindla. To już solidniejsza górska wycieczka z dłuższym zejściem.","en":"A longer route via Klínové boudy and Stoh back to Špindl. More of a proper mountain walk with a longer descent."},"diffLabels":{"cz":"střední","de":"mittel","pl":"średnia","en":"moderate"}},{"url":"https://mapy.com/s/denogusajo","km":13.1,"up":332,"down":798,"time":"4:20 h","difficulty":"hard","names":{"cz":"Chalupa na rozcestí, Výrovka a zpět do Špindlu","de":"Chalupa na rozcestí, Výrovka a zpět do Špindlu","pl":"Chalupa na rozcestí, Výrovka a zpět do Špindlu","en":"Chalupa na rozcestí, Výrovka a zpět do Špindlu"},"texts":{"cz":"Horská trasa přes Chalupu na rozcestí a Výrovku zpět do Špindlu. Vhodná pro zdatnější turisty a stabilnější počasí.","de":"Bergtour über Chalupa na rozcestí und Výrovka zurück nach Špindl. Geeignet für fittere Wanderer und stabileres Wetter.","pl":"Górska trasa przez Chalupę na rozcestí i Výrovkę z powrotem do Szpindla. Dobra dla sprawniejszych turystów i przy stabilniejszej pogodzie.","en":"A mountain route via Chalupa na rozcestí and Výrovka back to Špindl. Suitable for fitter hikers and more stable weather."},"diffLabels":{"cz":"těžší","de":"schwerer","pl":"trudniejsza","en":"hard"}},{"url":"https://mapy.com/s/kulecavefe","km":16.5,"up":460,"down":926,"time":"5:32 h","difficulty":"veryhard","names":{"cz":"Chalupa na rozcestí, Výrovka, Luční bouda a zpět do Špindlu","de":"Chalupa na rozcestí, Výrovka, Luční bouda a zpět do Špindlu","pl":"Chalupa na rozcestí, Výrovka, Luční bouda a zpět do Špindlu","en":"Chalupa na rozcestí, Výrovka, Luční bouda a zpět do Špindlu"},"texts":{"cz":"Delší horská varianta přes Chalupu na rozcestí, Výrovku a Luční boudu zpět do Špindlu. Počítejte už s celodennějším výletem.","de":"Längere Bergvariante über Chalupa na rozcestí, Výrovka und Luční bouda zurück nach Špindl. Eher eine Tagestour.","pl":"Dłuższy wariant górski przez Chalupę na rozcestí, Výrovkę i Luční boudę z powrotem do Szpindla. To już wycieczka prawie na cały dzień.","en":"A longer mountain option via Chalupa na rozcestí, Výrovka and Luční bouda back to Špindl. Expect more of a full-day hike."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/ladamanavo","km":22.8,"up":753,"down":738,"time":"7:25 h","difficulty":"veryhard","names":{"cz":"Chalupa na rozcestí, Luční bouda, Sněžka, Špindlerova bouda","de":"Chalupa na rozcestí, Luční bouda, Sněžka, Špindlerova bouda","pl":"Chalupa na rozcestí, Luční bouda, Sněžka, Špindlerova bouda","en":"Chalupa na rozcestí, Luční bouda, Sněžka, Špindlerova bouda"},"texts":{"cz":"Velká horská trasa přes Luční boudu a Sněžku s koncem na Špindlerově boudě. Praktické, když chcete skončit nahoře a sjet autobusem.","de":"Große Bergtour über Luční bouda und die Schneekoppe mit Ende an der Spindlerbaude. Praktisch, wenn man oben endet und mit dem Bus hinunterfährt.","pl":"Duża trasa górska przez Luční boudę i Śnieżkę z końcem na Špindlerovce. Praktyczna, gdy chcecie skończyć wysoko i zjechać autobusem.","en":"A big mountain route via Luční bouda and Sněžka, finishing at Špindlerova Bouda. Practical if you want to finish high and take the bus down."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}},{"url":"https://mapy.com/s/lolakepuje","km":23.8,"up":766,"down":1232,"time":"8:07 h","difficulty":"veryhard","names":{"cz":"Luční bouda, Sněžka a zpět do Špindlu","de":"Luční bouda, Sněžka a zpět do Špindlu","pl":"Luční bouda, Sněžka a zpět do Špindlu","en":"Luční bouda, Sněžka a zpět do Špindlu"},"texts":{"cz":"Nejdelší varianta přes Luční boudu a Sněžku zpět do Špindlu. Náročná celodenní túra pro dobré počasí a zdatnější turisty.","de":"Die längste Variante über Luční bouda und die Schneekoppe zurück nach Špindl. Anspruchsvolle Tagestour für gutes Wetter und fitte Wanderer.","pl":"Najdłuższy wariant przez Luční boudę i Śnieżkę z powrotem do Szpindla. Wymagająca całodniowa trasa przy dobrej pogodzie.","en":"The longest option via Luční bouda and Sněžka back to Špindl. A demanding full-day hike for good weather and fitter hikers."},"diffLabels":{"cz":"velmi těžká","de":"sehr schwer","pl":"bardzo trudna","en":"very hard"}}];
+const T = {
+  cs: {
+    subtitle: "Trasy z Pláně",
+    title: "Trasy z lanovky Pláň",
+    lead: "Vyberte si trasu podle délky a náročnosti. Detail se otevře až po kliknutí.",
+    tapHint: "Klepněte na trasu pro popis, převýšení a přímý odkaz do Mapy.com.",
+    back: "⬅ Zpět na hlavního průvodce",
+    section: "Turistické trasy",
+    dist: "Délka",
+    time: "Čas",
+    elev: "Převýšení",
+    diff: "Náročnost",
+    open: "🗺️ Otevřít v Mapy.com",
+    elevationNA: "viz Mapy.com",
+    homeUrl: "index.html?lang=cs"
+  },
+  de: {
+    subtitle: "Touren ab Pláň",
+    title: "Touren ab der Seilbahn Pláň",
+    lead: "Wählen Sie eine Tour nach Länge und Schwierigkeit. Details öffnen sich erst nach dem Antippen.",
+    tapHint: "Tippen Sie auf eine Route für Beschreibung, Höhenmeter und den direkten Link zu Mapy.com.",
+    back: "⬅ Zurück zum Hauptführer",
+    section: "Wandertouren",
+    dist: "Länge",
+    time: "Zeit",
+    elev: "Höhenmeter",
+    diff: "Schwierigkeit",
+    open: "🗺️ In Mapy.com öffnen",
+    elevationNA: "siehe Mapy.com",
+    homeUrl: "index.html?lang=de"
+  },
+  pl: {
+    subtitle: "Trasy z Pláně",
+    title: "Trasy z kolejki Pláň",
+    lead: "Wybierz trasę według długości i trudności. Szczegóły otworzą się dopiero po kliknięciu.",
+    tapHint: "Dotknij trasy, aby zobaczyć opis, przewyższenie i bezpośredni link do Mapy.com.",
+    back: "⬅ Powrót do głównego przewodnika",
+    section: "Trasy turystyczne",
+    dist: "Długość",
+    time: "Czas",
+    elev: "Przewyższenie",
+    diff: "Trudność",
+    open: "🗺️ Otwórz w Mapy.com",
+    elevationNA: "zobacz Mapy.com",
+    homeUrl: "index.html?lang=pl"
+  },
+  en: {
+    subtitle: "Routes from Pláň",
+    title: "Routes from the Pláň cable car",
+    lead: "Choose a route by distance and difficulty. Details open only after tapping.",
+    tapHint: "Tap a route to see the description, elevation and a direct Mapy.com link.",
+    back: "⬅ Back to main guide",
+    section: "Hiking routes",
+    dist: "Distance",
+    time: "Time",
+    elev: "Elevation",
+    diff: "Difficulty",
+    open: "🗺️ Open in Mapy.com",
+    elevationNA: "see Mapy.com",
+    homeUrl: "index.html?lang=en"
+  }
+};
+
+function getLang() {
+  const params = new URLSearchParams(window.location.search);
+  const forced = (params.get('lang') || '').toLowerCase();
+  if (['cs','de','pl','en'].includes(forced)) return forced;
+  const nav = ((navigator.languages && navigator.languages[0]) || navigator.language || 'en').toLowerCase();
+  if (nav.startsWith('cs')) return 'cs';
+  if (nav.startsWith('de')) return 'de';
+  if (nav.startsWith('pl')) return 'pl';
+  return 'en';
+}
+
+function dataLang(lang) { return lang === 'cs' ? 'cz' : lang; }
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function formatKm(km, lang) {
+  const loc = lang === 'en' ? 'en-US' : (lang === 'de' ? 'de-DE' : (lang === 'pl' ? 'pl-PL' : 'cs-CZ'));
+  return Number(km).toLocaleString(loc, { maximumFractionDigits: 1 });
+}
+function toggleRoute(routeId) {
+  const target = document.getElementById('route-' + routeId);
+  if (!target) return;
+  const shouldOpen = !target.classList.contains('open');
+  document.querySelectorAll('.route-card.open').forEach(card => {
+    card.classList.remove('open');
+    const btn = card.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+  if (shouldOpen) {
+    target.classList.add('open');
+    const btn = target.querySelector('.route-trigger');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  }
+}
+function routeKind(r, lang) {
+  const key = dataLang(lang);
+  const diff = (r.diffLabels && (r.diffLabels[key] || r.diffLabels.en)) || '';
+  const km = formatKm(r.km, lang);
+  return `${km} km • ${r.time} • ${diff}`;
+}
+function render() {
+  const lang = getLang();
+  const key = dataLang(lang);
+  const t = T[lang] || T.en;
+  document.documentElement.lang = lang;
+  document.title = t.title + ' | Spindl.info';
+  document.getElementById('txt-subtitle').textContent = t.subtitle;
+  document.getElementById('txt-title').textContent = t.title;
+  document.getElementById('txt-lead').textContent = t.lead;
+  document.getElementById('txt-tap-hint').textContent = t.tapHint;
+  document.getElementById('btn-back').textContent = t.back;
+  document.getElementById('btn-back').href = t.homeUrl;
+  document.getElementById('txt-section').textContent = t.section;
+
+  const wrap = document.getElementById('routes');
+  wrap.innerHTML = routes.map((r, i) => {
+    const id = 'plan-' + i;
+    const title = (r.names && (r.names[key] || r.names.en)) || 'Route';
+    const desc = (r.texts && (r.texts[key] || r.texts.en)) || '';
+    const diff = (r.diffLabels && (r.diffLabels[key] || r.diffLabels.en)) || '';
+    const km = formatKm(r.km, lang);
+    return `
+      <article class="route-card" id="route-${id}">
+        <button class="route-trigger" type="button" onclick="toggleRoute('${id}')" aria-expanded="false" aria-controls="detail-${id}">
+          <div class="route-head">
+            <div class="route-number">${i + 1}</div>
+            <div class="route-main">
+              <div class="route-topline">
+                <div>
+                  <h2 class="route-title">${esc(title)}</h2>
+                  <div class="route-type">${esc(routeKind(r, lang))}</div>
+                </div>
+                <div class="chevron">⌄</div>
+              </div>
+              <div class="quick-stats">
+                <div class="quick-stat"><span class="quick-label">${esc(t.dist)}</span><span class="quick-value">${km} km</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.time)}</span><span class="quick-value">${esc(r.time)}</span></div>
+                <div class="quick-stat"><span class="quick-label">${esc(t.diff)}</span><span class="quick-value">${esc(diff)}</span></div>
+              </div>
+            </div>
+          </div>
+        </button>
+        <div class="route-details" id="detail-${id}">
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-label">${esc(t.dist)}</span><span class="stat-value">${km} km</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.time)}</span><span class="stat-value">${esc(r.time)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.elev)}</span><span class="stat-value">${(Number.isFinite(r.up) && Number.isFinite(r.down)) ? `+${r.up} / −${r.down} m` : esc(t.elevationNA)}</span></div>
+            <div class="stat"><span class="stat-label">${esc(t.diff)}</span><span class="stat-value">${esc(diff)}</span></div>
+          </div>
+          <p class="route-desc">${esc(desc)}</p>
+          <a class="button btn-transport" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(t.open)}</a>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+render();
+</script>
+</body>
+</html>
